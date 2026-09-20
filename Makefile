@@ -67,6 +67,7 @@ export GOOS ?= $(TARGET_OS_LOCAL)
 
 PROTOC_GEN_GO_VERSION = v1.36.9
 PROTOC_GEN_GO_GRPC_VERSION = 1.5.1
+PROTOC_GEN_GRPC_GATEWAY_VERSION = v2.30.0
 
 # Default docker container and e2e test targets.
 TARGET_OS ?= linux
@@ -618,8 +619,8 @@ get-googleapis: ## Download Google API proto files for annotations
 init-proto:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@$(PROTOC_GEN_GO_VERSION)
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v$(PROTOC_GEN_GO_GRPC_VERSION)
-	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
-	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@$(PROTOC_GEN_GRPC_GATEWAY_VERSION)
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@$(PROTOC_GEN_GRPC_GATEWAY_VERSION)
 	@echo "init-proto completed!"
 
 

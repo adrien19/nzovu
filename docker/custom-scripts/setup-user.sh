@@ -16,7 +16,7 @@
 #
 # Syntax: ./setup-user.sh [USERNAME] [SECURE_PATH_BASE]
 
-USERNAME=${1:-"chronoqueue"}
+USERNAME=${1:-"nzovu"}
 SECURE_PATH_BASE=${2:-$PATH}
 
 set -e

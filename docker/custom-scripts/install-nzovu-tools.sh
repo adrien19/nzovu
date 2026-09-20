@@ -15,9 +15,9 @@
 # limitations under the License.
 #
 #
-# Syntax: ./install-chronoqueue-tools.sh [USERNAME] [GOROOT] [GOPATH] [PROTOC_VERSION] [PROTOC_GEN_GO_VERSION] [PROTOC_GEN_GO_GRPC_VERSION] [GOLANGCI_LINT_VERSION]
+# Syntax: ./install-nzovu-tools.sh [USERNAME] [GOROOT] [GOPATH] [PROTOC_VERSION] [PROTOC_GEN_GO_VERSION] [PROTOC_GEN_GO_GRPC_VERSION] [GOLANGCI_LINT_VERSION]
 
-USERNAME=${1:-"chronoqueue"}
+USERNAME=${1:-"nzovu"}
 GOROOT=${2:-"/usr/local/go"}
 GOPATH=${3:-"/go"}
 PROTOC_VERSION=${4:-"32.0"}
@@ -65,8 +65,6 @@ sudo -u ${USERNAME} --preserve-env=GOPATH,GOBIN,GOROOT \
 sudo -u ${USERNAME} --preserve-env=GOPATH,GOBIN,GOROOT \
      ${GOROOT}/bin/go install "google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PROTOC_GEN_GO_GRPC_VERSION}"
 
-# Install golangci-lint using the recommended method (best to avoid using go install according to the docs)
-# Must be installed as the non-root user
+# Build with the project toolchain so lint supports the module's Go version.
 sudo -u ${USERNAME} --preserve-env=GOLANGCI_LINT_VERSION,GOPATH,GOBIN,GOROOT \
-    sh -c 'curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "${GOBIN}" "v${GOLANGCI_LINT_VERSION}"'
-
+    ${GOROOT}/bin/go install "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v${GOLANGCI_LINT_VERSION}"
