@@ -909,7 +909,7 @@ func cleanup() error {
 }
 
 // createClient creates a Nzovu client
-func createClient() (*client.ChronoQueueClient, error) {
+func createClient() (*client.NzovuClient, error) {
 	opts := client.ClientOptions{
 		MaxRetries:          client.DefaultMaxRetries,
 		InitialBackoff:      client.DefaultInitialBackoff,
@@ -921,5 +921,5 @@ func createClient() (*client.ChronoQueueClient, error) {
 		fmt.Printf("Connecting to %s (insecure: %v)\n", serverAddr, insecure)
 	}
 
-	return client.NewChronoQueueClient(serverAddr, opts)
+	return client.NewNzovuClient(serverAddr, opts)
 }

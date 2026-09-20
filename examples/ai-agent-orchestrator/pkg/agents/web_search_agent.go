@@ -14,7 +14,7 @@ type WebSearchAgent struct {
 }
 
 // NewWebSearchAgent creates a new web search agent
-func NewWebSearchAgent(c *client.ChronoQueueClient, workers int, verbose bool) *WebSearchAgent {
+func NewWebSearchAgent(c *client.NzovuClient, workers int, verbose bool) *WebSearchAgent {
 	return &WebSearchAgent{
 		BaseAgent: NewBaseAgent(c, "agent-web-search", "web-search", workers, verbose),
 	}

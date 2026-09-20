@@ -102,7 +102,6 @@ exit $LASTEXITCODE
     if ($LASTEXITCODE -ne 0 -or -not $output.Contains("Nzovu v$version") -or -not $output.Contains("Git Commit: $commit") -or -not $output.Contains("Built:      $buildDate")) {
         throw "Installed binary metadata differs: $output"
     }
-    if (Test-Path (Join-Path $installDir "chronoqueue.exe")) { throw "Legacy binary name installed." }
     Invoke-TestInstall ""
     Invoke-TestInstall $tag
 

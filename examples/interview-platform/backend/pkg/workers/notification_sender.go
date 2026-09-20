@@ -13,12 +13,12 @@ import (
 
 // NotificationSenderWorker sends notifications to users
 type NotificationSenderWorker struct {
-	queue *client.ChronoQueueClient
+	queue *client.NzovuClient
 	db    *db.Database
 }
 
 // NewNotificationSenderWorker creates a new notification sender worker
-func NewNotificationSenderWorker(queue *client.ChronoQueueClient, database *db.Database) *NotificationSenderWorker {
+func NewNotificationSenderWorker(queue *client.NzovuClient, database *db.Database) *NotificationSenderWorker {
 	return &NotificationSenderWorker{
 		queue: queue,
 		db:    database,

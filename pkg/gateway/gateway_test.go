@@ -265,13 +265,11 @@ func TestResponseVersionHeaderUsesBuildMetadata(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	require.NoError(t, responseModifier(context.Background(), recorder, nil))
 	assert.Equal(t, version.Version, recorder.Header().Get("X-Nzovu-Version"))
-	assert.Empty(t, recorder.Header().Get("X-ChronoQueue-Version"))
 
 	preflight := httptest.NewRecorder()
 	handler := corsHandler(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {}), []string{"http://localhost"})
 	handler.ServeHTTP(preflight, httptest.NewRequest(http.MethodOptions, "/v1/queues", nil))
 	assert.Contains(t, preflight.Header().Get("Access-Control-Expose-Headers"), "X-Nzovu-Version")
-	assert.NotContains(t, preflight.Header().Get("Access-Control-Expose-Headers"), "X-ChronoQueue-Version")
 }
 
 func TestSwaggerAssetHandlerRejectsUnknownAsset(t *testing.T) {

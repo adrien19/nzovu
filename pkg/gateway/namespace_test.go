@@ -52,7 +52,7 @@ func TestNzovuNamespacePreservesGatewayAuthentication(t *testing.T) {
 	require.NoError(t, conn.Invoke(authorized, "/nzovu.api.queueservice.v1.QueueService/ListQueues", request, response))
 	err = conn.Invoke(ctx, "/nzovu.api.queueservice.v1.QueueService/ListQueues", request, response)
 	assert.Equal(t, codes.Unauthenticated, status.Code(err))
-	err = conn.Invoke(authorized, "/chronoqueue.api.queueservice.v1.QueueService/ListQueues", request, response)
+	err = conn.Invoke(authorized, "/unsupported.api.queueservice.v1.QueueService/ListQueues", request, response)
 	assert.Equal(t, codes.Unimplemented, status.Code(err))
 
 	handler, err := NewHTTPGateway(ctx, GatewayConfig{GRPCServerAddr: listener.Addr().String()}, logger)

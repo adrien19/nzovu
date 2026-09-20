@@ -39,10 +39,10 @@ log_info "HTTP Address: $HTTP_ADDR"
 case "$STORAGE_TYPE" in
     postgres)
         log_info "PostgreSQL Host: ${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}"
-        log_info "PostgreSQL Database: ${POSTGRES_DB:-chronoqueue}"
+        log_info "PostgreSQL Database: ${POSTGRES_DB:-nzovu}"
         ;;
     sqlite)
-        log_info "SQLite Database: ${SQLITE_DB_PATH:-chronoqueue.db}"
+        log_info "SQLite Database: ${SQLITE_DB_PATH:-nzovu.db}"
         ;;
     *)
         log_error "Unknown storage type: $STORAGE_TYPE"
@@ -95,7 +95,7 @@ case "$STORAGE_TYPE" in
         fi
         ;;
     sqlite)
-        SQLITE_DB_PATH="${SQLITE_DB_PATH:-chronoqueue.db}"
+        SQLITE_DB_PATH="${SQLITE_DB_PATH:-nzovu.db}"
         CMD_ARGS="$CMD_ARGS --sqlite-db-path $SQLITE_DB_PATH"
         ;;
 esac
@@ -106,7 +106,7 @@ esac
 [ -n "$HTTP_ADDR" ] && CMD_ARGS="$CMD_ARGS --http-addr $HTTP_ADDR"
 
 # Add TLS configuration flags
-tls_enabled="${NZOVU_TLS_ENABLED-${CHRONOQUEUE_TLS_ENABLED:-${ENABLE_TLS:-false}}}"
+tls_enabled="${NZOVU_TLS_ENABLED-${NZOVU_TLS_ENABLED:-${ENABLE_TLS:-false}}}"
 if [ "$tls_enabled" = "true" ]; then
     log_info "TLS enabled"
     CMD_ARGS="$CMD_ARGS --enable-tls"

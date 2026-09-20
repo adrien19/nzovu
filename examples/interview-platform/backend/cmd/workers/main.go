@@ -31,7 +31,7 @@ func main() {
 	log.Println("Database initialized successfully")
 
 	// Connect to Nzovu
-	queueClient, err := client.NewChronoQueueClient(*serverAddr, client.ClientOptions{
+	queueClient, err := client.NewNzovuClient(*serverAddr, client.ClientOptions{
 		MaxRetries:     10,
 		InitialBackoff: 1 * time.Second,
 		MaxBackoff:     10 * time.Second,

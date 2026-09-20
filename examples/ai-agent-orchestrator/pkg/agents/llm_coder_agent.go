@@ -16,7 +16,7 @@ type LLMCoderAgent struct {
 }
 
 // NewLLMCoderAgent creates a new LLM-powered coder agent
-func NewLLMCoderAgent(c *client.ChronoQueueClient, llmClient llm.LLMClient, workers int, verbose bool) *LLMCoderAgent {
+func NewLLMCoderAgent(c *client.NzovuClient, llmClient llm.LLMClient, workers int, verbose bool) *LLMCoderAgent {
 	return &LLMCoderAgent{
 		BaseAgent: NewBaseAgent(c, "agent-llm-coder", "llm-coder", workers, verbose),
 		llmClient: llmClient,

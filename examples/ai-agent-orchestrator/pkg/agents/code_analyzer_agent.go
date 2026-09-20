@@ -14,7 +14,7 @@ type CodeAnalyzerAgent struct {
 }
 
 // NewCodeAnalyzerAgent creates a new code analyzer agent
-func NewCodeAnalyzerAgent(c *client.ChronoQueueClient, workers int, verbose bool) *CodeAnalyzerAgent {
+func NewCodeAnalyzerAgent(c *client.NzovuClient, workers int, verbose bool) *CodeAnalyzerAgent {
 	return &CodeAnalyzerAgent{
 		BaseAgent: NewBaseAgent(c, "agent-code-analyzer", "code-analyzer", workers, verbose),
 	}

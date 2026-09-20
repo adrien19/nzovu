@@ -30,7 +30,7 @@ import (
 
 	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
 	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
-	webui "github.com/adrien19/nzovu/cmd/chronoq/web-ui"
+	webui "github.com/adrien19/nzovu/cmd/nzovu/web-ui"
 	"github.com/adrien19/nzovu/pkg/log"
 	"github.com/adrien19/nzovu/tests/helpers"
 )

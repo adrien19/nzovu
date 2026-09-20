@@ -18,12 +18,12 @@ import (
 
 // InterviewSchedulerWorker handles interview scheduling tasks
 type InterviewSchedulerWorker struct {
-	queue *client.ChronoQueueClient
+	queue *client.NzovuClient
 	db    *db.Database
 }
 
 // NewInterviewSchedulerWorker creates a new interview scheduler worker
-func NewInterviewSchedulerWorker(queue *client.ChronoQueueClient, database *db.Database) *InterviewSchedulerWorker {
+func NewInterviewSchedulerWorker(queue *client.NzovuClient, database *db.Database) *InterviewSchedulerWorker {
 	return &InterviewSchedulerWorker{
 		queue: queue,
 		db:    database,

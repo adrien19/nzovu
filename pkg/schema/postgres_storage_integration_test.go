@@ -19,9 +19,9 @@ import (
 func TestPostgresRegistryRoundTripsMetadata(t *testing.T) {
 	ctx := context.Background()
 	container, err := postgrescontainer.Run(ctx, "postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)
@@ -57,9 +57,9 @@ func TestPostgresRegistryRoundTripsMetadata(t *testing.T) {
 func TestPostgresRegistryActiveSelectionFallsBackFromInactiveLatestVersion(t *testing.T) {
 	ctx := context.Background()
 	container, err := postgrescontainer.Run(ctx, "postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)
@@ -109,9 +109,9 @@ func TestPostgresRegistryActiveSelectionFallsBackFromInactiveLatestVersion(t *te
 func TestPostgresRegistryListReturnsScanErrorWithoutPartialPage(t *testing.T) {
 	ctx := context.Background()
 	container, err := postgrescontainer.Run(ctx, "postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)

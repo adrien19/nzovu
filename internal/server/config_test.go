@@ -25,15 +25,13 @@ func TestAuthenticationDefaults(t *testing.T) {
 	assert.True(t, ProductionConfig().AuthEnabled)
 }
 
-func TestTLSNamespacePrecedenceAndValidation(t *testing.T) {
-	t.Setenv("CHRONOQUEUE_TLS_ENABLED", "false")
+func TestTLSConfigurationValidation(t *testing.T) {
 	t.Setenv("NZOVU_TLS_ENABLED", "true")
 	config := DefaultConfig()
 	assert.True(t, config.EnableTLS)
 	assert.True(t, config.GatewayUseTLS)
 	require.ErrorContains(t, config.Validate(), "cert-file or key-file")
 
-	t.Setenv("CHRONOQUEUE_TLS_ENABLED", "true")
 	t.Setenv("NZOVU_TLS_ENABLED", "false")
 	assert.False(t, DefaultConfig().EnableTLS)
 	require.ErrorContains(t, ProductionConfig().Validate(), "TLS must be enabled")
@@ -64,7 +62,8 @@ func TestValidateAuthentication(t *testing.T) {
 }
 
 func TestTLSDefaultsAndProductionValidation(t *testing.T) {
-	t.Setenv("CHRONOQUEUE_TLS_ENABLED", "")
+	t.Setenv("NZOVU_TLS_ENABLED", "")
+	require.NoError(t, os.Unsetenv("NZOVU_TLS_ENABLED"))
 	t.Setenv("CERT_FILE", "")
 	t.Setenv("KEY_FILE", "")
 	t.Setenv("CA_CERT_FILE", "")
@@ -99,7 +98,7 @@ func TestPostgresSecurityDefaults(t *testing.T) {
 	t.Setenv("POSTGRES_ROOT_CERT", "")
 
 	developmentConfig := DefaultConfig()
-	assert.Equal(t, "chronoqueue", developmentConfig.PostgresPassword)
+	assert.Equal(t, "nzovu", developmentConfig.PostgresPassword)
 	assert.Equal(t, "disable", developmentConfig.PostgresSSLMode)
 
 	productionConfig := ProductionConfig()
@@ -155,27 +154,27 @@ func TestValidateProductionPostgresDSN(t *testing.T) {
 	config.CertFile = "server.crt"
 	config.KeyFile = "server.key"
 
-	config.PostgresDSN = "postgres://user:secret@db/chronoqueue?sslmode=disable"
+	config.PostgresDSN = "postgres://user:secret@db/nzovu?sslmode=disable"
 	err := config.Validate()
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "postgres sslmode must be")
 
-	config.PostgresDSN = "postgres://user:secret@db/chronoqueue"
+	config.PostgresDSN = "postgres://user:secret@db/nzovu"
 	err = config.Validate()
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "must specify sslmode")
 
-	config.PostgresDSN = "postgres://user:super-secret@db:notaport/chronoqueue?sslmode=verify-full"
+	config.PostgresDSN = "postgres://user:super-secret@db:notaport/nzovu?sslmode=verify-full"
 	err = config.Validate()
 	require.Error(t, err)
 	assert.NotContains(t, err.Error(), "super-secret")
 
-	config.PostgresDSN = "host=db user=user password=secret dbname=chronoqueue sslmode=verify-full"
+	config.PostgresDSN = "host=db user=user password=secret dbname=nzovu sslmode=verify-full"
 	err = config.Validate()
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "postgres-root-cert is required")
 
-	config.PostgresDSN = "host=db user=user password=secret dbname=chronoqueue sslmode=verify-full sslrootcert=/certs/root.crt"
+	config.PostgresDSN = "host=db user=user password=secret dbname=nzovu sslmode=verify-full sslrootcert=/certs/root.crt"
 	assert.NoError(t, config.Validate())
 }
 
@@ -598,7 +597,7 @@ func TestTLSConfigFromEnvironment(t *testing.T) {
 }
 
 func TestGatewayTLSInheritsServerTLS(t *testing.T) {
-	t.Setenv("CHRONOQUEUE_TLS_ENABLED", "true")
+	t.Setenv("NZOVU_TLS_ENABLED", "true")
 	t.Setenv("CERT_FILE", "server.crt")
 	t.Setenv("KEY_FILE", "server.key")
 	t.Setenv("CA_CERT_FILE", "ca.crt")
@@ -634,4 +633,23 @@ func TestValidateGatewayMTLSCredentials(t *testing.T) {
 	config.GatewayClientCertFile = "gateway.crt"
 	config.GatewayClientKeyFile = "gateway.key"
 	assert.NoError(t, config.Validate())
+}
+
+func TestStorageDefaultsAndExplicitExistingLocations(t *testing.T) {
+	for _, key := range []string{"POSTGRES_USER", "POSTGRES_DB", "SQLITE_DB_PATH"} {
+		t.Setenv(key, "")
+	}
+	for _, config := range []*Config{DefaultConfig(), ProductionConfig()} {
+		assert.Equal(t, "nzovu", config.PostgresUser)
+		assert.Equal(t, "nzovu", config.PostgresDBName)
+		assert.Equal(t, "nzovu.db", config.SQLiteDBPath)
+	}
+	t.Setenv("POSTGRES_USER", "existing-user")
+	t.Setenv("POSTGRES_DB", "existing-data")
+	t.Setenv("SQLITE_DB_PATH", "/existing/queue.db")
+	for _, config := range []*Config{DefaultConfig(), ProductionConfig()} {
+		assert.Equal(t, "existing-user", config.PostgresUser)
+		assert.Equal(t, "existing-data", config.PostgresDBName)
+		assert.Equal(t, "/existing/queue.db", config.SQLiteDBPath)
+	}
 }

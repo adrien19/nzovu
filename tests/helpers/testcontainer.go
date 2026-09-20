@@ -86,9 +86,9 @@ func SetupTestEnvironment(t *testing.T) *TestEnvironment {
 	postgresContainer, err := postgres.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgres.WithDatabase("chronoqueue"),
-		postgres.WithUsername("chronoqueue"),
-		postgres.WithPassword("chronoqueue"),
+		postgres.WithDatabase("nzovu"),
+		postgres.WithUsername("nzovu"),
+		postgres.WithPassword("nzovu"),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 		network.WithNetwork([]string{"postgres"}, net),
 	)
@@ -128,9 +128,9 @@ func SetupTestEnvironment(t *testing.T) *TestEnvironment {
 			"STORAGE_TYPE":      "postgres",           // Use Postgres storage
 			"POSTGRES_HOST":     postgresInternalHost, // Use internal network address
 			"POSTGRES_PORT":     postgresInternalPort, // Postgres port
-			"POSTGRES_USER":     "chronoqueue",        // Postgres user
-			"POSTGRES_PASSWORD": "chronoqueue",        // Postgres password
-			"POSTGRES_DB":       "chronoqueue",        // Postgres database
+			"POSTGRES_USER":     "nzovu",              // Postgres user
+			"POSTGRES_PASSWORD": "nzovu",              // Postgres password
+			"POSTGRES_DB":       "nzovu",              // Postgres database
 			"POSTGRES_SSLMODE":  "disable",            // Disable SSL for tests
 			"LOG_LEVEL":         "debug",
 			"ENABLE_ENCRYPTION": "false", // Can be overridden for encryption tests
@@ -300,9 +300,9 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 	postgresContainer, err := postgres.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgres.WithDatabase("chronoqueue"),
-		postgres.WithUsername("chronoqueue"),
-		postgres.WithPassword("chronoqueue"),
+		postgres.WithDatabase("nzovu"),
+		postgres.WithUsername("nzovu"),
+		postgres.WithPassword("nzovu"),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 		network.WithNetwork([]string{"postgres"}, net),
 	)
@@ -333,8 +333,8 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 			"--storage-type", "postgres",
 			"--postgres-host", postgresInternalHost,
 			"--postgres-port", postgresInternalPort,
-			"--postgres-user", "chronoqueue",
-			"--postgres-db", "chronoqueue",
+			"--postgres-user", "nzovu",
+			"--postgres-db", "nzovu",
 			"--postgres-sslmode", "disable",
 			"--log-level", "debug",
 			// TLS configuration
@@ -347,7 +347,7 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 			"--gateway-client-key", "/certs/client.key",
 		},
 		Env: map[string]string{
-			"POSTGRES_PASSWORD": "chronoqueue", // Password must be passed via environment
+			"POSTGRES_PASSWORD": "nzovu", // Password must be passed via environment
 		},
 		Files: []testcontainers.ContainerFile{
 			{

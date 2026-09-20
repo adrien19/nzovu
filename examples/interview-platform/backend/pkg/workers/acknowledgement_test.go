@@ -35,17 +35,17 @@ func (s *acknowledgementService) AcknowledgeMessage(_ context.Context, req *queu
 
 func TestWorkersAcknowledgeWithClaimOwnership(t *testing.T) {
 	type processor func(context.Context, string, *message_pb.Message) error
-	workers := map[string]func(*client.ChronoQueueClient) processor{
-		"evaluation": func(queue *client.ChronoQueueClient) processor {
+	workers := map[string]func(*client.NzovuClient) processor{
+		"evaluation": func(queue *client.NzovuClient) processor {
 			return NewEvaluationProcessorWorker(queue, nil).processMessage
 		},
-		"interview": func(queue *client.ChronoQueueClient) processor {
+		"interview": func(queue *client.NzovuClient) processor {
 			return NewInterviewSchedulerWorker(queue, nil).processMessage
 		},
-		"notification": func(queue *client.ChronoQueueClient) processor {
+		"notification": func(queue *client.NzovuClient) processor {
 			return NewNotificationSenderWorker(queue, nil).processMessage
 		},
-		"report": func(queue *client.ChronoQueueClient) processor {
+		"report": func(queue *client.NzovuClient) processor {
 			return NewReportGeneratorWorker(queue, nil).processMessage
 		},
 	}
@@ -60,7 +60,7 @@ func TestWorkersAcknowledgeWithClaimOwnership(t *testing.T) {
 				if failed {
 					service.err = errors.New("acknowledgement rejected")
 				}
-				queue, err := client.NewChronoQueueClient("unused", client.ClientOptions{
+				queue, err := client.NewNzovuClient("unused", client.ClientOptions{
 					Connector: func(string, client.ClientOptions) (queueservice_pb.QueueServiceClient, *grpc.ClientConn, error) {
 						conn, err := grpc.NewClient("passthrough:///unused", grpc.WithTransportCredentials(insecure.NewCredentials()))
 						return service, conn, err

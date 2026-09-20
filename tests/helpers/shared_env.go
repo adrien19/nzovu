@@ -98,9 +98,9 @@ func createSharedEnvironment() (*TestEnvironment, error) {
 	postgresContainer, err := postgres.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgres.WithDatabase("chronoqueue"),
-		postgres.WithUsername("chronoqueue"),
-		postgres.WithPassword("chronoqueue"),
+		postgres.WithDatabase("nzovu"),
+		postgres.WithUsername("nzovu"),
+		postgres.WithPassword("nzovu"),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 		network.WithNetwork([]string{"postgres"}, net),
 	)
@@ -144,9 +144,9 @@ func createSharedEnvironment() (*TestEnvironment, error) {
 			"STORAGE_TYPE":          "postgres",           // Use Postgres storage
 			"POSTGRES_HOST":         postgresInternalHost, // Use internal network address
 			"POSTGRES_PORT":         postgresInternalPort, // Postgres port
-			"POSTGRES_USER":         "chronoqueue",        // Postgres user
-			"POSTGRES_PASSWORD":     "chronoqueue",        // Postgres password
-			"POSTGRES_DB":           "chronoqueue",        // Postgres database
+			"POSTGRES_USER":         "nzovu",              // Postgres user
+			"POSTGRES_PASSWORD":     "nzovu",              // Postgres password
+			"POSTGRES_DB":           "nzovu",              // Postgres database
 			"POSTGRES_SSLMODE":      "disable",            // Disable SSL for tests
 			"LOG_LEVEL":             "debug",              // Enable debug logging
 			"ENABLE_ENCRYPTION":     "false",              // Disable encryption for tests

@@ -97,7 +97,7 @@ func NewStorage(ctx context.Context, config *Config) (*Storage, error) {
 		_ = db.Close()
 		return nil, fmt.Errorf("acquire migration connection: %w", err)
 	}
-	if _, err := migrationConn.ExecContext(ctx, `SELECT pg_advisory_lock(hashtext('chronoqueue_schema_migration'))`); err != nil {
+	if _, err := migrationConn.ExecContext(ctx, `SELECT pg_advisory_lock(hashtext('nzovu_schema_migration'))`); err != nil {
 		if closeErr := migrationConn.Close(); closeErr != nil {
 			logger.DPanic("Failed to close schema migration connection after advisory lock failure", "error", closeErr)
 		}
@@ -109,7 +109,7 @@ func NewStorage(ctx context.Context, config *Config) (*Storage, error) {
 	initialized := false
 	defer func() {
 		var released bool
-		if err := migrationConn.QueryRowContext(context.Background(), `SELECT pg_advisory_unlock(hashtext('chronoqueue_schema_migration'))`).Scan(&released); err != nil {
+		if err := migrationConn.QueryRowContext(context.Background(), `SELECT pg_advisory_unlock(hashtext('nzovu_schema_migration'))`).Scan(&released); err != nil {
 			logger.DPanic("Failed to unlock schema migration", "error", err)
 		} else if !released {
 			logger.DPanic("Schema migration advisory lock was not held")

@@ -33,9 +33,9 @@ func TestReclaimExpiredMessage_AtomicAcrossPostgresInstances(t *testing.T) {
 	container, err := postgrescontainer.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)
@@ -481,9 +481,9 @@ func TestWorkerMutations_RequireActiveOwnershipAcrossPostgresInstances(t *testin
 	container, err := postgrescontainer.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)

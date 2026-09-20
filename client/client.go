@@ -183,8 +183,8 @@ type attemptInfo struct {
 	workerID  string
 }
 
-// ChronoQueueClient is a client to call Nzovu RPC
-type ChronoQueueClient struct {
+// NzovuClient is a client to call Nzovu RPC
+type NzovuClient struct {
 	service          queueservice_pb.QueueServiceClient
 	conn             *grpc.ClientConn
 	workChan         chan WorkItem
@@ -198,9 +198,9 @@ type ChronoQueueClient struct {
 	workerIDOnce     sync.Once
 }
 
-// NewChronoQueueClient returns a new Nzovu client
-func NewChronoQueueClient(address string, opts ClientOptions) (*ChronoQueueClient, error) {
-	client := &ChronoQueueClient{
+// NewNzovuClient returns a new Nzovu client
+func NewNzovuClient(address string, opts ClientOptions) (*NzovuClient, error) {
+	client := &NzovuClient{
 		closeChan: make(chan struct{}),
 		closed:    false,
 		mu:        sync.Mutex{},
@@ -299,7 +299,7 @@ func apiKeyUnaryClientInterceptor(apiKey string) grpc.UnaryClientInterceptor {
 	}
 }
 
-func (client *ChronoQueueClient) recordAttemptInfo(messageID, attemptID, workerID string) {
+func (client *NzovuClient) recordAttemptInfo(messageID, attemptID, workerID string) {
 	if messageID == "" {
 		return
 	}
@@ -309,7 +309,7 @@ func (client *ChronoQueueClient) recordAttemptInfo(messageID, attemptID, workerI
 	})
 }
 
-func (client *ChronoQueueClient) getAttemptInfo(messageID string) attemptInfo {
+func (client *NzovuClient) getAttemptInfo(messageID string) attemptInfo {
 	val, ok := client.attemptTracker.Load(messageID)
 	if !ok {
 		return attemptInfo{}
@@ -321,7 +321,7 @@ func (client *ChronoQueueClient) getAttemptInfo(messageID string) attemptInfo {
 	return info
 }
 
-func (client *ChronoQueueClient) clearAttemptInfo(messageID string) {
+func (client *NzovuClient) clearAttemptInfo(messageID string) {
 	if messageID == "" {
 		return
 	}
@@ -332,21 +332,21 @@ func (client *ChronoQueueClient) clearAttemptInfo(messageID string) {
 // when acknowledging messages in a fresh process. This ensures backends that require
 // attempt/worker validation (e.g., Postgres) receive the identifiers even if the
 // message was fetched in a different process.
-func (client *ChronoQueueClient) SetAttemptInfo(messageID, attemptID, workerID string) {
+func (client *NzovuClient) SetAttemptInfo(messageID, attemptID, workerID string) {
 	client.recordAttemptInfo(messageID, attemptID, workerID)
 	if workerID != "" {
 		client.workerID.Store(workerID)
 	}
 }
 
-func (client *ChronoQueueClient) heartbeatWorker() {
+func (client *NzovuClient) heartbeatWorker() {
 	for workItem := range client.workChan {
 		// Perform work here, e.g., manage heartbeats
 		client.manageHeartbeats(workItem.ctx, workItem.queue, workItem.messageID, workItem.attemptID, workItem.workerID)
 	}
 }
 
-func (client *ChronoQueueClient) setDefaultContextTimeout(ctx context.Context) (context.Context, context.CancelFunc) {
+func (client *NzovuClient) setDefaultContextTimeout(ctx context.Context) (context.Context, context.CancelFunc) {
 	_, ok := ctx.Deadline()
 	if !ok {
 		ctx, cancel := context.WithTimeout(ctx, client.opts.DefaultRPCTimeout)
@@ -459,7 +459,7 @@ func ParseMessageState(state string) (State, error) {
 }
 
 // CreateQueue create a queue and returns empty response
-func (client *ChronoQueueClient) CreateQueue(ctx context.Context, name string, queueOptions QueueOptions) (*queueservice_pb.CreateQueueResponse, error) {
+func (client *NzovuClient) CreateQueue(ctx context.Context, name string, queueOptions QueueOptions) (*queueservice_pb.CreateQueueResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -503,7 +503,7 @@ func (client *ChronoQueueClient) CreateQueue(ctx context.Context, name string, q
 }
 
 // DeleteQueue deletes a queue and returns empty response
-func (client *ChronoQueueClient) DeleteQueue(ctx context.Context, name string) (*queueservice_pb.DeleteQueueResponse, error) {
+func (client *NzovuClient) DeleteQueue(ctx context.Context, name string) (*queueservice_pb.DeleteQueueResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -518,7 +518,7 @@ func (client *ChronoQueueClient) DeleteQueue(ctx context.Context, name string) (
 }
 
 // PostMessage create adds a message to the queue and returns empty response
-func (client *ChronoQueueClient) PostMessage(ctx context.Context, queue string, messageId string, messageOptions MessageOptions) (*queueservice_pb.PostMessageResponse, error) {
+func (client *NzovuClient) PostMessage(ctx context.Context, queue string, messageId string, messageOptions MessageOptions) (*queueservice_pb.PostMessageResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -581,7 +581,7 @@ func (client *ChronoQueueClient) PostMessage(ctx context.Context, queue string, 
 //
 // If ctx has no deadline, a timeout is computed as DefaultRPCTimeout + 50ms per message,
 // which may exceed DefaultRPCTimeout for large batches.
-func (client *ChronoQueueClient) PostMessagesBulk(ctx context.Context, queue string, messages []MessageWithID, transactionMode queueservice_pb.PostMessagesBulkRequest_TransactionMode) (*queueservice_pb.PostMessagesBulkResponse, error) {
+func (client *NzovuClient) PostMessagesBulk(ctx context.Context, queue string, messages []MessageWithID, transactionMode queueservice_pb.PostMessagesBulkRequest_TransactionMode) (*queueservice_pb.PostMessagesBulkResponse, error) {
 	if _, ok := ctx.Deadline(); !ok {
 		timeout := client.opts.DefaultRPCTimeout + time.Duration(len(messages))*50*time.Millisecond
 		var cancel context.CancelFunc
@@ -667,7 +667,7 @@ func buildMessageHeaders(headers []MessageHeader) []*message_pb.Message_Metadata
 	return protoHeaders
 }
 
-func (client *ChronoQueueClient) manageHeartbeats(ctx context.Context, queueName string, messageId string, attemptID string, workerID string) {
+func (client *NzovuClient) manageHeartbeats(ctx context.Context, queueName string, messageId string, attemptID string, workerID string) {
 	if attemptID != "" || workerID != "" {
 		client.recordAttemptInfo(messageId, attemptID, workerID)
 	}
@@ -727,7 +727,7 @@ func (client *ChronoQueueClient) manageHeartbeats(ctx context.Context, queueName
 
 // GetNextMessage claims the next available message. Pass the configured key as
 // exclusivityKey when claiming from an EXCLUSIVE queue.
-func (client *ChronoQueueClient) GetNextMessage(ctx context.Context, queue string, leaseDuration string, enableHeartbeat bool, exclusivityKey ...string) (*queueservice_pb.GetNextMessageResponse, error) {
+func (client *NzovuClient) GetNextMessage(ctx context.Context, queue string, leaseDuration string, enableHeartbeat bool, exclusivityKey ...string) (*queueservice_pb.GetNextMessageResponse, error) {
 	if len(exclusivityKey) > 1 {
 		return nil, fmt.Errorf("at most one exclusivity key may be provided")
 	}
@@ -807,11 +807,11 @@ func (client *ChronoQueueClient) GetNextMessage(ctx context.Context, queue strin
 }
 
 // PeekQueueMessages returns messages on a queue that are in pending state
-func (client *ChronoQueueClient) PeekQueueMessages(ctx context.Context, queue string, limit int32, timeRange TimeRangeOption) (*queueservice_pb.PeekQueueMessagesResponse, error) {
+func (client *NzovuClient) PeekQueueMessages(ctx context.Context, queue string, limit int32, timeRange TimeRangeOption) (*queueservice_pb.PeekQueueMessagesResponse, error) {
 	return client.PeekQueueMessagesPage(ctx, queue, limit, "", timeRange)
 }
 
-func (client *ChronoQueueClient) PeekQueueMessagesPage(ctx context.Context, queue string, pageSize int32, pageToken string, timeRange TimeRangeOption) (*queueservice_pb.PeekQueueMessagesResponse, error) {
+func (client *NzovuClient) PeekQueueMessagesPage(ctx context.Context, queue string, pageSize int32, pageToken string, timeRange TimeRangeOption) (*queueservice_pb.PeekQueueMessagesResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -834,7 +834,7 @@ func (client *ChronoQueueClient) PeekQueueMessagesPage(ctx context.Context, queu
 }
 
 // GetQueueState returns state of a queue
-func (client *ChronoQueueClient) GetQueueState(ctx context.Context, queue string) (*queueservice_pb.GetQueueStateResponse, error) {
+func (client *NzovuClient) GetQueueState(ctx context.Context, queue string) (*queueservice_pb.GetQueueStateResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -849,7 +849,7 @@ func (client *ChronoQueueClient) GetQueueState(ctx context.Context, queue string
 }
 
 // RenewMessageLease updates a message's lease duration and returns empty response
-func (client *ChronoQueueClient) RenewMessageLease(ctx context.Context, queue string, messageId string, leaseDuration string) (*queueservice_pb.RenewMessageLeaseResponse, error) {
+func (client *NzovuClient) RenewMessageLease(ctx context.Context, queue string, messageId string, leaseDuration string) (*queueservice_pb.RenewMessageLeaseResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -882,7 +882,7 @@ func (client *ChronoQueueClient) RenewMessageLease(ctx context.Context, queue st
 
 // AcknowledgeMessage updates state of a message and empty response
 // Automatically stops heartbeat for the message if one is active.
-func (client *ChronoQueueClient) AcknowledgeMessage(ctx context.Context, queue string, messageId string, state State) (*queueservice_pb.AcknowledgeMessageResponse, error) {
+func (client *NzovuClient) AcknowledgeMessage(ctx context.Context, queue string, messageId string, state State) (*queueservice_pb.AcknowledgeMessageResponse, error) {
 	// Stop heartbeat before acknowledging (if active)
 	client.StopHeartbeat(messageId)
 
@@ -922,7 +922,7 @@ func (client *ChronoQueueClient) AcknowledgeMessage(ctx context.Context, queue s
 // CancelMessage cancels a message that is in INVISIBLE or PENDING state.
 // Messages in RUNNING, COMPLETED, ERRORED, or CANCELED states cannot be cancelled.
 // Optionally provide a reason for audit trail purposes.
-func (client *ChronoQueueClient) CancelMessage(ctx context.Context, queueName string, messageID string, reason string) (*queueservice_pb.CancelMessageResponse, error) {
+func (client *NzovuClient) CancelMessage(ctx context.Context, queueName string, messageID string, reason string) (*queueservice_pb.CancelMessageResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -941,7 +941,7 @@ func (client *ChronoQueueClient) CancelMessage(ctx context.Context, queueName st
 }
 
 // SendMessageHeartbeat sends a heartbeat for an in-flight message.
-func (client *ChronoQueueClient) SendMessageHeartbeat(ctx context.Context, queueName string, messageId string) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
+func (client *NzovuClient) SendMessageHeartbeat(ctx context.Context, queueName string, messageId string) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 	if client.opts.SendMessageHeartbeatFunc != nil {
 		return client.opts.SendMessageHeartbeatFunc(ctx, queueName, messageId)
 	}
@@ -979,7 +979,7 @@ func (client *ChronoQueueClient) SendMessageHeartbeat(ctx context.Context, queue
 // StopHeartbeat explicitly stops the heartbeat for a specific message.
 // This should be called when message processing completes (success or failure)
 // to ensure the heartbeat goroutine terminates cleanly.
-func (client *ChronoQueueClient) StopHeartbeat(messageID string) {
+func (client *NzovuClient) StopHeartbeat(messageID string) {
 	if cancel, ok := client.activeHeartbeats.LoadAndDelete(messageID); ok {
 		if cancelFunc, ok := cancel.(context.CancelFunc); ok {
 			cancelFunc()
@@ -988,7 +988,7 @@ func (client *ChronoQueueClient) StopHeartbeat(messageID string) {
 }
 
 // ListQueues returns list of available queues.
-func (client *ChronoQueueClient) ListQueues(ctx context.Context, prefix string) (*queueservice_pb.ListQueuesResponse, error) {
+func (client *NzovuClient) ListQueues(ctx context.Context, prefix string) (*queueservice_pb.ListQueuesResponse, error) {
 	response := &queueservice_pb.ListQueuesResponse{}
 	for {
 		page, err := client.ListQueuesPage(ctx, prefix, 0, response.GetNextPageToken())
@@ -1003,7 +1003,7 @@ func (client *ChronoQueueClient) ListQueues(ctx context.Context, prefix string) 
 	}
 }
 
-func (client *ChronoQueueClient) ListQueuesPage(ctx context.Context, prefix string, pageSize int32, pageToken string) (*queueservice_pb.ListQueuesResponse, error) {
+func (client *NzovuClient) ListQueuesPage(ctx context.Context, prefix string, pageSize int32, pageToken string) (*queueservice_pb.ListQueuesResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1022,7 +1022,7 @@ func (client *ChronoQueueClient) ListQueuesPage(ctx context.Context, prefix stri
 }
 
 // CreateSchedule creates a schedule and returns an empty response
-func (client *ChronoQueueClient) CreateSchedule(ctx context.Context, scheduleId string, scheduleOptions ScheduleOptions) (*queueservice_pb.CreateScheduleResponse, error) {
+func (client *NzovuClient) CreateSchedule(ctx context.Context, scheduleId string, scheduleOptions ScheduleOptions) (*queueservice_pb.CreateScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1076,7 +1076,7 @@ func (client *ChronoQueueClient) CreateSchedule(ctx context.Context, scheduleId 
 }
 
 // DeleteSchedule deletes a schedule and returns an empty response
-func (client *ChronoQueueClient) DeleteSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.DeleteScheduleResponse, error) {
+func (client *NzovuClient) DeleteSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.DeleteScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1092,7 +1092,7 @@ func (client *ChronoQueueClient) DeleteSchedule(ctx context.Context, scheduleId 
 }
 
 // GetSchedule returns a schedule
-func (client *ChronoQueueClient) GetSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.GetScheduleResponse, error) {
+func (client *NzovuClient) GetSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.GetScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1108,7 +1108,7 @@ func (client *ChronoQueueClient) GetSchedule(ctx context.Context, scheduleId str
 }
 
 // ListSchedules returns list of schedules
-func (client *ChronoQueueClient) ListSchedules(ctx context.Context, prefix string) (*queueservice_pb.ListSchedulesResponse, error) {
+func (client *NzovuClient) ListSchedules(ctx context.Context, prefix string) (*queueservice_pb.ListSchedulesResponse, error) {
 	response := &queueservice_pb.ListSchedulesResponse{}
 	for {
 		page, err := client.ListSchedulesPage(ctx, prefix, 0, response.GetNextPageToken())
@@ -1123,7 +1123,7 @@ func (client *ChronoQueueClient) ListSchedules(ctx context.Context, prefix strin
 	}
 }
 
-func (client *ChronoQueueClient) ListSchedulesPage(ctx context.Context, prefix string, pageSize int32, pageToken string) (*queueservice_pb.ListSchedulesResponse, error) {
+func (client *NzovuClient) ListSchedulesPage(ctx context.Context, prefix string, pageSize int32, pageToken string) (*queueservice_pb.ListSchedulesResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1141,11 +1141,11 @@ func (client *ChronoQueueClient) ListSchedulesPage(ctx context.Context, prefix s
 }
 
 // GetScheduleHistory returns the history of a schedule
-func (client *ChronoQueueClient) GetScheduleHistory(ctx context.Context, scheduleId string, limit int64) (*queueservice_pb.GetScheduleHistoryResponse, error) {
+func (client *NzovuClient) GetScheduleHistory(ctx context.Context, scheduleId string, limit int64) (*queueservice_pb.GetScheduleHistoryResponse, error) {
 	return client.GetScheduleHistoryPage(ctx, scheduleId, int32(limit), "")
 }
 
-func (client *ChronoQueueClient) GetScheduleHistoryPage(ctx context.Context, scheduleId string, pageSize int32, pageToken string) (*queueservice_pb.GetScheduleHistoryResponse, error) {
+func (client *NzovuClient) GetScheduleHistoryPage(ctx context.Context, scheduleId string, pageSize int32, pageToken string) (*queueservice_pb.GetScheduleHistoryResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1163,7 +1163,7 @@ func (client *ChronoQueueClient) GetScheduleHistoryPage(ctx context.Context, sch
 }
 
 // PauseSchedule pauses a schedule
-func (client *ChronoQueueClient) PauseSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.PauseScheduleResponse, error) {
+func (client *NzovuClient) PauseSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.PauseScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1179,7 +1179,7 @@ func (client *ChronoQueueClient) PauseSchedule(ctx context.Context, scheduleId s
 }
 
 // ResumeSchedule resumes a schedule
-func (client *ChronoQueueClient) ResumeSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.ResumeScheduleResponse, error) {
+func (client *NzovuClient) ResumeSchedule(ctx context.Context, scheduleId string) (*queueservice_pb.ResumeScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1195,7 +1195,7 @@ func (client *ChronoQueueClient) ResumeSchedule(ctx context.Context, scheduleId 
 }
 
 // ValidateCalendarSchedule validates a calendar schedule configuration
-func (client *ChronoQueueClient) ValidateCalendarSchedule(ctx context.Context, calendarScheduleJSON string) (*queueservice_pb.ValidateCalendarScheduleResponse, error) {
+func (client *NzovuClient) ValidateCalendarSchedule(ctx context.Context, calendarScheduleJSON string) (*queueservice_pb.ValidateCalendarScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1218,7 +1218,7 @@ func (client *ChronoQueueClient) ValidateCalendarSchedule(ctx context.Context, c
 }
 
 // PreviewCalendarSchedule previews execution times for a calendar schedule
-func (client *ChronoQueueClient) PreviewCalendarSchedule(ctx context.Context, calendarScheduleJSON string, count int32) (*queueservice_pb.PreviewCalendarScheduleResponse, error) {
+func (client *NzovuClient) PreviewCalendarSchedule(ctx context.Context, calendarScheduleJSON string, count int32) (*queueservice_pb.PreviewCalendarScheduleResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1244,11 +1244,11 @@ func (client *ChronoQueueClient) PreviewCalendarSchedule(ctx context.Context, ca
 // Dead Letter Queue Management Methods
 
 // GetDLQMessages retrieves messages from a Dead Letter Queue
-func (client *ChronoQueueClient) GetDLQMessages(ctx context.Context, dlqName string, limit int32) (*queueservice_pb.GetDLQMessagesResponse, error) {
+func (client *NzovuClient) GetDLQMessages(ctx context.Context, dlqName string, limit int32) (*queueservice_pb.GetDLQMessagesResponse, error) {
 	return client.GetDLQMessagesPage(ctx, dlqName, limit, "")
 }
 
-func (client *ChronoQueueClient) GetDLQMessagesPage(ctx context.Context, dlqName string, pageSize int32, pageToken string) (*queueservice_pb.GetDLQMessagesResponse, error) {
+func (client *NzovuClient) GetDLQMessagesPage(ctx context.Context, dlqName string, pageSize int32, pageToken string) (*queueservice_pb.GetDLQMessagesResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1267,7 +1267,7 @@ func (client *ChronoQueueClient) GetDLQMessagesPage(ctx context.Context, dlqName
 }
 
 // RequeueFromDLQ moves a message from DLQ to the required target queue.
-func (client *ChronoQueueClient) RequeueFromDLQ(ctx context.Context, dlqName string, messageId string, targetQueue string) (*queueservice_pb.RequeueFromDLQResponse, error) {
+func (client *NzovuClient) RequeueFromDLQ(ctx context.Context, dlqName string, messageId string, targetQueue string) (*queueservice_pb.RequeueFromDLQResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1286,7 +1286,7 @@ func (client *ChronoQueueClient) RequeueFromDLQ(ctx context.Context, dlqName str
 }
 
 // DeleteFromDLQ permanently deletes a message from a DLQ
-func (client *ChronoQueueClient) DeleteFromDLQ(ctx context.Context, dlqName string, messageId string) (*queueservice_pb.DeleteFromDLQResponse, error) {
+func (client *NzovuClient) DeleteFromDLQ(ctx context.Context, dlqName string, messageId string) (*queueservice_pb.DeleteFromDLQResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1304,7 +1304,7 @@ func (client *ChronoQueueClient) DeleteFromDLQ(ctx context.Context, dlqName stri
 }
 
 // PurgeDLQ removes all messages from a DLQ
-func (client *ChronoQueueClient) PurgeDLQ(ctx context.Context, dlqName string) (*queueservice_pb.PurgeDLQResponse, error) {
+func (client *NzovuClient) PurgeDLQ(ctx context.Context, dlqName string) (*queueservice_pb.PurgeDLQResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1321,7 +1321,7 @@ func (client *ChronoQueueClient) PurgeDLQ(ctx context.Context, dlqName string) (
 }
 
 // GetDLQStats returns statistics about a DLQ
-func (client *ChronoQueueClient) GetDLQStats(ctx context.Context, dlqName string) (*queueservice_pb.GetDLQStatsResponse, error) {
+func (client *NzovuClient) GetDLQStats(ctx context.Context, dlqName string) (*queueservice_pb.GetDLQStatsResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1350,7 +1350,7 @@ type SchemaOptions struct {
 
 // RegisterSchema registers a new schema or creates a new version of an existing schema
 // This is a client-side implementation that will work once server-side methods are added
-func (client *ChronoQueueClient) RegisterSchema(ctx context.Context, schemaID string, options SchemaOptions) error {
+func (client *NzovuClient) RegisterSchema(ctx context.Context, schemaID string, options SchemaOptions) error {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1378,7 +1378,7 @@ func (client *ChronoQueueClient) RegisterSchema(ctx context.Context, schemaID st
 
 // GetSchema retrieves a schema by ID and optional version
 // version = 0 means get the latest version
-func (client *ChronoQueueClient) GetSchema(ctx context.Context, schemaID string, version int32) (map[string]interface{}, error) {
+func (client *NzovuClient) GetSchema(ctx context.Context, schemaID string, version int32) (map[string]interface{}, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1413,7 +1413,7 @@ func (client *ChronoQueueClient) GetSchema(ctx context.Context, schemaID string,
 }
 
 // ListSchemas returns all schemas matching the criteria
-func (client *ChronoQueueClient) ListSchemas(ctx context.Context, prefix string, limit int32, activeOnly bool) ([]map[string]interface{}, error) {
+func (client *NzovuClient) ListSchemas(ctx context.Context, prefix string, limit int32, activeOnly bool) ([]map[string]interface{}, error) {
 	res, err := client.ListSchemasPage(ctx, prefix, limit, "", activeOnly)
 	if err != nil {
 		return nil, err
@@ -1434,7 +1434,7 @@ func (client *ChronoQueueClient) ListSchemas(ctx context.Context, prefix string,
 	return schemas, nil
 }
 
-func (client *ChronoQueueClient) ListSchemasPage(ctx context.Context, prefix string, pageSize int32, pageToken string, activeOnly bool) (*queueservice_pb.ListSchemasResponse, error) {
+func (client *NzovuClient) ListSchemasPage(ctx context.Context, prefix string, pageSize int32, pageToken string, activeOnly bool) (*queueservice_pb.ListSchemasResponse, error) {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1456,7 +1456,7 @@ func (client *ChronoQueueClient) ListSchemasPage(ctx context.Context, prefix str
 
 // DeleteSchema removes a schema version or all versions
 // version = 0 means delete all versions
-func (client *ChronoQueueClient) DeleteSchema(ctx context.Context, schemaID string, version int32) error {
+func (client *NzovuClient) DeleteSchema(ctx context.Context, schemaID string, version int32) error {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1479,7 +1479,7 @@ func (client *ChronoQueueClient) DeleteSchema(ctx context.Context, schemaID stri
 }
 
 // ValidatePayload validates a payload against a schema
-func (client *ChronoQueueClient) ValidatePayload(ctx context.Context, schemaID string, version int32, payloadJSON string) error {
+func (client *NzovuClient) ValidatePayload(ctx context.Context, schemaID string, version int32, payloadJSON string) error {
 	ctx, cancel := client.setDefaultContextTimeout(ctx)
 	if cancel != nil {
 		defer cancel()
@@ -1505,7 +1505,7 @@ func (client *ChronoQueueClient) ValidatePayload(ctx context.Context, schemaID s
 }
 
 // Close closes the client
-func (client *ChronoQueueClient) Close() {
+func (client *NzovuClient) Close() {
 	client.mu.Lock()
 	defer client.mu.Unlock()
 

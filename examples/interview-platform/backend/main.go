@@ -43,7 +43,7 @@ func main() {
 
 	// Initialize Nzovu client
 	log.Println("Attempting to connect to Nzovu...")
-	queueClient, err := client.NewChronoQueueClient(*serverAddr, client.ClientOptions{
+	queueClient, err := client.NewNzovuClient(*serverAddr, client.ClientOptions{
 		MaxRetries:     10,
 		InitialBackoff: 1 * time.Second,
 		MaxBackoff:     10 * time.Second,
@@ -180,7 +180,7 @@ func main() {
 }
 
 // initializeQueues creates all necessary queues for the interview platform
-func initializeQueues(ctx context.Context, qClient *client.ChronoQueueClient) error {
+func initializeQueues(ctx context.Context, qClient *client.NzovuClient) error {
 	// Queue configurations with different retention policies based on use case
 	queueConfigs := []struct {
 		name            string

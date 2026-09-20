@@ -59,7 +59,7 @@ func TestAPIKeyUnaryClientInterceptor(t *testing.T) {
 	})
 }
 
-type mockChronoQueueServer struct {
+type mockNzovuServer struct {
 	queueservice_pb.UnimplementedQueueServiceServer
 	lastAckAttemptID string
 	lastAckWorkerID  string
@@ -92,7 +92,7 @@ func dialer() func(context.Context, string) (net.Conn, error) {
 
 	server := grpc.NewServer()
 
-	queueservice_pb.RegisterQueueServiceServer(server, &mockChronoQueueServer{})
+	queueservice_pb.RegisterQueueServiceServer(server, &mockNzovuServer{})
 
 	go func() {
 		if err := server.Serve(listener); err != nil {
@@ -118,7 +118,7 @@ func testConnector(dialer func(context.Context, string) (net.Conn, error)) Conne
 	}
 }
 
-func (*mockChronoQueueServer) CreateQueue(ctx context.Context, req *queueservice_pb.CreateQueueRequest) (*queueservice_pb.CreateQueueResponse, error) {
+func (*mockNzovuServer) CreateQueue(ctx context.Context, req *queueservice_pb.CreateQueueRequest) (*queueservice_pb.CreateQueueResponse, error) {
 	if req.GetName() == "" {
 		return &queueservice_pb.CreateQueueResponse{
 			Success: false,
@@ -129,14 +129,14 @@ func (*mockChronoQueueServer) CreateQueue(ctx context.Context, req *queueservice
 	}, nil
 }
 
-func (*mockChronoQueueServer) DeleteQueue(ctx context.Context, req *queueservice_pb.DeleteQueueRequest) (*queueservice_pb.DeleteQueueResponse, error) {
+func (*mockNzovuServer) DeleteQueue(ctx context.Context, req *queueservice_pb.DeleteQueueRequest) (*queueservice_pb.DeleteQueueResponse, error) {
 	if req.GetName() == "" {
 		return &queueservice_pb.DeleteQueueResponse{Success: false}, status.Errorf(codes.InvalidArgument, "cannot delete queue with no name %v", req.Name)
 	}
 	return &queueservice_pb.DeleteQueueResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) PostMessage(ctx context.Context, req *queueservice_pb.PostMessageRequest) (*queueservice_pb.PostMessageResponse, error) {
+func (*mockNzovuServer) PostMessage(ctx context.Context, req *queueservice_pb.PostMessageRequest) (*queueservice_pb.PostMessageResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.PostMessageResponse{Success: false}, status.Errorf(codes.InvalidArgument, "cannot post message given queue with no name %v", req.GetQueueName())
 	}
@@ -152,7 +152,7 @@ func (*mockChronoQueueServer) PostMessage(ctx context.Context, req *queueservice
 	return &queueservice_pb.PostMessageResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) SendMessageHeartbeat(ctx context.Context, req *queueservice_pb.SendMessageHeartBeatRequest) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
+func (*mockNzovuServer) SendMessageHeartbeat(ctx context.Context, req *queueservice_pb.SendMessageHeartBeatRequest) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.SendMessageHeartBeatResponse{}, status.Errorf(codes.InvalidArgument, "cannot send heartbeat given queue with no name %v", req.GetQueueName())
 	}
@@ -162,7 +162,7 @@ func (*mockChronoQueueServer) SendMessageHeartbeat(ctx context.Context, req *que
 	return &queueservice_pb.SendMessageHeartBeatResponse{}, nil
 }
 
-func (*mockChronoQueueServer) GetNextMessage(ctx context.Context, req *queueservice_pb.GetNextMessageRequest) (*queueservice_pb.GetNextMessageResponse, error) {
+func (*mockNzovuServer) GetNextMessage(ctx context.Context, req *queueservice_pb.GetNextMessageRequest) (*queueservice_pb.GetNextMessageResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.GetNextMessageResponse{}, status.Errorf(codes.InvalidArgument, "cannot query queue with no name %v", req)
 	}
@@ -180,7 +180,7 @@ func (*mockChronoQueueServer) GetNextMessage(ctx context.Context, req *queueserv
 	}, nil
 }
 
-func (*mockChronoQueueServer) PeekQueueMessages(ctx context.Context, req *queueservice_pb.PeekQueueMessagesRequest) (*queueservice_pb.PeekQueueMessagesResponse, error) {
+func (*mockNzovuServer) PeekQueueMessages(ctx context.Context, req *queueservice_pb.PeekQueueMessagesRequest) (*queueservice_pb.PeekQueueMessagesResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.PeekQueueMessagesResponse{}, status.Errorf(codes.InvalidArgument, "cannot query queue with no name %v", req)
 	}
@@ -197,7 +197,7 @@ func (*mockChronoQueueServer) PeekQueueMessages(ctx context.Context, req *queues
 	}, nil
 }
 
-func (*mockChronoQueueServer) GetQueueState(ctx context.Context, req *queueservice_pb.GetQueueStateRequest) (*queueservice_pb.GetQueueStateResponse, error) {
+func (*mockNzovuServer) GetQueueState(ctx context.Context, req *queueservice_pb.GetQueueStateRequest) (*queueservice_pb.GetQueueStateResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.GetQueueStateResponse{}, status.Errorf(codes.InvalidArgument, "cannot query queue with no name %v", req)
 	}
@@ -227,7 +227,7 @@ func (*mockChronoQueueServer) GetQueueState(ctx context.Context, req *queueservi
 	}, nil
 }
 
-func (*mockChronoQueueServer) RenewMessageLease(ctx context.Context, req *queueservice_pb.RenewMessageLeaseRequest) (*queueservice_pb.RenewMessageLeaseResponse, error) {
+func (*mockNzovuServer) RenewMessageLease(ctx context.Context, req *queueservice_pb.RenewMessageLeaseRequest) (*queueservice_pb.RenewMessageLeaseResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.RenewMessageLeaseResponse{}, status.Errorf(codes.InvalidArgument, "cannot renew message's lease given queue with no name %v", req.GetQueueName())
 	}
@@ -240,7 +240,7 @@ func (*mockChronoQueueServer) RenewMessageLease(ctx context.Context, req *queues
 	}, nil
 }
 
-func (s *mockChronoQueueServer) AcknowledgeMessage(ctx context.Context, req *queueservice_pb.AcknowledgeMessageRequest) (*queueservice_pb.AcknowledgeMessageResponse, error) {
+func (s *mockNzovuServer) AcknowledgeMessage(ctx context.Context, req *queueservice_pb.AcknowledgeMessageRequest) (*queueservice_pb.AcknowledgeMessageResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.AcknowledgeMessageResponse{Success: false}, status.Errorf(codes.InvalidArgument, "cannot acknowledge message given queue with no name %v", req.GetQueueName())
 	}
@@ -260,7 +260,7 @@ func (s *mockChronoQueueServer) AcknowledgeMessage(ctx context.Context, req *que
 	return &queueservice_pb.AcknowledgeMessageResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) SendMessageHeartBeat(ctx context.Context, req *queueservice_pb.SendMessageHeartBeatRequest) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
+func (*mockNzovuServer) SendMessageHeartBeat(ctx context.Context, req *queueservice_pb.SendMessageHeartBeatRequest) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.SendMessageHeartBeatResponse{}, status.Errorf(codes.InvalidArgument, "cannot send message's heartbeat given queue with no name %v", req.GetQueueName())
 	}
@@ -270,7 +270,7 @@ func (*mockChronoQueueServer) SendMessageHeartBeat(ctx context.Context, req *que
 	return &queueservice_pb.SendMessageHeartBeatResponse{}, nil
 }
 
-func (*mockChronoQueueServer) CancelMessage(ctx context.Context, req *queueservice_pb.CancelMessageRequest) (*queueservice_pb.CancelMessageResponse, error) {
+func (*mockNzovuServer) CancelMessage(ctx context.Context, req *queueservice_pb.CancelMessageRequest) (*queueservice_pb.CancelMessageResponse, error) {
 	if req.GetQueueName() == "" {
 		return &queueservice_pb.CancelMessageResponse{Success: false}, status.Errorf(codes.InvalidArgument, "queue name is required")
 	}
@@ -280,7 +280,7 @@ func (*mockChronoQueueServer) CancelMessage(ctx context.Context, req *queueservi
 	return &queueservice_pb.CancelMessageResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) ListQueues(ctx context.Context, req *queueservice_pb.ListQueuesRequest) (*queueservice_pb.ListQueuesResponse, error) {
+func (*mockNzovuServer) ListQueues(ctx context.Context, req *queueservice_pb.ListQueuesRequest) (*queueservice_pb.ListQueuesResponse, error) {
 	if req.GetPrefix() == "paginated" || req.GetPrefix() == "paginated-error" {
 		if req.GetPageToken() == "queue-page-2" {
 			if req.GetPrefix() == "paginated-error" {
@@ -300,7 +300,7 @@ func (*mockChronoQueueServer) ListQueues(ctx context.Context, req *queueservice_
 	}, nil
 }
 
-func (*mockChronoQueueServer) ListSchedules(ctx context.Context, req *queueservice_pb.ListSchedulesRequest) (*queueservice_pb.ListSchedulesResponse, error) {
+func (*mockNzovuServer) ListSchedules(ctx context.Context, req *queueservice_pb.ListSchedulesRequest) (*queueservice_pb.ListSchedulesResponse, error) {
 	if req.GetPageToken() == "schedule-page-2" {
 		if req.GetPrefix() == "paginated-error" {
 			return nil, status.Error(codes.Unavailable, "schedule second page unavailable")
@@ -310,8 +310,8 @@ func (*mockChronoQueueServer) ListSchedules(ctx context.Context, req *queueservi
 	return &queueservice_pb.ListSchedulesResponse{Schedules: []*schedule_pb.Schedule{{ScheduleId: "schedule-1"}}, NextPageToken: "schedule-page-2"}, nil
 }
 
-// DLQ Methods for mockChronoQueueServer
-func (*mockChronoQueueServer) GetDLQMessages(ctx context.Context, req *queueservice_pb.GetDLQMessagesRequest) (*queueservice_pb.GetDLQMessagesResponse, error) {
+// DLQ Methods for mockNzovuServer
+func (*mockNzovuServer) GetDLQMessages(ctx context.Context, req *queueservice_pb.GetDLQMessagesRequest) (*queueservice_pb.GetDLQMessagesResponse, error) {
 	return &queueservice_pb.GetDLQMessagesResponse{
 		Messages: []*message_pb.Message{
 			{
@@ -324,19 +324,19 @@ func (*mockChronoQueueServer) GetDLQMessages(ctx context.Context, req *queueserv
 	}, nil
 }
 
-func (*mockChronoQueueServer) RequeueFromDLQ(ctx context.Context, req *queueservice_pb.RequeueFromDLQRequest) (*queueservice_pb.RequeueFromDLQResponse, error) {
+func (*mockNzovuServer) RequeueFromDLQ(ctx context.Context, req *queueservice_pb.RequeueFromDLQRequest) (*queueservice_pb.RequeueFromDLQResponse, error) {
 	return &queueservice_pb.RequeueFromDLQResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) DeleteFromDLQ(ctx context.Context, req *queueservice_pb.DeleteFromDLQRequest) (*queueservice_pb.DeleteFromDLQResponse, error) {
+func (*mockNzovuServer) DeleteFromDLQ(ctx context.Context, req *queueservice_pb.DeleteFromDLQRequest) (*queueservice_pb.DeleteFromDLQResponse, error) {
 	return &queueservice_pb.DeleteFromDLQResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) PurgeDLQ(ctx context.Context, req *queueservice_pb.PurgeDLQRequest) (*queueservice_pb.PurgeDLQResponse, error) {
+func (*mockNzovuServer) PurgeDLQ(ctx context.Context, req *queueservice_pb.PurgeDLQRequest) (*queueservice_pb.PurgeDLQResponse, error) {
 	return &queueservice_pb.PurgeDLQResponse{Success: true}, nil
 }
 
-func (*mockChronoQueueServer) GetDLQStats(ctx context.Context, req *queueservice_pb.GetDLQStatsRequest) (*queueservice_pb.GetDLQStatsResponse, error) {
+func (*mockNzovuServer) GetDLQStats(ctx context.Context, req *queueservice_pb.GetDLQStatsRequest) (*queueservice_pb.GetDLQStatsResponse, error) {
 	return &queueservice_pb.GetDLQStatsResponse{
 		Name:         req.DlqName,
 		MessageCount: 5,
@@ -345,7 +345,7 @@ func (*mockChronoQueueServer) GetDLQStats(ctx context.Context, req *queueservice
 	}, nil
 }
 
-func TestNewChronoQueueClient(t *testing.T) {
+func TestNewNzovuClient(t *testing.T) {
 	dialer := dialer()
 
 	type args struct {
@@ -355,7 +355,7 @@ func TestNewChronoQueueClient(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *ChronoQueueClient
+		want    *NzovuClient
 		wantErr bool
 	}{
 		{
@@ -379,9 +379,9 @@ func TestNewChronoQueueClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := NewChronoQueueClient(tt.args.address, tt.args.opts)
+			_, err := NewNzovuClient(tt.args.address, tt.args.opts)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewChronoQueueClient() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NewNzovuClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 		})
@@ -478,7 +478,7 @@ func TestDefaultServerConnector(t *testing.T) {
 	}
 }
 
-func TestChronoQueueClient_heartbeatWorker(t *testing.T) {
+func TestNzovuClient_heartbeatWorker(t *testing.T) {
 	type fields struct {
 		service   queueservice_pb.QueueServiceClient
 		conn      *grpc.ClientConn
@@ -494,7 +494,7 @@ func TestChronoQueueClient_heartbeatWorker(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client := &ChronoQueueClient{
+			client := &NzovuClient{
 				service:   tt.fields.service,
 				conn:      tt.fields.conn,
 				workChan:  tt.fields.workChan,
@@ -506,7 +506,7 @@ func TestChronoQueueClient_heartbeatWorker(t *testing.T) {
 	}
 }
 
-func TestChronoQueueClient_setDefaultContextTimeout(t *testing.T) {
+func TestNzovuClient_setDefaultContextTimeout(t *testing.T) {
 	type fields struct {
 		service   queueservice_pb.QueueServiceClient
 		conn      *grpc.ClientConn
@@ -538,7 +538,7 @@ func TestChronoQueueClient_setDefaultContextTimeout(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client := &ChronoQueueClient{
+			client := &NzovuClient{
 				service:   tt.fields.service,
 				conn:      tt.fields.conn,
 				workChan:  tt.fields.workChan,
@@ -547,7 +547,7 @@ func TestChronoQueueClient_setDefaultContextTimeout(t *testing.T) {
 			}
 			got, _ := client.setDefaultContextTimeout(tt.args.ctx)
 			if _, ok := got.Deadline(); !ok {
-				t.Errorf("ChronoQueueClient.setDefaultContextTimeout() ok = %v, want %v", ok, true)
+				t.Errorf("NzovuClient.setDefaultContextTimeout() ok = %v, want %v", ok, true)
 			}
 		})
 	}
@@ -594,7 +594,7 @@ func Test_parseDurationToProto(t *testing.T) {
 	}
 }
 
-func TestChronoQueueClient_CreateQueue(t *testing.T) {
+func TestNzovuClient_CreateQueue(t *testing.T) {
 	dialer := dialer()
 
 	type args struct {
@@ -640,7 +640,7 @@ func TestChronoQueueClient_CreateQueue(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -648,17 +648,17 @@ func TestChronoQueueClient_CreateQueue(t *testing.T) {
 
 			got, err := client.CreateQueue(tt.args.ctx, tt.args.name, tt.args.queueOptions)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.CreateQueue() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.CreateQueue() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.CreateQueue() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.CreateQueue() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_DeleteQueue(t *testing.T) {
+func TestNzovuClient_DeleteQueue(t *testing.T) {
 	dialer := dialer()
 
 	type args struct {
@@ -704,7 +704,7 @@ func TestChronoQueueClient_DeleteQueue(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -712,17 +712,17 @@ func TestChronoQueueClient_DeleteQueue(t *testing.T) {
 
 			got, err := client.DeleteQueue(tt.args.ctx, tt.args.name)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.DeleteQueue() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.DeleteQueue() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.DeleteQueue() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.DeleteQueue() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_PostMessage(t *testing.T) {
+func TestNzovuClient_PostMessage(t *testing.T) {
 	dialer := dialer()
 
 	type args struct {
@@ -815,7 +815,7 @@ func TestChronoQueueClient_PostMessage(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -823,11 +823,11 @@ func TestChronoQueueClient_PostMessage(t *testing.T) {
 
 			got, err := client.PostMessage(tt.args.ctx, tt.args.queue, tt.args.messageId, tt.args.messageOptions)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.PostMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.PostMessage() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.PostMessage() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.PostMessage() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -854,7 +854,7 @@ func TestBuildMessageHeadersPreservesOrderDuplicatesAndCopiesValues(t *testing.T
 
 func TestPostMessagesBulkPropagatesHeaders(t *testing.T) {
 	service := &capturingQueueServiceClient{}
-	chronoqueueClient := &ChronoQueueClient{
+	nzovuClient := &NzovuClient{
 		service: service,
 		opts:    ClientOptions{DefaultRPCTimeout: time.Second},
 	}
@@ -872,7 +872,7 @@ func TestPostMessagesBulkPropagatesHeaders(t *testing.T) {
 		{MessageID: "second", Options: MessageOptions{LeaseDuration: "3s"}},
 	}
 
-	_, err := chronoqueueClient.PostMessagesBulk(context.Background(), "queue", messages, queueservice_pb.PostMessagesBulkRequest_ALL_OR_NOTHING)
+	_, err := nzovuClient.PostMessagesBulk(context.Background(), "queue", messages, queueservice_pb.PostMessagesBulkRequest_ALL_OR_NOTHING)
 	require.NoError(t, err)
 	require.NotNil(t, service.bulkRequest)
 	require.Len(t, service.bulkRequest.GetMessages(), 2)
@@ -887,9 +887,9 @@ func TestPostMessagesBulkPropagatesHeaders(t *testing.T) {
 
 func TestCreateSchedulePropagatesProducerOptions(t *testing.T) {
 	service := &capturingQueueServiceClient{}
-	chronoqueueClient := &ChronoQueueClient{service: service, opts: ClientOptions{DefaultRPCTimeout: time.Second}}
+	nzovuClient := &NzovuClient{service: service, opts: ClientOptions{DefaultRPCTimeout: time.Second}}
 
-	_, err := chronoqueueClient.CreateSchedule(context.Background(), "schedule", ScheduleOptions{
+	_, err := nzovuClient.CreateSchedule(context.Background(), "schedule", ScheduleOptions{
 		QueueName:     "queue",
 		CronSchedule:  "*/5 * * * *",
 		LeaseDuration: "3s",
@@ -927,8 +927,8 @@ func TestCreateSchedulePropagatesProducerOptions(t *testing.T) {
 
 func TestCreateQueuePropagatesAdvancedConfiguration(t *testing.T) {
 	service := &capturingQueueServiceClient{}
-	chronoqueueClient := &ChronoQueueClient{service: service, opts: ClientOptions{DefaultRPCTimeout: time.Second}}
-	_, err := chronoqueueClient.CreateQueue(context.Background(), "orders", QueueOptions{
+	nzovuClient := &NzovuClient{service: service, opts: ClientOptions{DefaultRPCTimeout: time.Second}}
+	_, err := nzovuClient.CreateQueue(context.Background(), "orders", QueueOptions{
 		LeaseDuration: "30s", MaxPayloadSize: 4096, AllowedContentTypes: []string{"application/json"},
 		PriorityConfig:  &queue_pb.PriorityConfig{Policy: queue_pb.FairnessPolicy_HYBRID, PriorityWeights: map[int32]int32{4: 70}, AgeBoostThreshold: durationpb.New(30 * time.Minute), AgeBoostMultiplier: 2},
 		LeasePolicy:     LeasePolicyOptions{BaseLease: "30s", MaxExtension: "5m", HeartbeatTimeout: "15s", ExtendStep: "10s", MaxRenewals: 5},
@@ -973,7 +973,7 @@ func mustStruct(t *testing.T, value map[string]any) *structpb.Struct {
 	return result
 }
 
-func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
+func TestNzovuClient_manageHeartbeats(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct {
@@ -994,8 +994,8 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 		name     string
 		args     args
 		fields   fields
-		setup    func(*fields, *ChronoQueueClient)
-		validate func(*testing.T, *fields, *ChronoQueueClient)
+		setup    func(*fields, *NzovuClient)
+		validate func(*testing.T, *fields, *NzovuClient)
 	}{
 		{
 			name: "Heartbeat Success",
@@ -1005,7 +1005,7 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 				messageId: "validMessageId",
 			},
 			fields: fields{},
-			setup: func(f *fields, client *ChronoQueueClient) {
+			setup: func(f *fields, client *NzovuClient) {
 				// Override SendMessageHeartbeat to always succeed
 				client.opts.SendMessageHeartbeatFunc = func(ctx context.Context, queueName, messageId string) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 					f.sendHeartbeatCallCounter.Add(1)
@@ -1013,7 +1013,7 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 				}
 				client.opts.MaxHeartbeatRetryCount = 1
 			},
-			validate: func(t *testing.T, f *fields, client *ChronoQueueClient) {
+			validate: func(t *testing.T, f *fields, client *NzovuClient) {
 				// Validate that SendMessageHeartbeat was called
 				time.Sleep(time.Second)
 				if f.sendHeartbeatCallCounter.Load() == 0 {
@@ -1029,7 +1029,7 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 				messageId: "validMessageId",
 			},
 			fields: fields{},
-			setup: func(f *fields, client *ChronoQueueClient) {
+			setup: func(f *fields, client *NzovuClient) {
 				client.opts.SendMessageHeartbeatFunc = func(ctx context.Context, queueName, messageId string) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 					f.sendHeartbeatCallCounter.Add(1)
 
@@ -1042,7 +1042,7 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 					return &queueservice_pb.SendMessageHeartBeatResponse{}, nil
 				}
 			},
-			validate: func(t *testing.T, f *fields, client *ChronoQueueClient) {
+			validate: func(t *testing.T, f *fields, client *NzovuClient) {
 				// Validate that SendMessageHeartbeat was called and recovered after a retry
 				time.Sleep(2 * time.Second)
 
@@ -1064,14 +1064,14 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 				messageId: "validMessageId",
 			},
 			fields: fields{},
-			setup: func(f *fields, client *ChronoQueueClient) {
+			setup: func(f *fields, client *NzovuClient) {
 				client.opts.SendMessageHeartbeatFunc = func(ctx context.Context, queueName, messageId string) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 					f.sendHeartbeatCallCounter.Add(1)
 					return nil, errors.New("forced error")
 				}
 				client.opts.MaxHeartbeatRetryCount = 1
 			},
-			validate: func(t *testing.T, f *fields, client *ChronoQueueClient) {
+			validate: func(t *testing.T, f *fields, client *NzovuClient) {
 				// Allow time for retries to occur
 				// Note: This sleep time might need to be adjusted based on actual behavior
 				time.Sleep(2 * time.Second)
@@ -1090,14 +1090,14 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 				messageId: "validMessageId",
 			},
 			fields: fields{},
-			setup: func(f *fields, client *ChronoQueueClient) {
+			setup: func(f *fields, client *NzovuClient) {
 				// Setup a call counter and ensure it is reset
 				client.opts.SendMessageHeartbeatFunc = func(ctx context.Context, queueName, messageId string) (*queueservice_pb.SendMessageHeartBeatResponse, error) {
 					f.sendHeartbeatCallCounter.Add(1)
 					return &queueservice_pb.SendMessageHeartBeatResponse{}, nil
 				}
 			},
-			validate: func(t *testing.T, f *fields, client *ChronoQueueClient) {
+			validate: func(t *testing.T, f *fields, client *NzovuClient) {
 				// Allow for initial heartbeats
 				time.Sleep(200 * time.Millisecond)
 
@@ -1126,7 +1126,7 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer),
 			}
-			client, err := NewChronoQueueClient("bufnet", opts)
+			client, err := NewNzovuClient("bufnet", opts)
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1146,7 +1146,7 @@ func TestChronoQueueClient_manageHeartbeats(t *testing.T) {
 	}
 }
 
-func TestChronoQueueClient_GetNextMessage(t *testing.T) {
+func TestNzovuClient_GetNextMessage(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1237,7 +1237,7 @@ func TestChronoQueueClient_GetNextMessage(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1245,17 +1245,17 @@ func TestChronoQueueClient_GetNextMessage(t *testing.T) {
 
 			got, err := client.GetNextMessage(tt.args.ctx, tt.args.queue, tt.args.leaseDuration, tt.args.enableHeartbeat, tt.args.exclusivityKey)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.GetNextMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.GetNextMessage() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.GetNextMessage() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.GetNextMessage() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_PeekQueueMessages(t *testing.T) {
+func TestNzovuClient_PeekQueueMessages(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1327,7 +1327,7 @@ func TestChronoQueueClient_PeekQueueMessages(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1335,17 +1335,17 @@ func TestChronoQueueClient_PeekQueueMessages(t *testing.T) {
 
 			got, err := client.PeekQueueMessages(tt.args.ctx, tt.args.queue, tt.args.limit, tt.args.timeRange)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.PeekQueueMessages() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.PeekQueueMessages() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.PeekQueueMessages() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.PeekQueueMessages() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_GetQueueState(t *testing.T) {
+func TestNzovuClient_GetQueueState(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1413,7 +1413,7 @@ func TestChronoQueueClient_GetQueueState(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1421,17 +1421,17 @@ func TestChronoQueueClient_GetQueueState(t *testing.T) {
 
 			got, err := client.GetQueueState(tt.args.ctx, tt.args.queue)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.GetQueueState() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.GetQueueState() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.GetQueueState() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.GetQueueState() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_RenewMessageLease(t *testing.T) {
+func TestNzovuClient_RenewMessageLease(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1479,7 +1479,7 @@ func TestChronoQueueClient_RenewMessageLease(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1487,17 +1487,17 @@ func TestChronoQueueClient_RenewMessageLease(t *testing.T) {
 
 			got, err := client.RenewMessageLease(tt.args.ctx, tt.args.queue, tt.args.messageId, tt.args.leaseDuration)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.RenewMessageLease() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.RenewMessageLease() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.RenewMessageLease() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.RenewMessageLease() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_AcknowledgeMessage(t *testing.T) {
+func TestNzovuClient_AcknowledgeMessage(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1542,7 +1542,7 @@ func TestChronoQueueClient_AcknowledgeMessage(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1550,18 +1550,18 @@ func TestChronoQueueClient_AcknowledgeMessage(t *testing.T) {
 
 			got, err := client.AcknowledgeMessage(tt.args.ctx, tt.args.queue, tt.args.messageId, tt.args.state)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.AcknowledgeMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.AcknowledgeMessage() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.AcknowledgeMessage() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.AcknowledgeMessage() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_AcknowledgeMessage_WithAttemptInfo(t *testing.T) {
-	server := &mockChronoQueueServer{}
+func TestNzovuClient_AcknowledgeMessage_WithAttemptInfo(t *testing.T) {
+	server := &mockNzovuServer{}
 	listener := bufconn.Listen(1024 * 1024)
 	grpcServer := grpc.NewServer()
 	queueservice_pb.RegisterQueueServiceServer(grpcServer, server)
@@ -1583,7 +1583,7 @@ func TestChronoQueueClient_AcknowledgeMessage_WithAttemptInfo(t *testing.T) {
 		return queueservice_pb.NewQueueServiceClient(conn), conn, nil
 	}
 
-	client, err := NewChronoQueueClient("bufnet", ClientOptions{Connector: connector})
+	client, err := NewNzovuClient("bufnet", ClientOptions{Connector: connector})
 	if err != nil {
 		t.Fatalf("failed to create client: %v", err)
 	}
@@ -1603,7 +1603,7 @@ func TestChronoQueueClient_AcknowledgeMessage_WithAttemptInfo(t *testing.T) {
 	}
 }
 
-func TestChronoQueueClient_SendMessageHeartbeat(t *testing.T) {
+func TestNzovuClient_SendMessageHeartbeat(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1645,7 +1645,7 @@ func TestChronoQueueClient_SendMessageHeartbeat(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1653,17 +1653,17 @@ func TestChronoQueueClient_SendMessageHeartbeat(t *testing.T) {
 
 			got, err := client.SendMessageHeartbeat(tt.args.ctx, tt.args.queueName, tt.args.messageId)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.SendMessageHeartbeat() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.SendMessageHeartbeat() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.SendMessageHeartbeat() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.SendMessageHeartbeat() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_ListQueues(t *testing.T) {
+func TestNzovuClient_ListQueues(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
@@ -1698,7 +1698,7 @@ func TestChronoQueueClient_ListQueues(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1706,18 +1706,18 @@ func TestChronoQueueClient_ListQueues(t *testing.T) {
 
 			got, err := client.ListQueues(tt.args.ctx, tt.args.prefix)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ChronoQueueClient.ListQueues() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NzovuClient.ListQueues() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !proto.Equal(got, tt.want) {
-				t.Errorf("ChronoQueueClient.ListQueues() = %v, want %v", got, tt.want)
+				t.Errorf("NzovuClient.ListQueues() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestChronoQueueClient_ListMethodsAggregatePages(t *testing.T) {
-	client, err := NewChronoQueueClient("bufnet", ClientOptions{Connector: testConnector(dialer())})
+func TestNzovuClient_ListMethodsAggregatePages(t *testing.T) {
+	client, err := NewNzovuClient("bufnet", ClientOptions{Connector: testConnector(dialer())})
 	require.NoError(t, err)
 	t.Cleanup(client.Close)
 
@@ -1732,8 +1732,8 @@ func TestChronoQueueClient_ListMethodsAggregatePages(t *testing.T) {
 	require.Empty(t, schedules.GetNextPageToken())
 }
 
-func TestChronoQueueClient_ListMethodsDiscardPartialResultsOnLaterPageFailure(t *testing.T) {
-	client, err := NewChronoQueueClient("bufnet", ClientOptions{Connector: testConnector(dialer())})
+func TestNzovuClient_ListMethodsDiscardPartialResultsOnLaterPageFailure(t *testing.T) {
+	client, err := NewNzovuClient("bufnet", ClientOptions{Connector: testConnector(dialer())})
 	require.NoError(t, err)
 	t.Cleanup(client.Close)
 
@@ -1748,19 +1748,19 @@ func TestChronoQueueClient_ListMethodsDiscardPartialResultsOnLaterPageFailure(t 
 	require.ErrorContains(t, err, "schedule second page unavailable")
 }
 
-func TestChronoQueueClient_Close(t *testing.T) {
+func TestNzovuClient_Close(t *testing.T) {
 	dialer := dialer()
 
 	type fields struct{}
 	tests := []struct {
 		name    string
 		fields  fields
-		execute func(client *ChronoQueueClient) error // a function that tries to execute something with the client
+		execute func(client *NzovuClient) error // a function that tries to execute something with the client
 		wantErr bool
 	}{
 		{
 			name: "Successful Closure",
-			execute: func(client *ChronoQueueClient) error {
+			execute: func(client *NzovuClient) error {
 				_, err := client.GetNextMessage(context.Background(), "testQueue", "2s", false)
 				return err
 			},
@@ -1768,7 +1768,7 @@ func TestChronoQueueClient_Close(t *testing.T) {
 		},
 		{
 			name: "Use After Closure",
-			execute: func(client *ChronoQueueClient) error {
+			execute: func(client *NzovuClient) error {
 				client.Close()
 				_, err := client.GetNextMessage(context.Background(), "testQueue", "2s", false)
 				return err
@@ -1781,7 +1781,7 @@ func TestChronoQueueClient_Close(t *testing.T) {
 			opts := ClientOptions{
 				Connector: testConnector(dialer), // use testConnector with dialer
 			}
-			client, err := NewChronoQueueClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
+			client, err := NewNzovuClient("bufnet", opts) // using "bufnet" as address, but it doesn't matter
 			if err != nil {
 				t.Fatalf("Failed to create client: %v", err)
 			}
@@ -1795,12 +1795,12 @@ func TestChronoQueueClient_Close(t *testing.T) {
 	}
 }
 
-// TestChronoQueueClient_DLQMethods tests all DLQ operations
-func TestChronoQueueClient_DLQMethods(t *testing.T) {
+// TestNzovuClient_DLQMethods tests all DLQ operations
+func TestNzovuClient_DLQMethods(t *testing.T) {
 	opts := ClientOptions{
 		Connector: testConnector(dialer()),
 	}
-	client, err := NewChronoQueueClient("bufnet", opts)
+	client, err := NewNzovuClient("bufnet", opts)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -1885,9 +1885,9 @@ func TestChronoQueueClient_DLQMethods(t *testing.T) {
 	})
 }
 
-func TestChronoQueueClient_CancelMessage(t *testing.T) {
+func TestNzovuClient_CancelMessage(t *testing.T) {
 	dialer := dialer()
-	client, err := NewChronoQueueClient("bufnet", ClientOptions{
+	client, err := NewNzovuClient("bufnet", ClientOptions{
 		Connector: testConnector(dialer),
 	})
 	if err != nil {

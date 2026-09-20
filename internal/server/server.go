@@ -20,10 +20,10 @@ import (
 
 	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
 	"github.com/adrien19/nzovu/internal/encryption/keymanager"
-	"github.com/adrien19/nzovu/pkg/chronoqueue"
 	"github.com/adrien19/nzovu/pkg/gateway"
 	"github.com/adrien19/nzovu/pkg/log"
 	"github.com/adrien19/nzovu/pkg/metrics"
+	"github.com/adrien19/nzovu/pkg/nzovu"
 	"github.com/adrien19/nzovu/pkg/repository"
 	"github.com/adrien19/nzovu/pkg/schema"
 )
@@ -33,7 +33,7 @@ type Server struct {
 	config               *Config
 	logger               *log.Logger
 	encryptionKeyManager *keymanager.EncryptionKeyManager
-	grpcServer           *chronoqueue.ChronoQueueServer
+	grpcServer           *nzovu.NzovuServer
 	database             repository.Storage
 	schemaRegistry       schema.Registry // Schema registry for message validation
 	schemaRegistryDB     *sql.DB
@@ -106,7 +106,7 @@ func (s *Server) Start(ctx context.Context) error {
 		}()
 	}
 	// Initialize gRPC server with storage and schema registry
-	s.grpcServer = chronoqueue.NewChronoQueueServer(s.database, s.schemaRegistry, s.logger)
+	s.grpcServer = nzovu.NewNzovuServer(s.database, s.schemaRegistry, s.logger)
 
 	// Print startup information
 	s.printStartupInfo()

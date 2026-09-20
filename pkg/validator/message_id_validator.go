@@ -22,7 +22,7 @@ type MessageIDValidator struct {
 func NewMessageIDValidator() Validator {
 	return &MessageIDValidator{
 		pattern:          regexp.MustCompile(`^[a-zA-Z0-9_-]+$`),
-		reservedPrefixes: []string{"system:", "internal:", "nzovu:", "chronoqueue:"},
+		reservedPrefixes: []string{"system:", "internal:", "nzovu:"},
 		minLength:        1,
 		maxLength:        256,
 	}

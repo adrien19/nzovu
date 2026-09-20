@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-const TestAPIKey = "chronoqueue-integration-test-key"
+const TestAPIKey = "nzovu-integration-test-key"
 
 func AuthenticatedGRPCDialOption(apiKey string) grpc.DialOption {
 	return grpc.WithUnaryInterceptor(func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {

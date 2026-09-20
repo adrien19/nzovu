@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
-	chronoqueueclient "github.com/adrien19/nzovu/client"
+	nzovuclient "github.com/adrien19/nzovu/client"
 	"github.com/adrien19/nzovu/tests/helpers"
 )
 
@@ -28,7 +28,7 @@ func TestAuthenticationGRPC(t *testing.T) {
 	_, err = service.ListQueues(context.Background(), &queueservicepb.ListQueuesRequest{})
 	assert.Equal(t, codes.Unauthenticated, status.Code(err))
 
-	client, err := chronoqueueclient.NewChronoQueueClient(env.GRPCAddr, chronoqueueclient.ClientOptions{APIKey: helpers.TestAPIKey})
+	client, err := nzovuclient.NewNzovuClient(env.GRPCAddr, nzovuclient.ClientOptions{APIKey: helpers.TestAPIKey})
 	require.NoError(t, err)
 	defer client.Close()
 	_, err = client.ListQueues(context.Background(), "")

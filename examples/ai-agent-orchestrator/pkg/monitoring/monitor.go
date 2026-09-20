@@ -44,7 +44,7 @@ type SystemStats struct {
 
 // Monitor provides monitoring capabilities for the orchestrator
 type Monitor struct {
-	client         *client.ChronoQueueClient
+	client         *client.NzovuClient
 	storageMonitor *StorageMonitor
 	queueNames     []string
 	startTime      time.Time
@@ -52,7 +52,7 @@ type Monitor struct {
 }
 
 // NewMonitor creates a new monitoring instance
-func NewMonitor(c *client.ChronoQueueClient, refreshRate time.Duration) *Monitor {
+func NewMonitor(c *client.NzovuClient, refreshRate time.Duration) *Monitor {
 	// Initialize monitor using Nzovu API
 	storageMonitor := NewStorageMonitor(c)
 

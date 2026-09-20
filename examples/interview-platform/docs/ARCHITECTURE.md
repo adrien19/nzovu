@@ -439,7 +439,7 @@ func BulkPostEvaluations(interviews []Interview) error {
     }
 
     // Post all in one gRPC call (if Nzovu supports)
-    return chronoqClient.BulkPostMessages(ctx, batch)
+    return nzovuClient.BulkPostMessages(ctx, batch)
 }
 ```
 
@@ -540,7 +540,7 @@ func PostSensitiveEvaluation(interview Interview) error {
         },
     }
 
-    return chronoqClient.PostMessage(ctx, message)
+    return nzovuClient.PostMessage(ctx, message)
 }
 
 // Worker decrypts before processing

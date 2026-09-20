@@ -15,7 +15,7 @@ type DataProcessorAgent struct {
 }
 
 // NewDataProcessorAgent creates a new data processor agent
-func NewDataProcessorAgent(c *client.ChronoQueueClient, workers int, verbose bool) *DataProcessorAgent {
+func NewDataProcessorAgent(c *client.NzovuClient, workers int, verbose bool) *DataProcessorAgent {
 	return &DataProcessorAgent{
 		BaseAgent: NewBaseAgent(c, "agent-data-processor", "data-processor", workers, verbose),
 	}

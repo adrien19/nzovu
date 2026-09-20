@@ -79,7 +79,6 @@ output="$("${install_dir}/nzovu" --version)"
 grep -Fq "Nzovu v${version}" <<<"${output}"
 grep -Fq "Git Commit: ${commit}" <<<"${output}"
 grep -Fq "Built:      ${build_date}" <<<"${output}"
-test ! -e "${install_dir}/chronoqueue"
 
 printf '{"tag_name":"%s"}\n' "${tag}" > "${test_root}/latest.json"
 install_version

@@ -13,7 +13,7 @@ import (
 
 // ResultStore manages agent results for historical reference and aggregation
 type ResultStore struct {
-	client    *client.ChronoQueueClient
+	client    *client.NzovuClient
 	queueName string
 	mu        sync.RWMutex
 	cache     map[string][]*AgentResult // parentID -> results
@@ -24,7 +24,7 @@ type ResultStore struct {
 }
 
 // NewResultStore creates a new result store
-func NewResultStore(c *client.ChronoQueueClient, verbose bool) *ResultStore {
+func NewResultStore(c *client.NzovuClient, verbose bool) *ResultStore {
 	return &ResultStore{
 		client:    c,
 		queueName: "agent-results",

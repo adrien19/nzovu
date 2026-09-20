@@ -46,7 +46,7 @@ type Agent interface {
 
 // BaseAgent provides common functionality for all agents
 type BaseAgent struct {
-	client            *client.ChronoQueueClient
+	client            *client.NzovuClient
 	queueName         string
 	agentType         string
 	workers           int
@@ -58,7 +58,7 @@ type BaseAgent struct {
 }
 
 // NewBaseAgent creates a new base agent
-func NewBaseAgent(c *client.ChronoQueueClient, queueName, agentType string, workers int, verbose bool) *BaseAgent {
+func NewBaseAgent(c *client.NzovuClient, queueName, agentType string, workers int, verbose bool) *BaseAgent {
 	return &BaseAgent{
 		client:      c,
 		queueName:   queueName,

@@ -1,0 +1,103 @@
+package commands
+
+import (
+	"context"
+	"fmt"
+	"net"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/spf13/cobra"
+
+	webui "github.com/adrien19/nzovu/cmd/nzovu/web-ui"
+	"github.com/adrien19/nzovu/pkg/log"
+)
+
+// NewWebUICommand creates the web-ui command.
+func NewWebUICommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "web-ui",
+		Short: "Nzovu next-generation web interface",
+		Long:  `Next-generation dark-themed web interface for monitoring and managing Nzovu`,
+	}
+
+	cmd.AddCommand(newWebUIStartCommand())
+
+	return cmd
+}
+
+func newWebUIStartCommand() *cobra.Command {
+	var (
+		host     string
+		port     string
+		grpcAddr string
+		skipSSL  bool
+	)
+
+	cmd := &cobra.Command{
+		Use:   "start",
+		Short: "Start the Nzovu next-generation web UI",
+		Long: `Start the next-generation web interface for monitoring queues, managing
+schedules, and viewing dead letter queues. Uses the dark nzovu-* design system.
+
+Example:
+  nzovu web-ui start --port 8081 --grpc-address localhost:9000`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runWebUIStart(host, port, grpcAddr, skipSSL)
+		},
+	}
+
+	cmd.Flags().StringVar(&host, "host", "127.0.0.1", "Host address for the web UI")
+	cmd.Flags().StringVar(&port, "port", "8081", "Port for the web UI")
+	cmd.Flags().StringVar(&grpcAddr, "grpc-address", "localhost:9000", "Address of the Nzovu gRPC server")
+	cmd.Flags().BoolVar(&skipSSL, "skip-ssl", false, "Disable TLS for the gRPC connection (for local/dev use)")
+
+	return cmd
+}
+
+func runWebUIStart(host, port, grpcAddr string, skipSSL bool) error {
+	logger := log.NewLogger()
+
+	server, err := webui.NewUIServer(grpcAddr, skipSSL, logger)
+	if err != nil {
+		return fmt.Errorf("failed to create web-UI server: %w", err)
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+	errChan := make(chan error, 1)
+	go func() {
+		addr := net.JoinHostPort(host, port)
+		logger.InfoWithFields("Starting Nzovu web-UI", "address", addr, "grpc", grpcAddr)
+		fmt.Printf("\n")
+		fmt.Printf("Nzovu web-UI is starting...\n")
+		fmt.Printf("Dashboard: %s://%s\n", server.URLScheme(), addr)
+		fmt.Printf("Connected to: %s\n", grpcAddr)
+		fmt.Printf("\n")
+		fmt.Printf("Press Ctrl+C to stop\n\n")
+
+		if err := server.Start(addr); err != nil {
+			errChan <- err
+		}
+	}()
+
+	select {
+	case <-sigChan:
+		logger.Info("Received shutdown signal, stopping web-UI server...")
+		shutdownCtx, shutdownCancel := context.WithTimeout(ctx, 10*time.Second)
+		defer shutdownCancel()
+		if err := server.Stop(shutdownCtx); err != nil {
+			return fmt.Errorf("error stopping web-UI server: %w", err)
+		}
+		logger.Info("web-UI server stopped gracefully")
+		return nil
+	case err := <-errChan:
+		return fmt.Errorf("web-UI server error: %w", err)
+	}
+}

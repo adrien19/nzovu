@@ -29,7 +29,7 @@ import (
 
 type authenticatedPrincipalKey struct{}
 
-const gatewayClientIDMetadataKey = "chronoqueue-gateway-client-id"
+const gatewayClientIDMetadataKey = "nzovu-gateway-client-id"
 
 var gatewayClientIDSigningKey = func() [32]byte {
 	var key [32]byte

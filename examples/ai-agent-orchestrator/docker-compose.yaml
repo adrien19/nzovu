@@ -112,7 +112,7 @@ services:
     environment:
       - SERVER_MODE=development
       - STORAGE_TYPE=sqlite
-      - SQLITE_DB_PATH=/data/chronoqueue.db
+      - SQLITE_DB_PATH=/data/nzovu.db
       - GRPC_ADDR=:9000
       - HTTP_ADDR=:8080
     ports:

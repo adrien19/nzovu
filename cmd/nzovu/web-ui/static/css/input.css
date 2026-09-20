@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+    --color-bg: #080c12;
+    --color-panel: #0c1118;
+    --color-panel-2: #0d1219;
+    --color-line: #1e2d3d;
+    --color-line-soft: #162336;
+    --color-brand: #3b82f6;
+    --color-brand-soft: #0f1f38;
+    --color-good: #10b981;
+    --color-warn: #f59e0b;
+    --color-danger: #ef4444;
+}
+
+@layer base {
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-bg text-zinc-100 antialiased;
+    }
+}
+
+@layer components {
+    .nzovu-shell {
+        min-height: 100vh;
+        background-image: radial-gradient(circle at top, rgba(59, 130, 246, 0.07), transparent 35%), linear-gradient(180deg, #060a10, #080c12 36%, #090d14);
+    }
+
+    .nzovu-sidebar {
+        @apply relative w-64 shrink-0 border-r border-line bg-black/55 backdrop-blur;
+    }
+
+    .nzovu-content {
+        @apply flex-1 px-7 py-5;
+    }
+
+    .nzovu-panel {
+        @apply rounded-xl border border-line bg-panel/95;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 48px rgba(0, 0, 0, 0.28);
+    }
+
+    .nzovu-panel-soft {
+        @apply rounded-xl border border-line-soft bg-panel-2/95;
+    }
+
+    .nzovu-stat {
+        @apply rounded-lg border-l border-line px-5 py-2;
+    }
+
+    .nzovu-badge {
+        @apply inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium;
+    }
+
+    .nzovu-badge-good {
+        @apply border-emerald-500/25 bg-emerald-500/10 text-emerald-300;
+    }
+
+    .nzovu-badge-warn {
+        @apply border-amber-500/25 bg-amber-500/10 text-amber-300;
+    }
+
+    .nzovu-badge-muted {
+        @apply border-zinc-700 bg-zinc-800/80 text-zinc-300;
+    }
+
+    .nzovu-btn {
+        @apply inline-flex items-center gap-2 rounded-md border border-line bg-zinc-900/80 px-3 py-2 text-sm text-zinc-200 transition hover:border-zinc-600 hover:bg-zinc-800;
+    }
+
+    .nzovu-btn-primary {
+        @apply border-blue-500/35 bg-blue-500/8 text-blue-300 hover:bg-blue-500/14;
+    }
+
+    .nzovu-input {
+        @apply h-10 rounded-md border border-line bg-zinc-950/70 px-3 text-sm text-zinc-100 outline-none ring-0 placeholder:text-zinc-500 focus:border-blue-500/35;
+    }
+
+    .nzovu-nav-link {
+        @apply flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-zinc-300 transition hover:bg-zinc-900/70 hover:text-white;
+    }
+
+    .nzovu-nav-link-active {
+        @apply bg-zinc-800 text-white;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .nzovu-kpi {
+        @apply text-3xl font-semibold tracking-tight text-white;
+    }
+
+    .nzovu-label {
+        @apply text-[11px] uppercase tracking-[0.22em] text-zinc-500;
+    }
+
+    .nzovu-table {
+        @apply min-w-full divide-y divide-line text-sm;
+    }
+
+    .nzovu-table th {
+        @apply bg-zinc-950/20 px-4 py-3 text-left text-[11px] uppercase tracking-[0.18em] text-zinc-500;
+    }
+
+    .nzovu-table td {
+        @apply px-4 py-3 text-zinc-200;
+    }
+
+    .nzovu-table tbody tr {
+        @apply border-t border-line-soft hover:bg-zinc-900/35;
+    }
+
+    .nzovu-select-card {
+        @apply flex items-center gap-3 rounded-xl border border-line bg-zinc-950/40 px-4 py-5 text-sm text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900/70;
+    }
+
+    .nzovu-select-card-active {
+        @apply border-blue-500/30 bg-blue-500/10 text-white;
+    }
+
+    .nzovu-tabs {
+        @apply inline-flex rounded-lg border border-line bg-zinc-950/50 p-1;
+    }
+
+    .nzovu-tab {
+        @apply rounded-md px-4 py-1.5 text-sm text-zinc-400;
+    }
+
+    .nzovu-tab-active {
+        @apply bg-zinc-800 text-white;
+    }
+}

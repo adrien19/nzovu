@@ -16,7 +16,7 @@ type LLMWriterAgent struct {
 }
 
 // NewLLMWriterAgent creates a new LLM-powered writer agent
-func NewLLMWriterAgent(c *client.ChronoQueueClient, llmClient llm.LLMClient, workers int, verbose bool) *LLMWriterAgent {
+func NewLLMWriterAgent(c *client.NzovuClient, llmClient llm.LLMClient, workers int, verbose bool) *LLMWriterAgent {
 	return &LLMWriterAgent{
 		BaseAgent: NewBaseAgent(c, "agent-llm-writer", "llm-writer", workers, verbose),
 		llmClient: llmClient,

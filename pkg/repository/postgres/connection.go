@@ -34,7 +34,7 @@ func DefaultConnectionConfig() *ConnectionConfig {
 		Port:            5432,
 		User:            "postgres",
 		Password:        "postgres",
-		Database:        "chronoqueue",
+		Database:        "nzovu",
 		SSLMode:         "disable",
 		MaxOpenConns:    10,
 		MaxIdleConns:    5,

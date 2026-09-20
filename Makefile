@@ -263,7 +263,7 @@ test-no-gotestsum:
 test-stable:
 	CGO_ENABLED=$(CGO) \
 		go test -v \
-				./client ./pkg/chronoqueue ./pkg/gateway ./pkg/metrics ./internal/server ./internal/util ./internal/encryption/... ./pkg/log \
+				./client ./pkg/nzovu ./pkg/gateway ./pkg/metrics ./internal/server ./internal/util ./internal/encryption/... ./pkg/log \
 				$(COVERAGE_OPTS)
 
 .PHONY: test-stable-gotestsum
@@ -272,7 +272,7 @@ test-stable-gotestsum: check-gotestsum
 		--jsonfile $(TEST_OUTPUT_FILE_PREFIX)_stable.json \
 		--format pkgname-and-test-fails \
 		-- \
-		./client ./pkg/chronoqueue ./pkg/gateway ./pkg/metrics ./internal/server ./internal/util ./internal/encryption/... ./pkg/log \
+		./client ./pkg/nzovu ./pkg/gateway ./pkg/metrics ./internal/server ./internal/util ./internal/encryption/... ./pkg/log \
 		$(COVERAGE_OPTS)
 
 ################################################################################
@@ -480,7 +480,7 @@ modtidy:
 .PHONY: ui-deps
 ui-deps:
 	@echo "Installing UI dependencies..."
-	@cd cmd/chronoq/web-ui && npm install
+	@cd cmd/nzovu/web-ui && npm install
 
 ################################################################################
 # Target: ui-build (build UI CSS and binary)                                   #
@@ -488,7 +488,7 @@ ui-deps:
 .PHONY: ui-build
 ui-build: ui-deps
 	@echo "Building UI CSS..."
-	@cd cmd/chronoq/web-ui && npm run build:css
+	@cd cmd/nzovu/web-ui && npm run build:css
 	@echo "Building UI binary..."
 	@mkdir -p $(NZOVU_OUT_DIR)
 	@go build -ldflags "$(LDFLAGS)" -o $(NZOVU_OUT_DIR)/nzovu .
@@ -499,7 +499,7 @@ ui-build: ui-deps
 .PHONY: ui-watch
 ui-watch: ui-deps
 	@echo "Watching UI CSS for changes..."
-	@cd cmd/chronoq/web-ui && npm run watch:css
+	@cd cmd/nzovu/web-ui && npm run watch:css
 
 ################################################################################
 # Target: ui-dev (run Nzovu with the UI in dev mode)                           #
@@ -524,8 +524,8 @@ ui-dev: ui-build
 ################################################################################
 # Usage:
 #   make server-dev                              # Use SQLite (default)
-#   make server-dev DATABASE=chronoqueue.db      # Use SQLite
-#   make server-dev DB=./data/chronoqueue.db     # Use SQLite (short form)
+#   make server-dev DATABASE=nzovu.db      # Use SQLite
+#   make server-dev DB=./data/nzovu.db     # Use SQLite (short form)
 #   make server-dev STORAGE=postgres              # Use Postgres (override with POSTGRES_* vars)
 ################################################################################
 .PHONY: server-dev
@@ -551,7 +551,7 @@ else ifdef DB
 	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/nzovu.log
 else
 	@echo "Starting Nzovu in development mode with SQLite storage (default)..."
-	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/nzovu.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path nzovu.db 2>&1 | tee logs/nzovu.log
 endif
 
 

@@ -38,7 +38,7 @@ func TestSQLitePeekStateConsistency_LeasedMessageExcluded(t *testing.T) {
 
 	cfg := server.DefaultConfig()
 	cfg.StorageType = "sqlite"
-	cfg.SQLiteDBPath = filepath.Join(t.TempDir(), "chronoqueue-test.db")
+	cfg.SQLiteDBPath = filepath.Join(t.TempDir(), "nzovu-test.db")
 	cfg.GRPCAddr = grpcAddr
 	cfg.HTTPAddr = httpAddr
 	cfg.IsDevelopment = true

@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/adrien19/nzovu/cmd/chronoq/commands"
+	"github.com/adrien19/nzovu/cmd/nzovu/commands"
 	"github.com/adrien19/nzovu/internal/server"
 	"github.com/adrien19/nzovu/pkg/version"
 )
