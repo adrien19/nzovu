@@ -1,7 +1,9 @@
 # Docker image build setting
 DOCKER:=docker
-DOCKERFILE_DIR?=./docker
-CHRONOQUEUE_IMAGE_NAME?=$(RELEASE_NAME)
+DOCKERFILE_DIR?=./images
+DOCKER_REGISTRY?=ghcr.io/adrien19
+NZOVU_TAG?=$(NZOVU_VERSION)
+NZOVU_IMAGE_NAME?=nzovu
 
 # build docker image for linux
 BIN_DIR:=$(OUT_DIR)/$(TARGET_OS)_$(TARGET_ARCH)
@@ -40,24 +42,24 @@ else
 endif
 
 ifeq ($(MANIFEST_TAG),)
-	MANIFEST_TAG=$(CHRONOQUEUE_TAG)
+	MANIFEST_TAG=$(NZOVU_TAG)
 endif
 
 ifeq ($(MANIFEST_LATEST_TAG),)
-	MANIFEST_LATEST_TAG=$(CHRONOQUEUE_TAG)
+	MANIFEST_LATEST_TAG=$(NZOVU_TAG)
 endif
 
 LINUX_BINS_OUT_DIR=$(OUT_DIR)/linux_$(GOARCH)
-DOCKER_IMAGE=$(DOCKER_REGISTRY)/$(CHRONOQUEUE_IMAGE_NAME)
-BUILD_TAG=$(CHRONOQUEUE_TAG)-$(CHRONOQUEUE_TAG)
+DOCKER_IMAGE=$(DOCKER_REGISTRY)/$(NZOVU_IMAGE_NAME)
+BUILD_TAG=$(NZOVU_TAG)
 
 
 check-docker-env:
 ifeq ($(DOCKER_REGISTRY),)
 	$(error DOCKER_REGISTRY environment variable must be set)
 endif
-ifeq ($(CHRONOQUEUE_TAG),)
-	$(error CHRONOQUEUE_TAG environment variable must be set)
+ifeq ($(NZOVU_TAG),)
+	$(error NZOVU_TAG environment variable must be set)
 endif
 
 check-arch:
@@ -70,14 +72,12 @@ endif
 
 docker-build: SHELL := $(shell which bash)
 docker-build: check-docker-env check-arch
-	$(info Building $(DOCKER_IMAGE):$(CHRONOQUEUE_TAG) docker image ...)
-ifeq ($(TARGET_ARCH),$(TARGET_ARCH_LOCAL))
-	$(DOCKER) build --build-arg PKG_FILES=* $(BUILD_ARGS) -f $(DOCKERFILE_DIR)/$(DOCKERFILE) $(BIN_DIR) -t $(DOCKER_IMAGE):$(BUILD_TAG)
-else
-	-$(DOCKER) buildx create --use --name chronoqueuebuild
-	-$(DOCKER) run --rm --privileged multiarch/qemu-user-static --reset -p yes
-	$(DOCKER) buildx build --build-arg PKG_FILES=* $(BUILD_ARGS) --platform $(DOCKER_IMAGE_PLATFORM) -f $(DOCKERFILE_DIR)/$(DOCKERFILE) $(BIN_DIR) -t $(DOCKER_IMAGE):$(BUILD_TAG) --provenance=false
-endif
+	$(info Building $(DOCKER_IMAGE):$(NZOVU_TAG) docker image ...)
+	$(DOCKER) build --platform $(DOCKER_IMAGE_PLATFORM) $(BUILD_ARGS) \
+		--build-arg VERSION=$(NZOVU_VERSION) \
+		--build-arg GIT_COMMIT=$(GIT_COMMIT) \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		-f $(DOCKERFILE_DIR)/$(DOCKERFILE) . -t $(DOCKER_IMAGE):$(BUILD_TAG)
 
 
 ################################################################################
@@ -87,11 +87,11 @@ endif
 # Update whenever you upgrade dev container image
 DEV_CONTAINER_VERSION_TAG?=latest
 
-# ChronoQueue container image name
+# Nzovu container image name
 DEV_CONTAINER_IMAGE_NAME=nzovu-dev
 
 DEV_CONTAINER_DOCKERFILE=Dockerfile-dev
-DOCKERFILE_DIR=./docker
+DEV_CONTAINER_DOCKERFILE_DIR=./docker
 
 check-docker-env-for-dev-container:
 ifeq ($(DOCKER_REGISTRY),)
@@ -102,9 +102,9 @@ build-dev-container:
 ifeq ($(DOCKER_REGISTRY),)
 	$(info DOCKER_REGISTRY environment variable not set, tagging image without registry prefix.)
 	$(info `make tag-dev-container` should be run with DOCKER_REGISTRY before `make push-dev-container.)
-	$(DOCKER) build -f $(DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DOCKERFILE_DIR)/. -t $(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG)
+	$(DOCKER) build -f $(DEV_CONTAINER_DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DEV_CONTAINER_DOCKERFILE_DIR)/. -t $(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG)
 else
-	$(DOCKER) build -f $(DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DOCKERFILE_DIR)/. -t $(DOCKER_REGISTRY)/$(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG)
+	$(DOCKER) build -f $(DEV_CONTAINER_DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DEV_CONTAINER_DOCKERFILE_DIR)/. -t $(DOCKER_REGISTRY)/$(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG)
 endif
 
 tag-dev-container: check-docker-env-for-dev-container
@@ -117,18 +117,18 @@ build-dev-container-all-arch:
 ifeq ($(DOCKER_REGISTRY),)
 	$(info DOCKER_REGISTRY environment variable not set, tagging image without registry prefix.)
 	$(DOCKER) buildx build --platform $(DEV_CONTAINER_MULTI_ARCH) \
-		-f $(DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DOCKERFILE_DIR)/. \
+		-f $(DEV_CONTAINER_DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DEV_CONTAINER_DOCKERFILE_DIR)/. \
 		-t $(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG) \
 		--provenance=false
 else
 	$(DOCKER) buildx build --platform $(DEV_CONTAINER_MULTI_ARCH) \
-		-f $(DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DOCKERFILE_DIR)/. \
+		-f $(DEV_CONTAINER_DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DEV_CONTAINER_DOCKERFILE_DIR)/. \
 		-t $(DOCKER_REGISTRY)/$(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG) \
 		--provenance=false
 endif
 
 push-dev-container-all-arch: check-docker-env-for-dev-container
 	$(DOCKER) buildx build --platform $(DEV_CONTAINER_MULTI_ARCH) \
-		-f $(DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DOCKERFILE_DIR)/. \
-		-t $(DAPR_REGISTRY)/$(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG) \
+		-f $(DEV_CONTAINER_DOCKERFILE_DIR)/$(DEV_CONTAINER_DOCKERFILE) $(DEV_CONTAINER_DOCKERFILE_DIR)/. \
+		-t $(DOCKER_REGISTRY)/$(DEV_CONTAINER_IMAGE_NAME):$(DEV_CONTAINER_VERSION_TAG) \
 		--push --provenance=false

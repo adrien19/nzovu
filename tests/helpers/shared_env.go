@@ -135,7 +135,7 @@ func createSharedEnvironment() (*TestEnvironment, error) {
 	// Use pre-built test image (built via `make build-test-image`)
 	// This avoids rebuilding the image every time tests run
 	serverReq := testcontainers.ContainerRequest{
-		Image:        "chronoqueue:test-latest",
+		Image:        "nzovu:test-latest",
 		ExposedPorts: []string{"9000/tcp", "8080/tcp"},
 		Env: map[string]string{
 			"AUTH_ENABLED":          "true",

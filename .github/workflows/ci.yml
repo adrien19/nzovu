@@ -162,6 +162,9 @@ jobs:
         exclude:
           - goos: windows
             goarch: arm64
+        include:
+          - goos: linux
+            goarch: arm
 
     steps:
       - name: Checkout code
@@ -185,6 +188,25 @@ jobs:
           name: nzovu-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/*
           retention-days: 7
+
+  installer-tests:
+    name: Installer Fixtures (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - if: runner.os != 'Windows'
+        run: make test-install-script
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./install/install_test.ps1
 
   docker-build:
     name: Build & Push Docker Images
@@ -332,6 +354,7 @@ jobs:
         integration-tests,
         sqlite-integration-tests,
         build,
+        installer-tests,
       ]
     if: always()
     steps:
@@ -346,12 +369,14 @@ jobs:
           echo "| Integration Tests | ${{ needs.integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| SQLite Integration Tests | ${{ needs.sqlite-integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Build | ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Installer Fixtures | ${{ needs.installer-tests.result }} |" >> $GITHUB_STEP_SUMMARY
 
           if [[ "${{ needs.code-quality.result }}" == "failure" ]] || \
              [[ "${{ needs.unit-tests.result }}" == "failure" ]] || \
              [[ "${{ needs.integration-tests.result }}" == "failure" ]] || \
              [[ "${{ needs.sqlite-integration-tests.result }}" == "failure" ]] || \
-             [[ "${{ needs.build.result }}" == "failure" ]]; then
+             [[ "${{ needs.build.result }}" == "failure" ]] || \
+             [[ "${{ needs.installer-tests.result }}" == "failure" ]]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "❌ **CI Pipeline Failed**" >> $GITHUB_STEP_SUMMARY
             exit 1

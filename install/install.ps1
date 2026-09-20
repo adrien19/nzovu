@@ -1,27 +1,27 @@
 
-# ChronoQueue install script for Windows (PowerShell)
+# Nzovu install script for Windows (PowerShell)
 #
 # Usage:
-#   # Install latest version to $Env:SystemDrive\chronoqueue and add to User PATH
-#   powershell -Command "iwr -useb https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.ps1 | iex"
+#   # Install latest version to $Env:LOCALAPPDATA\Programs\nzovu and add to User PATH
+#   powershell -Command "iwr -useb https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.ps1 | iex"
 #
 #   # Install a specific version
-#   $s=iwr -useb https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.ps1; `
+#   $s=iwr -useb https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.ps1; `
 #   $b=[ScriptBlock]::Create($s); invoke-command -ScriptBlock $b -ArgumentList '0.1.0'
 #
 #   # Install to a custom directory (no admin required)
-#   $Env:CHRONOQUEUE_INSTALL_DIR="C:\tools\chronoqueue"
-#   powershell -Command "iwr -useb https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.ps1 | iex"
+#   $Env:NZOVU_INSTALL_DIR="C:\tools\nzovu"
+#   powershell -Command "iwr -useb https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.ps1 | iex"
 #
 #   # Install a specific version to a custom directory
-#   $s=iwr -useb https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.ps1; `
-#   $b=[ScriptBlock]::Create($s); invoke-command -ScriptBlock $b -ArgumentList '0.1.0','C:\tools\chronoqueue'
+#   $s=iwr -useb https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.ps1; `
+#   $b=[ScriptBlock]::Create($s); invoke-command -ScriptBlock $b -ArgumentList '0.1.0','C:\tools\nzovu'
 
 param (
     # Version to install (e.g. "0.1.0" or "v0.1.0"). Defaults to latest release.
     [string]$Version  = "",
-    # Directory to install chronoqueue into. Defaults to $Env:CHRONOQUEUE_INSTALL_DIR
-    # or $Env:SystemDrive\chronoqueue if not set.
+    # Directory to install nzovu into. Defaults to $Env:NZOVU_INSTALL_DIR
+    # or $Env:LOCALAPPDATA\Programs\nzovu if not set.
     [string]$InstallDir = ""
 )
 
@@ -31,10 +31,10 @@ $ErrorActionPreference = "Stop"
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 $GithubOrg   = "adrien19"
-$GithubRepo  = "chronoqueue"
-$BinaryName  = "chronoqueue.exe"
-$ReleasesUrl = if ($Env:CHRONOQUEUE_RELEASES_URL) { $Env:CHRONOQUEUE_RELEASES_URL } else { "https://github.com/$GithubOrg/$GithubRepo/releases" }
-$ApiUrl      = if ($Env:CHRONOQUEUE_API_URL) { $Env:CHRONOQUEUE_API_URL } else { "https://api.github.com/repos/$GithubOrg/$GithubRepo/releases/latest" }
+$GithubRepo  = "nzovu"
+$BinaryName  = "nzovu.exe"
+$ReleasesUrl = if ($Env:NZOVU_RELEASES_URL) { $Env:NZOVU_RELEASES_URL } else { "https://github.com/$GithubOrg/$GithubRepo/releases" }
+$ApiUrl      = if ($Env:NZOVU_API_URL) { $Env:NZOVU_API_URL } else { "https://api.github.com/repos/$GithubOrg/$GithubRepo/releases/latest" }
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -135,30 +135,30 @@ function Test-Checksum([string]$FilePath, [string]$ChecksumFile) {
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-function Install-ChronoQueue {
+function Install-Nzovu {
     # ── Version ──────────────────────────────────────────────────────────────
     $ver = $Version.TrimStart('v')
     if ([string]::IsNullOrWhiteSpace($ver)) {
-        Write-Step "Determining latest chronoqueue version..."
+        Write-Step "Determining latest nzovu version..."
         $ver = Get-LatestVersion
     }
     Assert-SemanticVersion -Value $ver
-    Write-Step "Installing chronoqueue v$ver"
+    Write-Step "Installing nzovu v$ver"
 
     # ── Architecture (Windows releases only ship amd64) ───────────────────────
     $arch = "amd64"
-    $archiveName = "chronoqueue-v${ver}-windows-${arch}.zip"
-    $binaryInArchive = "chronoqueue-v${ver}-windows-${arch}.exe"
+    $archiveName = "nzovu-v${ver}-windows-${arch}.zip"
+    $binaryInArchive = "nzovu-v${ver}-windows-${arch}.exe"
 
     # ── Install dir ──────────────────────────────────────────────────────────
     $userSetDir = $false
     if (-not [string]::IsNullOrWhiteSpace($InstallDir)) {
         $userSetDir = $true
-    } elseif (-not [string]::IsNullOrWhiteSpace($Env:CHRONOQUEUE_INSTALL_DIR)) {
-        $InstallDir = $Env:CHRONOQUEUE_INSTALL_DIR
+    } elseif (-not [string]::IsNullOrWhiteSpace($Env:NZOVU_INSTALL_DIR)) {
+        $InstallDir = $Env:NZOVU_INSTALL_DIR
         $userSetDir = $true
     } else {
-        $InstallDir = Join-Path $Env:LOCALAPPDATA "Programs\chronoqueue"
+        $InstallDir = Join-Path $Env:LOCALAPPDATA "Programs\nzovu"
     }
 
     # ── URLs ──────────────────────────────────────────────────────────────────
@@ -213,7 +213,7 @@ function Install-ChronoQueue {
         if (-not (Test-Path $InstallDir)) {
             New-Item -ItemType Directory -Path $InstallDir | Out-Null
         }
-        Write-Step "Installing chronoqueue to $InstallDir..."
+        Write-Step "Installing nzovu to $InstallDir..."
         Copy-Item -Path $binaryPath -Destination (Join-Path $InstallDir $BinaryName) -Force
 
         # ── Add to User PATH ──────────────────────────────────────────────────
@@ -230,13 +230,13 @@ function Install-ChronoQueue {
         }
 
         # ── Done ──────────────────────────────────────────────────────────────
-        Write-Step "chronoqueue v$ver installed successfully."
+        Write-Step "nzovu v$ver installed successfully."
         Write-Host ""
-        Write-Host "Run 'chronoqueue --help' to get started." -ForegroundColor Cyan
+        Write-Host "Run 'nzovu --help' to get started." -ForegroundColor Cyan
 
     } finally {
         Remove-Item -Recurse -Force -Path $tmpDir -ErrorAction SilentlyContinue
     }
 }
 
-Install-ChronoQueue
+Install-Nzovu

@@ -229,7 +229,7 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: chronoqueue:pr-${{ github.event.pull_request.number }}
+          tags: nzovu:pr-${{ github.event.pull_request.number }}
           build-args: |
             VERSION=pr-${{ github.event.pull_request.number }}
             GIT_COMMIT=${{ github.sha }}

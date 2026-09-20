@@ -323,10 +323,10 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 	// Start ChronoQueue server container with TLS enabled
 	t.Log("Starting ChronoQueue server container with TLS...")
 	serverReq := testcontainers.ContainerRequest{
-		Image:        "chronoqueue:test-latest",
+		Image:        "nzovu:test-latest",
 		ExposedPorts: []string{"9000/tcp", "8080/tcp"},
 		Networks:     []string{net.Name},
-		Entrypoint:   []string{"/chronoqueue"}, // Override entrypoint to skip entrypoint.sh
+		Entrypoint:   []string{"/nzovu"}, // Override entrypoint to skip entrypoint.sh
 		Cmd: []string{
 			"server",
 			"--dev",
