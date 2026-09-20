@@ -2,7 +2,7 @@
 services:
   prometheus:
     image: prom/prometheus:v2.48.0
-    container_name: chronoqueue-prometheus
+    container_name: nzovu-prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -16,7 +16,7 @@ services:
       - ${WORKSPACE_FOLDER}/monitoring/prometheus-alerts.yml:/etc/prometheus/alerts.yml:ro
       - prometheus-data:/prometheus
     networks:
-      - chronoqueue-network
+      - nzovu-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
@@ -27,7 +27,7 @@ services:
 
   grafana:
     image: grafana/grafana:10.2.2
-    container_name: chronoqueue-grafana
+    container_name: nzovu-grafana
     ports:
       - "3000:3000"
     environment:
@@ -39,9 +39,9 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - ${WORKSPACE_FOLDER}/deploy/grafana/provisioning:/etc/grafana/provisioning:ro
-      - ${WORKSPACE_FOLDER}/monitoring/grafana-dashboard.json:/var/lib/grafana/dashboards/chronoqueue-main.json:ro
+      - ${WORKSPACE_FOLDER}/monitoring/grafana-dashboard.json:/var/lib/grafana/dashboards/nzovu-main.json:ro
     networks:
-      - chronoqueue-network
+      - nzovu-network
     depends_on:
       - prometheus
     restart: unless-stopped
@@ -53,7 +53,8 @@ services:
       start_period: 40s
 
 networks:
-  chronoqueue-network:
+  nzovu-network:
+    name: ${NZOVU_NETWORK_NAME:-nzovu-network}
     external: true
 
 volumes:

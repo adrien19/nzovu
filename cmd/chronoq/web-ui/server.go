@@ -13,12 +13,12 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
 
 	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
 	"github.com/adrien19/nzovu/cmd/chronoq/web-ui/handlers"
+	"github.com/adrien19/nzovu/internal/runtimeenv"
 	"github.com/adrien19/nzovu/pkg/log"
 )
 
@@ -77,11 +77,15 @@ func NewUIServer(grpcAddr string, skipSSL bool, logger *log.Logger) (*UIServer, 
 
 	configDir, err := os.UserConfigDir()
 	if err != nil {
-		configDir = "."
+		return nil, fmt.Errorf("locate UI configuration: %w", err)
 	}
-	store := clusterstore.NewStore(filepath.Join(configDir, "chronoqueue", "web-ui-clusters.json"))
+	storePath, err := clusterConfigPath(configDir)
+	if err != nil {
+		return nil, err
+	}
+	store := clusterstore.NewStore(storePath)
 	if err := store.Load(); err != nil {
-		logger.WarnWithFields("Failed to load cluster store, starting fresh", "error", err)
+		return nil, fmt.Errorf("load cluster store: %w", err)
 	}
 	store.Seed("Local", grpcAddr, skipSSL)
 
@@ -89,39 +93,30 @@ func NewUIServer(grpcAddr string, skipSSL bool, logger *log.Logger) (*UIServer, 
 		publicOrigin    normalizedOrigin
 		hasPublicOrigin bool
 	)
-	if rawPublicOrigin := strings.TrimSpace(os.Getenv("CHRONOQUEUE_UI_PUBLIC_ORIGIN")); rawPublicOrigin != "" {
+	if rawPublicOrigin := strings.TrimSpace(runtimeenv.Get("NZOVU_UI_PUBLIC_ORIGIN")); rawPublicOrigin != "" {
 		parsedOrigin, err := parseOrigin(rawPublicOrigin)
 		if err != nil {
-			return nil, fmt.Errorf("invalid CHRONOQUEUE_UI_PUBLIC_ORIGIN: %w", err)
+			return nil, fmt.Errorf("invalid NZOVU_UI_PUBLIC_ORIGIN: %w", err)
 		}
 		publicOrigin = parsedOrigin
 		hasPublicOrigin = true
 	}
 	if !hasPublicOrigin {
-		logger.Warn("CHRONOQUEUE_UI_PUBLIC_ORIGIN is not set; all UI mutation requests will be rejected with 403")
+		logger.Warn("NZOVU_UI_PUBLIC_ORIGIN is not set; all UI mutation requests will be rejected with 403")
 	}
 
-	trustProxyHeaders := false
-	if rawTrustProxy := strings.TrimSpace(os.Getenv("CHRONOQUEUE_UI_TRUST_PROXY_HEADERS")); rawTrustProxy != "" {
-		parsedTrustProxy, err := strconv.ParseBool(rawTrustProxy)
-		if err != nil {
-			return nil, fmt.Errorf("invalid CHRONOQUEUE_UI_TRUST_PROXY_HEADERS: %w", err)
-		}
-		trustProxyHeaders = parsedTrustProxy
+	trustProxyHeaders, err := runtimeenv.Bool("NZOVU_UI_TRUST_PROXY_HEADERS", false)
+	if err != nil {
+		return nil, err
 	}
-
-	authEnabled := false
-	if rawAuthEnabled := strings.TrimSpace(os.Getenv("CHRONOQUEUE_UI_AUTH_ENABLED")); rawAuthEnabled != "" {
-		parsedAuthEnabled, err := strconv.ParseBool(rawAuthEnabled)
-		if err != nil {
-			return nil, fmt.Errorf("invalid CHRONOQUEUE_UI_AUTH_ENABLED: %w", err)
-		}
-		authEnabled = parsedAuthEnabled
+	authEnabled, err := runtimeenv.Bool("NZOVU_UI_AUTH_ENABLED", false)
+	if err != nil {
+		return nil, err
 	}
 	auth := uiAuthConfig{
 		enabled:  authEnabled,
-		username: os.Getenv("CHRONOQUEUE_UI_AUTH_USERNAME"),
-		password: os.Getenv("CHRONOQUEUE_UI_AUTH_PASSWORD"),
+		username: runtimeenv.Get("NZOVU_UI_AUTH_USERNAME"),
+		password: runtimeenv.Get("NZOVU_UI_AUTH_PASSWORD"),
 	}
 	if auth.enabled && (auth.username == "" || auth.password == "") {
 		return nil, fmt.Errorf("web UI authentication enabled but username or password is missing")
@@ -139,9 +134,21 @@ func NewUIServer(grpcAddr string, skipSSL bool, logger *log.Logger) (*UIServer, 
 	}, nil
 }
 
+func clusterConfigPath(configDir string) (string, error) {
+	current := filepath.Join(configDir, "nzovu", "web-ui-clusters.json")
+	for _, path := range []string{current, filepath.Join(configDir, "chronoqueue", "web-ui-clusters.json")} {
+		if _, err := os.Stat(path); err == nil {
+			return path, nil
+		} else if !os.IsNotExist(err) {
+			return "", fmt.Errorf("inspect cluster configuration: %w", err)
+		}
+	}
+	return current, nil
+}
+
 func uiTLSConfigFromEnvironment() (uiTLSConfig, error) {
-	certFile := strings.TrimSpace(os.Getenv("CHRONOQUEUE_UI_TLS_CERT_FILE"))
-	keyFile := strings.TrimSpace(os.Getenv("CHRONOQUEUE_UI_TLS_KEY_FILE"))
+	certFile := strings.TrimSpace(runtimeenv.Get("NZOVU_UI_TLS_CERT_FILE"))
+	keyFile := strings.TrimSpace(runtimeenv.Get("NZOVU_UI_TLS_KEY_FILE"))
 	if (certFile == "") != (keyFile == "") {
 		return uiTLSConfig{}, fmt.Errorf("web UI TLS certificate and key must be configured together")
 	}
@@ -318,7 +325,7 @@ func uiAuthMiddleware(config uiAuthConfig, next http.Handler) http.Handler {
 			subtle.ConstantTimeCompare([]byte(password), []byte(config.password)) == 1
 		if !authorized {
 			w.Header().Set("Cache-Control", "no-store")
-			w.Header().Set("WWW-Authenticate", `Basic realm="ChronoQueue", charset="UTF-8"`)
+			w.Header().Set("WWW-Authenticate", `Basic realm="Nzovu", charset="UTF-8"`)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
@@ -434,7 +441,7 @@ func validateMutationOrigin(
 	}
 
 	if !hasConfiguredOrigin {
-		return fmt.Errorf("CHRONOQUEUE_UI_PUBLIC_ORIGIN is not configured")
+		return fmt.Errorf("NZOVU_UI_PUBLIC_ORIGIN is not configured")
 	}
 	if requestOrigin != configuredOrigin {
 		return fmt.Errorf("origin mismatch: %s != %s", requestOrigin, configuredOrigin)

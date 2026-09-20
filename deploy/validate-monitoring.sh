@@ -1,5 +1,5 @@
 #!/bin/bash
-# ChronoQueue Monitoring Stack Validation Script
+# Nzovu Monitoring Stack Validation Script
 
 set -e
 
@@ -9,7 +9,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo "=========================================="
-echo "ChronoQueue Monitoring Stack Validation"
+echo "Nzovu Monitoring Stack Validation"
 echo "=========================================="
 echo ""
 
@@ -76,7 +76,7 @@ check_docker_containers() {
     echo "Docker Container Status:"
     echo "------------------------"
     
-    for container in chronoqueue-server chronoqueue-prometheus chronoqueue-grafana; do
+    for container in nzovu-server nzovu-prometheus nzovu-grafana; do
         if docker ps --format '{{.Names}}' | grep -q "^${container}$"; then
             status=$(docker ps --filter "name=^${container}$" --format '{{.Status}}')
             echo -e "${GREEN}✓${NC} $container: $status"
@@ -92,7 +92,7 @@ check_docker_networks() {
     echo "Docker Network Status:"
     echo "----------------------"
     
-    for network in chronoqueue-network demo_network; do
+    for network in "${NZOVU_NETWORK_NAME:-nzovu-network}"; do
         if docker network ls --format '{{.Name}}' | grep -q "^${network}$"; then
             container_count=$(docker network inspect "$network" -f '{{len .Containers}}' 2>/dev/null || echo "0")
             echo -e "${GREEN}✓${NC} $network: $container_count container(s) connected"
@@ -112,17 +112,17 @@ echo "Step 2: Checking Service Endpoints"
 echo "===================================="
 sleep 2  # Give services time to initialize
 
-check_http_service "ChronoQueue HTTP API" "http://localhost:8080/health" 200 || true
-check_http_service "ChronoQueue Metrics" "http://localhost:8080/metrics" 200 || true
+check_http_service "Nzovu HTTP API" "http://localhost:8080/health" 200 || true
+check_http_service "Nzovu Metrics" "http://localhost:8080/metrics" 200 || true
 check_http_service "Prometheus" "http://localhost:9090/-/healthy" 200 || true
 check_http_service "Grafana" "http://localhost:3000/api/health" 200 || true
 
 echo ""
 echo "Step 3: Checking Metrics Data"
 echo "=============================="
-check_metrics "http://localhost:8080/metrics" "chronoqueue_queues_total" || true
-check_metrics "http://localhost:8080/metrics" "chronoqueue_messages_enqueued_total" || true
-check_metrics "http://localhost:8080/metrics" "chronoqueue_messages_by_state" || true
+check_metrics "http://localhost:8080/metrics" "nzovu_queues_total" || true
+check_metrics "http://localhost:8080/metrics" "nzovu_messages_enqueued_total" || true
+check_metrics "http://localhost:8080/metrics" "nzovu_messages_by_state" || true
 
 echo ""
 echo "Step 4: Checking Prometheus Integration"
@@ -134,7 +134,7 @@ echo "Step 5: Quick Links"
 echo "==================="
 echo "Grafana Dashboard:    http://localhost:3000 (admin/admin)"
 echo "Prometheus:           http://localhost:9090"
-echo "ChronoQueue Metrics:  http://localhost:8080/metrics"
+echo "Nzovu Metrics:  http://localhost:8080/metrics"
 echo ""
 
 # Summary
@@ -147,10 +147,10 @@ echo ""
 echo "Next steps:"
 echo "1. Open Grafana: http://localhost:3000"
 echo "2. Login with admin/admin"
-echo "3. Navigate to ChronoQueue folder → ChronoQueue - Main Dashboard"
+echo "3. Navigate to Nzovu folder → Nzovu - Main Dashboard"
 echo "4. Create some queues and messages to see metrics populate"
 echo ""
 echo "To view logs:"
-echo "  docker-compose logs -f chronoqueuesvc"
+echo "  docker-compose logs -f nzovusvc"
 echo "  docker-compose -f docker-compose.monitoring.yaml logs -f"
 echo ""

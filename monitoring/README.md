@@ -1,23 +1,23 @@
-# ChronoQueue Monitoring
+# Nzovu Monitoring
 
-This directory contains monitoring and observability configuration for ChronoQueue.
+This directory contains monitoring and observability configuration for Nzovu.
 
 ## Contents
 
-- `grafana-dashboard.json`: Pre-built Grafana dashboard visualizing all ChronoQueue metrics
+- `grafana-dashboard.json`: Pre-built Grafana dashboard visualizing all Nzovu metrics
 - `prometheus-alerts.yml`: Prometheus alerting rules for production monitoring
 
 ## Quick Start
 
 ### 1. Prometheus Configuration
 
-Add ChronoQueue as a scrape target in your `prometheus.yml`:
+Add Nzovu as a scrape target in your `prometheus.yml`:
 
 ```yaml
 scrape_configs:
-  - job_name: 'chronoqueue'
+  - job_name: 'nzovu'
     static_configs:
-      - targets: ['localhost:9090']  # Adjust to your ChronoQueue metrics port
+      - targets: ['localhost:9090']  # Adjust to your Nzovu metrics port
     scrape_interval: 15s
 ```
 
@@ -25,7 +25,7 @@ Load the alerting rules:
 
 ```yaml
 rule_files:
-  - '/path/to/chronoqueue/monitoring/prometheus-alerts.yml'
+  - '/path/to/nzovu/monitoring/prometheus-alerts.yml'
 ```
 
 Restart Prometheus to apply changes.
@@ -38,7 +38,7 @@ Restart Prometheus to apply changes.
 4. Select your Prometheus datasource
 5. Click **Import**
 
-The dashboard will be available at: **ChronoQueue - Main Dashboard**
+The dashboard will be available at: **Nzovu - Main Dashboard**
 
 ## Dashboard Panels
 
@@ -91,44 +91,44 @@ The Grafana dashboard includes the following sections:
 
 The `prometheus-alerts.yml` file contains 20+ baseline alerts that must be tuned and validated against production traffic:
 
-### chronoqueue_message_processing
+### nzovu_message_processing
 
 - `HighPendingMessageCount`: Queue backlog exceeds 1000 messages
 - `HighMessageClaimLatency`: P95 claim latency > 500ms
 - `SlowMessageProcessing`: P95 processing duration > 5 minutes
 
-### chronoqueue_dlq_health
+### nzovu_dlq_health
 
 - `HighDLQIngestionRate`: More than 10 messages/sec moving to DLQ
 - `DLQMessageAccumulation`: DLQ has > 100 messages
 - `PoisonMessagesDetected`: Messages hitting max_attempts repeatedly
 
-### chronoqueue_lease_management
+### nzovu_lease_management
 
 - `HighLeaseExpirationRate`: More than 5 leases expiring per second
 - `FrequentHeartbeatTimeouts`: Workers not sending heartbeats
 - `LeaseRenewalLimitReached`: Messages hitting max_renewals limit
 
-### chronoqueue_scheduler
+### nzovu_scheduler
 
 - `SchedulerLagging`: Scheduler is > 60 seconds behind schedule
 - `SchedulerServiceStalled`: No scheduler iterations in 5 minutes
 - `SchedulerIterationFailures`: Scheduler encountering errors
 - `SlowSchedulerIterations`: P95 iteration time > 10 seconds
 
-### chronoqueue_reclaim_service
+### nzovu_reclaim_service
 
 - `ReclaimServiceStalled`: Reclaim service not running
 - `ReclaimIterationFailures`: Reclaim encountering errors
 
-### chronoqueue_database
+### nzovu_database
 
 - `SlowDatabaseQueries`: P95 query latency > 100ms
 - `SlowDatabaseTransactions`: P95 transaction latency > 500ms
 - `DatabaseConnectionPoolExhausted`: Connection pool has waiters
 - `LowIdleConnections`: < 20% idle connections during high load
 
-### chronoqueue_general_health
+### nzovu_general_health
 
 - `QueueCountDropped`: Queue count dropped to zero unexpectedly
 - `NoMessageThroughput`: No message processing despite pending messages
@@ -153,7 +153,7 @@ Edit `prometheus-alerts.yml` to tune thresholds for your environment:
 
 ```yaml
 # Example: Increase pending message threshold
-expr: chronoqueue_messages_by_state{state="PENDING"} > 5000  # Changed from 1000
+expr: nzovu_messages_by_state{state="PENDING"} > 5000  # Changed from 1000
 ```
 
 ### Dashboard Time Ranges
@@ -200,10 +200,10 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - grafana-storage:/var/lib/grafana
-      - ./monitoring/grafana-dashboard.json:/etc/grafana/provisioning/dashboards/chronoqueue.json
+      - ./monitoring/grafana-dashboard.json:/etc/grafana/provisioning/dashboards/nzovu.json
 
-  chronoqueue:
-    # Your ChronoQueue service
+  nzovu:
+    # Your Nzovu service
     ports:
       - "9000:9000"  # gRPC
       - "8080:8080"  # HTTP/REST API and metrics endpoint
@@ -218,7 +218,7 @@ volumes:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: chronoqueue-alerts
+  name: nzovu-alerts
 data:
   alerts.yml: |
     # Content of prometheus-alerts.yml
@@ -226,7 +226,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: chronoqueue-dashboard
+  name: nzovu-dashboard
 data:
   dashboard.json: |
     # Content of grafana-dashboard.json
@@ -236,15 +236,15 @@ data:
 
 ### No Data in Grafana
 
-1. Verify Prometheus is scraping ChronoQueue:
+1. Verify Prometheus is scraping Nzovu:
 
    ```bash
-   curl http://localhost:8080/metrics | grep chronoqueue
+   curl http://localhost:8080/metrics | grep nzovu
    ```
 
 2. Check Prometheus targets:
    - Open <http://localhost:9090/targets>
-   - Ensure ChronoQueue target is "UP"
+   - Ensure Nzovu target is "UP"
 
 3. Verify datasource in Grafana:
    - Navigate to Configuration → Data Sources
@@ -255,7 +255,7 @@ data:
 1. Check alert rules loaded in Prometheus:
 
    ```bash
-   curl http://localhost:9090/api/v1/rules | jq '.data.groups[] | select(.name | contains("chronoqueue"))'
+   curl http://localhost:9090/api/v1/rules | jq '.data.groups[] | select(.name | contains("nzovu"))'
    ```
 
 2. Verify alert expression in Prometheus:
@@ -284,6 +284,6 @@ If you see performance degradation with many queues:
 
 For issues or questions:
 
-- Check [ChronoQueue documentation](../README.md)
+- Check [Nzovu documentation](../README.md)
 - Review [metrics documentation](../pkg/metrics/README.md)
 - File an issue on GitHub

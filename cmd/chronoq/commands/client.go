@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/adrien19/nzovu/client"
 	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
+	"github.com/adrien19/nzovu/internal/runtimeenv"
 )
 
 // ClientOptions holds configuration for the ChronoQueue client
@@ -35,7 +35,7 @@ func GetClientOptions(cmd *cobra.Command) (*ClientOptions, error) {
 		return nil, fmt.Errorf("read --api-key: %w", err)
 	}
 	if apiKey == "" {
-		apiKey = os.Getenv("CHRONOQUEUE_API_KEY")
+		apiKey = runtimeenv.Get("NZOVU_API_KEY")
 	}
 	insecure, _ := cmd.Flags().GetBool("insecure")
 	certFile, _ := cmd.Flags().GetString("cert-file")

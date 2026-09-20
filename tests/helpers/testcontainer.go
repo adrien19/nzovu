@@ -141,7 +141,7 @@ func SetupTestEnvironment(t *testing.T) *TestEnvironment {
 	}
 
 	serverGenericReq := testcontainers.GenericContainerRequest{ContainerRequest: serverReq, Started: true}
-	require.NoError(t, network.WithNetwork([]string{"chronoqueue"}, net)(&serverGenericReq))
+	require.NoError(t, network.WithNetwork([]string{"nzovu"}, net)(&serverGenericReq))
 	serverContainer, err := testcontainers.GenericContainer(ctx, serverGenericReq)
 	serverOwned := serverContainer != nil
 	t.Cleanup(func() {

@@ -1,55 +1,55 @@
-# ChronoQueue Prometheus Alerting Rules
+# Nzovu Prometheus Alerting Rules
 #
 # Import these rules into your Prometheus configuration:
 #   rule_files:
-#     - 'chronoqueue-alerts.yml'
+#     - 'nzovu-alerts.yml'
 
 groups:
-  - name: chronoqueue
+  - name: nzovu
     rules:
-      - alert: ChronoQueueDLQGrowing
-        expr: rate(chronoqueue_dlq_ingestion_total[10m]) > 0
+      - alert: NzovuDLQGrowing
+        expr: rate(nzovu_dlq_ingestion_total[10m]) > 0
         for: 15m
         labels:
           severity: warning
         annotations:
-          summary: ChronoQueue messages are entering a dead-letter queue
-      - alert: ChronoQueueReclaimFailures
-        expr: rate(chronoqueue_background_service_iterations_total{service="reclaim",status="error"}[5m]) > 0
+          summary: Nzovu messages are entering a dead-letter queue
+      - alert: NzovuReclaimFailures
+        expr: rate(nzovu_background_service_iterations_total{service="reclaim",status="error"}[5m]) > 0
         for: 5m
         labels:
           severity: critical
         annotations:
-          summary: ChronoQueue reclaim cycles are failing
-      - alert: ChronoQueueSchedulerLag
-        expr: chronoqueue_schedule_lag_seconds > 60
+          summary: Nzovu reclaim cycles are failing
+      - alert: NzovuSchedulerLag
+        expr: nzovu_schedule_lag_seconds > 60
         for: 10m
         labels:
           severity: warning
         annotations:
-          summary: ChronoQueue schedule activation is delayed
-      - alert: ChronoQueueDatabaseSaturation
-        expr: rate(chronoqueue_db_connections_wait_total[5m]) > 0.1
+          summary: Nzovu schedule activation is delayed
+      - alert: NzovuDatabaseSaturation
+        expr: rate(nzovu_db_connections_wait_total[5m]) > 0.1
         for: 10m
         labels:
           severity: warning
         annotations:
-          summary: ChronoQueue has sustained database connection contention
+          summary: Nzovu has sustained database connection contention
           description: "Database connection waits have exceeded 0.1 waits/second for 10 minutes on {{ $labels.backend }}."
-      - alert: ChronoQueueEncryptionKeyRefreshFailures
-        expr: increase(chronoqueue_encryption_key_refresh_failures_total[5m]) > 0
+      - alert: NzovuEncryptionKeyRefreshFailures
+        expr: increase(nzovu_encryption_key_refresh_failures_total[5m]) > 0
         for: 1m
         labels:
           severity: critical
         annotations:
-          summary: ChronoQueue cannot refresh its encryption keys
+          summary: Nzovu cannot refresh its encryption keys
 
-  - name: chronoqueue_message_processing
+  - name: nzovu_message_processing
     interval: 30s
     rules:
       # Alert when messages are stuck in PENDING state for too long
       - alert: HighPendingMessageCount
-        expr: chronoqueue_messages_by_state{state="PENDING"} > 1000
+        expr: nzovu_messages_by_state{state="PENDING"} > 1000
         for: 5m
         labels:
           severity: warning
@@ -60,7 +60,7 @@ groups:
 
       # Alert when claim latency is too high (P95 > 500ms)
       - alert: HighMessageClaimLatency
-        expr: histogram_quantile(0.95, rate(chronoqueue_message_claim_duration_seconds_bucket[5m])) > 0.5
+        expr: histogram_quantile(0.95, rate(nzovu_message_claim_duration_seconds_bucket[5m])) > 0.5
         for: 3m
         labels:
           severity: warning
@@ -71,7 +71,7 @@ groups:
 
       # Alert when processing duration is too high (P95 > 5min)
       - alert: SlowMessageProcessing
-        expr: histogram_quantile(0.95, rate(chronoqueue_message_processing_duration_seconds_bucket[10m])) > 300
+        expr: histogram_quantile(0.95, rate(nzovu_message_processing_duration_seconds_bucket[10m])) > 300
         for: 5m
         labels:
           severity: warning
@@ -80,12 +80,12 @@ groups:
           summary: "Slow message processing for queue {{ $labels.queue_name }}"
           description: "P95 message processing time is {{ $value }}s (>5min) for queue {{ $labels.queue_name }}. Workers may be overloaded or tasks are too complex."
 
-  - name: chronoqueue_dlq_health
+  - name: nzovu_dlq_health
     interval: 30s
     rules:
       # Alert on high DLQ ingestion rate (>10 messages/sec)
       - alert: HighDLQIngestionRate
-        expr: rate(chronoqueue_dlq_ingestion_total[5m]) > 10
+        expr: rate(nzovu_dlq_ingestion_total[5m]) > 10
         for: 5m
         labels:
           severity: critical
@@ -96,7 +96,7 @@ groups:
 
       # Alert when DLQ has many messages accumulating
       - alert: DLQMessageAccumulation
-        expr: chronoqueue_dlq_messages_total > 100
+        expr: nzovu_dlq_messages_total > 100
         for: 10m
         labels:
           severity: warning
@@ -107,7 +107,7 @@ groups:
 
       # Alert when DLQ ingestion is primarily due to max_attempts
       - alert: PoisonMessagesDetected
-        expr: rate(chronoqueue_dlq_ingestion_total{reason="max_attempts"}[10m]) > 1
+        expr: rate(nzovu_dlq_ingestion_total{reason="max_attempts"}[10m]) > 1
         for: 10m
         labels:
           severity: warning
@@ -116,12 +116,12 @@ groups:
           summary: "Poison messages detected in {{ $labels.source_queue }}"
           description: "Queue {{ $labels.source_queue }} is consistently failing messages after max attempts ({{ $value }}/sec). May indicate a systemic issue with message processing logic."
 
-  - name: chronoqueue_lease_management
+  - name: nzovu_lease_management
     interval: 30s
     rules:
       # Alert on high lease expiration rate (workers dying or too slow)
       - alert: HighLeaseExpirationRate
-        expr: rate(chronoqueue_lease_expirations_total[5m]) > 5
+        expr: rate(nzovu_lease_expirations_total[5m]) > 5
         for: 3m
         labels:
           severity: warning
@@ -132,7 +132,7 @@ groups:
 
       # Alert on frequent heartbeat timeouts
       - alert: FrequentHeartbeatTimeouts
-        expr: rate(chronoqueue_heartbeat_timeouts_total[5m]) > 2
+        expr: rate(nzovu_heartbeat_timeouts_total[5m]) > 2
         for: 5m
         labels:
           severity: warning
@@ -143,7 +143,7 @@ groups:
 
       # Alert when many renewals are denied due to max_renewals limit
       - alert: LeaseRenewalLimitReached
-        expr: rate(chronoqueue_lease_renewals_total{status="denied_max_renewals"}[5m]) > 1
+        expr: rate(nzovu_lease_renewals_total{status="denied_max_renewals"}[5m]) > 1
         for: 5m
         labels:
           severity: info
@@ -152,12 +152,12 @@ groups:
           summary: "Lease renewal limit frequently reached for queue {{ $labels.queue_name }}"
           description: "{{ $value }} renewals/sec are being denied due to max_renewals limit for queue {{ $labels.queue_name }}. Consider increasing max_renewals or optimizing worker processing."
 
-  - name: chronoqueue_scheduler
+  - name: nzovu_scheduler
     interval: 30s
     rules:
       # Alert when scheduler is falling significantly behind
       - alert: SchedulerLagging
-        expr: chronoqueue_schedule_lag_seconds > 60
+        expr: nzovu_schedule_lag_seconds > 60
         for: 2m
         labels:
           severity: warning
@@ -168,7 +168,7 @@ groups:
 
       # Alert when scheduler service is not running iterations
       - alert: SchedulerServiceStalled
-        expr: rate(chronoqueue_background_service_iterations_total{service="scheduler"}[5m]) == 0
+        expr: rate(nzovu_background_service_iterations_total{service="scheduler"}[5m]) == 0
         for: 5m
         labels:
           severity: critical
@@ -179,7 +179,7 @@ groups:
 
       # Alert when scheduler iterations are failing
       - alert: SchedulerIterationFailures
-        expr: rate(chronoqueue_background_service_iterations_total{service="scheduler",status="error"}[5m]) > 0.1
+        expr: rate(nzovu_background_service_iterations_total{service="scheduler",status="error"}[5m]) > 0.1
         for: 3m
         labels:
           severity: critical
@@ -190,7 +190,7 @@ groups:
 
       # Alert when scheduler iteration duration is too high
       - alert: SlowSchedulerIterations
-        expr: histogram_quantile(0.95, rate(chronoqueue_background_service_iteration_duration_seconds_bucket{service="scheduler"}[5m])) > 10
+        expr: histogram_quantile(0.95, rate(nzovu_background_service_iteration_duration_seconds_bucket{service="scheduler"}[5m])) > 10
         for: 5m
         labels:
           severity: warning
@@ -199,12 +199,12 @@ groups:
           summary: "Scheduler iterations are taking too long"
           description: "P95 scheduler iteration time is {{ $value }}s (>10s). Scheduler may be processing too many messages per iteration or database is slow."
 
-  - name: chronoqueue_reclaim_service
+  - name: nzovu_reclaim_service
     interval: 30s
     rules:
       # Alert when reclaim service is not running
       - alert: ReclaimServiceStalled
-        expr: rate(chronoqueue_background_service_iterations_total{service="reclaim"}[5m]) == 0
+        expr: rate(nzovu_background_service_iterations_total{service="reclaim"}[5m]) == 0
         for: 5m
         labels:
           severity: critical
@@ -215,7 +215,7 @@ groups:
 
       # Alert when reclaim iterations are failing
       - alert: ReclaimIterationFailures
-        expr: rate(chronoqueue_background_service_iterations_total{service="reclaim",status="error"}[5m]) > 0.1
+        expr: rate(nzovu_background_service_iterations_total{service="reclaim",status="error"}[5m]) > 0.1
         for: 3m
         labels:
           severity: critical
@@ -224,12 +224,12 @@ groups:
           summary: "Reclaim iterations are failing"
           description: "{{ $value }} reclaim iterations/sec are failing. Check reclaim service logs for errors."
 
-  - name: chronoqueue_database
+  - name: nzovu_database
     interval: 30s
     rules:
       # Alert on slow database queries (P95 > 100ms)
       - alert: SlowDatabaseQueries
-        expr: histogram_quantile(0.95, rate(chronoqueue_db_query_duration_seconds_bucket[5m])) > 0.1
+        expr: histogram_quantile(0.95, rate(nzovu_db_query_duration_seconds_bucket[5m])) > 0.1
         for: 5m
         labels:
           severity: warning
@@ -240,7 +240,7 @@ groups:
 
       # Alert on slow database transactions (P95 > 500ms)
       - alert: SlowDatabaseTransactions
-        expr: histogram_quantile(0.95, rate(chronoqueue_db_transaction_duration_seconds_bucket[5m])) > 0.5
+        expr: histogram_quantile(0.95, rate(nzovu_db_transaction_duration_seconds_bucket[5m])) > 0.5
         for: 5m
         labels:
           severity: warning
@@ -251,7 +251,7 @@ groups:
 
       # Alert when connection pool is exhausted
       - alert: DatabaseConnectionPoolExhausted
-        expr: rate(chronoqueue_db_connections_wait_total[5m]) > 1
+        expr: rate(nzovu_db_connections_wait_total[5m]) > 1
         for: 2m
         labels:
           severity: critical
@@ -263,8 +263,8 @@ groups:
       # Alert when connection pool has low idle connections during high load
       - alert: LowIdleConnections
         expr: |
-          (chronoqueue_db_connections_idle / (chronoqueue_db_connections_active + chronoqueue_db_connections_idle)) < 0.2
-          and chronoqueue_db_connections_active > 10
+          (nzovu_db_connections_idle / (nzovu_db_connections_active + nzovu_db_connections_idle)) < 0.2
+          and nzovu_db_connections_active > 10
         for: 5m
         labels:
           severity: warning
@@ -273,14 +273,14 @@ groups:
           summary: "Low idle database connections for {{ $labels.backend }}"
           description: "Only {{ $value | humanizePercentage }} of connections are idle during high load. Consider increasing pool size."
 
-  - name: chronoqueue_general_health
+  - name: nzovu_general_health
     interval: 30s
     rules:
       # Alert when total queue count drops unexpectedly
       - alert: QueueCountDropped
         expr: |
-          chronoqueue_queues_total < 1
-          and chronoqueue_queues_total offset 5m > 0
+          nzovu_queues_total < 1
+          and nzovu_queues_total offset 5m > 0
         for: 2m
         labels:
           severity: critical
@@ -292,8 +292,8 @@ groups:
       # Alert on zero message throughput when messages exist
       - alert: NoMessageThroughput
         expr: |
-          sum(chronoqueue_messages_by_state{state="PENDING"}) > 10
-          and rate(chronoqueue_messages_dequeued_total[5m]) == 0
+          sum(nzovu_messages_by_state{state="PENDING"}) > 10
+          and rate(nzovu_messages_dequeued_total[5m]) == 0
         for: 5m
         labels:
           severity: critical

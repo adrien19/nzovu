@@ -81,8 +81,8 @@ func TestReclaimMetricsReflectPersistedExpiryCause(t *testing.T) {
 			require.NoError(t, err)
 
 			registry := metrics.NewMetricsRegistry()
-			leaseMetric := fmt.Sprintf(`chronoqueue_lease_expirations_total{expiry_type="lease",queue_name="%s"}`, queueName)
-			heartbeatMetric := fmt.Sprintf(`chronoqueue_heartbeat_timeouts_total{queue_name="%s"}`, queueName)
+			leaseMetric := fmt.Sprintf(`nzovu_lease_expirations_total{expiry_type="lease",queue_name="%s"}`, queueName)
+			heartbeatMetric := fmt.Sprintf(`nzovu_heartbeat_timeouts_total{queue_name="%s"}`, queueName)
 			leaseBefore := metricValue(t, registry, leaseMetric)
 			heartbeatBefore := metricValue(t, registry, heartbeatMetric)
 			dlqReason := "heartbeat_timeout"
@@ -93,14 +93,14 @@ func TestReclaimMetricsReflectPersistedExpiryCause(t *testing.T) {
 			if metricDLQTarget == "" {
 				metricDLQTarget = queueName + "-dlq"
 			}
-			dlqMetric := fmt.Sprintf(`chronoqueue_dlq_ingestion_total{dlq_name="%s",reason="%s",source_queue="%s"}`, metricDLQTarget, dlqReason, queueName)
+			dlqMetric := fmt.Sprintf(`nzovu_dlq_ingestion_total{dlq_name="%s",reason="%s",source_queue="%s"}`, metricDLQTarget, dlqReason, queueName)
 			dlqBefore := metricValue(t, registry, dlqMetric)
 			transitionState := "PENDING"
 			if tt.transitionsToErrored {
 				transitionState = "ERRORED"
 			}
-			transitionMetric := fmt.Sprintf(`chronoqueue_message_state_transitions_total{from_state="RUNNING",queue_name="%s",to_state="%s"}`, queueName, transitionState)
-			processedMetric := fmt.Sprintf(`chronoqueue_background_service_processed_messages_total{queue_name="%s",service="reclaim"}`, queueName)
+			transitionMetric := fmt.Sprintf(`nzovu_message_state_transitions_total{from_state="RUNNING",queue_name="%s",to_state="%s"}`, queueName, transitionState)
+			processedMetric := fmt.Sprintf(`nzovu_background_service_processed_messages_total{queue_name="%s",service="reclaim"}`, queueName)
 			transitionBefore := metricValue(t, registry, transitionMetric)
 			processedBefore := metricValue(t, registry, processedMetric)
 			if tt.reclamationFails {

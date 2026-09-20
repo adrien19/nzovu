@@ -25,6 +25,27 @@ func TestAuthenticationDefaults(t *testing.T) {
 	assert.True(t, ProductionConfig().AuthEnabled)
 }
 
+func TestTLSNamespacePrecedenceAndValidation(t *testing.T) {
+	t.Setenv("CHRONOQUEUE_TLS_ENABLED", "false")
+	t.Setenv("NZOVU_TLS_ENABLED", "true")
+	config := DefaultConfig()
+	assert.True(t, config.EnableTLS)
+	assert.True(t, config.GatewayUseTLS)
+	require.ErrorContains(t, config.Validate(), "cert-file or key-file")
+
+	t.Setenv("CHRONOQUEUE_TLS_ENABLED", "true")
+	t.Setenv("NZOVU_TLS_ENABLED", "false")
+	assert.False(t, DefaultConfig().EnableTLS)
+	require.ErrorContains(t, ProductionConfig().Validate(), "TLS must be enabled")
+
+	for _, value := range []string{"", "invalid"} {
+		t.Setenv("NZOVU_TLS_ENABLED", value)
+		config = DefaultConfig()
+		config.EnableTLS = true
+		require.ErrorContains(t, config.Validate(), "invalid NZOVU_TLS_ENABLED")
+	}
+}
+
 func TestValidateAuthentication(t *testing.T) {
 	config := DefaultConfig()
 	config.AuthEnabled = true

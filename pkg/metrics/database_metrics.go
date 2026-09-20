@@ -13,7 +13,7 @@ var (
 	// Operation: "claim_message", "enqueue_message", "ack_message", "get_queue_state", etc.
 	dbQueryDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "chronoqueue_db_query_duration_seconds",
+			Name: "nzovu_db_query_duration_seconds",
 			Help: "Duration of database queries",
 			// Buckets optimized for database operations (0.1ms to 1s)
 			Buckets: []float64{.0001, .0005, .001, .005, .01, .05, .1, .5, 1},
@@ -26,7 +26,7 @@ var (
 	// Higher than query duration due to transaction overhead
 	dbTransactionDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "chronoqueue_db_transaction_duration_seconds",
+			Name: "nzovu_db_transaction_duration_seconds",
 			Help: "Duration of database transactions",
 			// Buckets optimized for transactions (1ms to 5s)
 			Buckets: []float64{.001, .005, .01, .05, .1, .5, 1, 5},
@@ -39,7 +39,7 @@ var (
 	// High values may indicate connection pool exhaustion
 	dbConnectionsActive = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_db_connections_active",
+			Name: "nzovu_db_connections_active",
 			Help: "Number of active database connections",
 		},
 		[]string{"backend"},
@@ -49,7 +49,7 @@ var (
 	// Low values during high load indicate pool sizing issues
 	dbConnectionsIdle = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_db_connections_idle",
+			Name: "nzovu_db_connections_idle",
 			Help: "Number of idle database connections in pool",
 		},
 		[]string{"backend"},
@@ -58,7 +58,7 @@ var (
 	// dbConnectionsWaitTotal tracks cumulative waits for availability.
 	dbConnectionsWaitTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_db_connections_wait_total",
+			Name: "nzovu_db_connections_wait_total",
 			Help: "Total number of connections that waited for availability",
 		},
 		[]string{"backend"},

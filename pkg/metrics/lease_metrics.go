@@ -11,7 +11,7 @@ var (
 	// Use this to detect workers that are stuck renewing leases
 	leaseRenewalsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_lease_renewals_total",
+			Name: "nzovu_lease_renewals_total",
 			Help: "Total number of lease renewals",
 		},
 		[]string{"queue_name", "status"},
@@ -21,7 +21,7 @@ var (
 	// High lease expiration rate may indicate workers are crashing or overloaded
 	leaseExpirationsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_lease_expirations_total",
+			Name: "nzovu_lease_expirations_total",
 			Help: "Total number of expired leases reclaimed",
 		},
 		[]string{"queue_name", "expiry_type"},
@@ -31,7 +31,7 @@ var (
 	// Workers are expected to send heartbeats regularly - timeouts indicate worker issues
 	heartbeatTimeoutsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_heartbeat_timeouts_total",
+			Name: "nzovu_heartbeat_timeouts_total",
 			Help: "Total number of heartbeat timeouts",
 		},
 		[]string{"queue_name"},

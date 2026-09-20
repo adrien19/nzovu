@@ -121,6 +121,23 @@ func TestGetClientOptionsAPIKeyEnvironmentFallback(t *testing.T) {
 	assert.Equal(t, "flag-secret", opts.APIKey)
 }
 
+func TestGetClientOptionsNzovuAPIKeyPrecedence(t *testing.T) {
+	t.Setenv("CHRONOQUEUE_API_KEY", "legacy-secret")
+	cmd := &cobra.Command{}
+	cmd.Flags().String("api-key", "", "")
+	for _, value := range []string{"nzovu-secret", ""} {
+		t.Setenv("NZOVU_API_KEY", value)
+		opts, err := GetClientOptions(cmd)
+		require.NoError(t, err)
+		assert.Equal(t, value, opts.APIKey)
+	}
+	t.Setenv("NZOVU_API_KEY", "nzovu-secret")
+	require.NoError(t, cmd.Flags().Set("api-key", "flag-secret"))
+	opts, err := GetClientOptions(cmd)
+	require.NoError(t, err)
+	assert.Equal(t, "flag-secret", opts.APIKey)
+}
+
 func TestGetClientOptionsReturnsAPIKeyFlagError(t *testing.T) {
 	cmd := &cobra.Command{}
 	_, err := GetClientOptions(cmd)

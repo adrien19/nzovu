@@ -10,7 +10,7 @@ var (
 	// This is a gauge that should be updated periodically or after DLQ operations
 	dlqMessagesTotal = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_dlq_messages_total",
+			Name: "nzovu_dlq_messages_total",
 			Help: "Total number of messages in dead letter queues",
 		},
 		[]string{"dlq_name"},
@@ -21,7 +21,7 @@ var (
 	// Reasons: max_attempts, lease_timeout, heartbeat_timeout, or nack
 	dlqIngestionRate = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_dlq_ingestion_total",
+			Name: "nzovu_dlq_ingestion_total",
 			Help: "Total number of messages moved to DLQ",
 		},
 		[]string{"dlq_name", "source_queue", "reason"},
@@ -31,7 +31,7 @@ var (
 	// Use this to monitor DLQ recovery operations
 	dlqRetryTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_dlq_retry_total",
+			Name: "nzovu_dlq_retry_total",
 			Help: "Total number of messages retried from DLQ",
 		},
 		[]string{"dlq_name", "destination_queue"},

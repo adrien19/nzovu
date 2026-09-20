@@ -81,7 +81,7 @@
             "pluginVersion": "8.0.0",
             "targets": [
                 {
-                    "expr": "chronoqueue_queues_total",
+                    "expr": "nzovu_queues_total",
                     "refId": "A"
                 }
             ],
@@ -159,7 +159,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_messages_enqueued_total[5m])) by (queue_name)",
+                    "expr": "sum(rate(nzovu_messages_enqueued_total[5m])) by (queue_name)",
                     "legendFormat": "{{queue_name}}",
                     "refId": "A"
                 }
@@ -238,7 +238,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_messages_dequeued_total[5m])) by (queue_name)",
+                    "expr": "sum(rate(nzovu_messages_dequeued_total[5m])) by (queue_name)",
                     "legendFormat": "{{queue_name}}",
                     "refId": "A"
                 }
@@ -299,7 +299,7 @@
             "pluginVersion": "8.0.0",
             "targets": [
                 {
-                    "expr": "sum(chronoqueue_messages_by_state{state=\"PENDING\"})",
+                    "expr": "sum(nzovu_messages_by_state{state=\"PENDING\"})",
                     "refId": "A"
                 }
             ],
@@ -390,7 +390,7 @@
             },
             "targets": [
                 {
-                    "expr": "chronoqueue_messages_by_state",
+                    "expr": "nzovu_messages_by_state",
                     "legendFormat": "{{queue_name}} - {{state}}",
                     "refId": "A"
                 }
@@ -491,17 +491,17 @@
             },
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.50, sum(rate(chronoqueue_message_claim_duration_seconds_bucket[5m])) by (le, queue_name))",
+                    "expr": "histogram_quantile(0.50, sum(rate(nzovu_message_claim_duration_seconds_bucket[5m])) by (le, queue_name))",
                     "legendFormat": "{{queue_name}} P50",
                     "refId": "A"
                 },
                 {
-                    "expr": "histogram_quantile(0.95, sum(rate(chronoqueue_message_claim_duration_seconds_bucket[5m])) by (le, queue_name))",
+                    "expr": "histogram_quantile(0.95, sum(rate(nzovu_message_claim_duration_seconds_bucket[5m])) by (le, queue_name))",
                     "legendFormat": "{{queue_name}} P95",
                     "refId": "B"
                 },
                 {
-                    "expr": "histogram_quantile(0.99, sum(rate(chronoqueue_message_claim_duration_seconds_bucket[5m])) by (le, queue_name))",
+                    "expr": "histogram_quantile(0.99, sum(rate(nzovu_message_claim_duration_seconds_bucket[5m])) by (le, queue_name))",
                     "legendFormat": "{{queue_name}} P99",
                     "refId": "C"
                 }
@@ -588,17 +588,17 @@
             },
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.50, sum(rate(chronoqueue_message_processing_duration_seconds_bucket[5m])) by (le, queue_name))",
+                    "expr": "histogram_quantile(0.50, sum(rate(nzovu_message_processing_duration_seconds_bucket[5m])) by (le, queue_name))",
                     "legendFormat": "{{queue_name}} P50",
                     "refId": "A"
                 },
                 {
-                    "expr": "histogram_quantile(0.95, sum(rate(chronoqueue_message_processing_duration_seconds_bucket[5m])) by (le, queue_name))",
+                    "expr": "histogram_quantile(0.95, sum(rate(nzovu_message_processing_duration_seconds_bucket[5m])) by (le, queue_name))",
                     "legendFormat": "{{queue_name}} P95",
                     "refId": "B"
                 },
                 {
-                    "expr": "histogram_quantile(0.99, sum(rate(chronoqueue_message_processing_duration_seconds_bucket[5m])) by (le, queue_name))",
+                    "expr": "histogram_quantile(0.99, sum(rate(nzovu_message_processing_duration_seconds_bucket[5m])) by (le, queue_name))",
                     "legendFormat": "{{queue_name}} P99",
                     "refId": "C"
                 }
@@ -673,7 +673,7 @@
             "pluginVersion": "8.0.0",
             "targets": [
                 {
-                    "expr": "sum(chronoqueue_dlq_messages_total)",
+                    "expr": "sum(nzovu_dlq_messages_total)",
                     "refId": "A"
                 }
             ],
@@ -750,7 +750,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_dlq_ingestion_total[5m])) by (source_queue, reason)",
+                    "expr": "sum(rate(nzovu_dlq_ingestion_total[5m])) by (source_queue, reason)",
                     "legendFormat": "{{source_queue}} - {{reason}}",
                     "refId": "A"
                 }
@@ -828,7 +828,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_dlq_retry_total[5m])) by (dlq_name, destination_queue)",
+                    "expr": "sum(rate(nzovu_dlq_retry_total[5m])) by (dlq_name, destination_queue)",
                     "legendFormat": "{{dlq_name}} → {{destination_queue}}",
                     "refId": "A"
                 }
@@ -920,7 +920,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_lease_renewals_total[5m])) by (queue_name, status)",
+                    "expr": "sum(rate(nzovu_lease_renewals_total[5m])) by (queue_name, status)",
                     "legendFormat": "{{queue_name}} - {{status}}",
                     "refId": "A"
                 }
@@ -998,7 +998,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_lease_expirations_total[5m])) by (queue_name, expiry_type)",
+                    "expr": "sum(rate(nzovu_lease_expirations_total[5m])) by (queue_name, expiry_type)",
                     "legendFormat": "{{queue_name}} - {{expiry_type}}",
                     "refId": "A"
                 }
@@ -1099,7 +1099,7 @@
             },
             "targets": [
                 {
-                    "expr": "chronoqueue_schedule_lag_seconds",
+                    "expr": "nzovu_schedule_lag_seconds",
                     "legendFormat": "{{queue_name}}",
                     "refId": "A"
                 }
@@ -1178,7 +1178,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_schedule_activations_total[5m])) by (queue_name)",
+                    "expr": "sum(rate(nzovu_schedule_activations_total[5m])) by (queue_name)",
                     "legendFormat": "{{queue_name}}",
                     "refId": "A"
                 }
@@ -1270,7 +1270,7 @@
             },
             "targets": [
                 {
-                    "expr": "sum(rate(chronoqueue_background_service_iterations_total[5m])) by (service, status)",
+                    "expr": "sum(rate(nzovu_background_service_iterations_total[5m])) by (service, status)",
                     "legendFormat": "{{service}} - {{status}}",
                     "refId": "A"
                 }
@@ -1357,7 +1357,7 @@
             },
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.95, sum(rate(chronoqueue_background_service_iteration_duration_seconds_bucket[5m])) by (le, service))",
+                    "expr": "histogram_quantile(0.95, sum(rate(nzovu_background_service_iteration_duration_seconds_bucket[5m])) by (le, service))",
                     "legendFormat": "{{service}} P95",
                     "refId": "A"
                 }
@@ -1458,7 +1458,7 @@
             },
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.95, sum(rate(chronoqueue_db_query_duration_seconds_bucket[5m])) by (le, backend, operation))",
+                    "expr": "histogram_quantile(0.95, sum(rate(nzovu_db_query_duration_seconds_bucket[5m])) by (le, backend, operation))",
                     "legendFormat": "{{backend}}/{{operation}}",
                     "refId": "A"
                 }
@@ -1545,7 +1545,7 @@
             },
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.95, sum(rate(chronoqueue_db_transaction_duration_seconds_bucket[5m])) by (le, backend, operation))",
+                    "expr": "histogram_quantile(0.95, sum(rate(nzovu_db_transaction_duration_seconds_bucket[5m])) by (le, backend, operation))",
                     "legendFormat": "{{backend}}/{{operation}}",
                     "refId": "A"
                 }
@@ -1625,17 +1625,17 @@
             },
             "targets": [
                 {
-                    "expr": "chronoqueue_db_connections_active",
+                    "expr": "nzovu_db_connections_active",
                     "legendFormat": "{{backend}} - active",
                     "refId": "A"
                 },
                 {
-                    "expr": "chronoqueue_db_connections_idle",
+                    "expr": "nzovu_db_connections_idle",
                     "legendFormat": "{{backend}} - idle",
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(chronoqueue_db_connections_wait_total[5m])",
+                    "expr": "rate(nzovu_db_connections_wait_total[5m])",
                     "legendFormat": "{{backend}} - waits/sec",
                     "refId": "C"
                 }
@@ -1648,7 +1648,7 @@
     "schemaVersion": 27,
     "style": "dark",
     "tags": [
-        "chronoqueue",
+        "nzovu",
         "messaging",
         "queue"
     ],
@@ -1661,7 +1661,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "ChronoQueue - Main Dashboard",
-    "uid": "chronoqueue-main",
+    "title": "Nzovu - Main Dashboard",
+    "uid": "nzovu-main",
     "version": 1
 }

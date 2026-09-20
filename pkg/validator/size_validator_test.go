@@ -35,3 +35,12 @@ func TestSizeValidatorCountsHeadersInTotalMessageSizeWithoutChargingPayloadLimit
 		require.True(t, result.Valid, "errors: %v", result.Errors)
 	})
 }
+
+func TestSizeValidatorNzovuLimitTakesPrecedence(t *testing.T) {
+	t.Setenv("CHRONOQUEUE_MAX_MESSAGE_SIZE", "4096")
+	t.Setenv("NZOVU_MAX_MESSAGE_SIZE", "16")
+	message := headerMessage(&messagepb.Message_Metadata_Header{Key: "trace-id", Value: []byte(strings.Repeat("x", 32))})
+	result := NewSizeValidator(nil).Validate(context.Background(), message)
+	require.False(t, result.Valid)
+	assert.Equal(t, "message", result.Errors[0].Field)
+}

@@ -3,7 +3,6 @@ package validator
 import (
 	"context"
 	"fmt"
-	"os"
 	"strconv"
 
 	"google.golang.org/protobuf/encoding/protojson"
@@ -12,6 +11,7 @@ import (
 	message_pb "github.com/adrien19/nzovu/api/message/v1"
 	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
 	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/internal/runtimeenv"
 )
 
 const (
@@ -36,11 +36,11 @@ type SizeValidator struct {
 // NewSizeValidator creates a new size validator
 func NewSizeValidator(queueMeta *queue_pb.QueueMetadata) *SizeValidator {
 	validator := &SizeValidator{
-		maxMessageSize:       getEnvInt("CHRONOQUEUE_MAX_MESSAGE_SIZE", DefaultMaxMessageSize),
-		maxPayloadSize:       getEnvInt("CHRONOQUEUE_MAX_PAYLOAD_SIZE", DefaultMaxPayloadSize),
-		maxMetadataKeySize:   getEnvInt("CHRONOQUEUE_MAX_METADATA_KEY_SIZE", DefaultMaxMetadataKeySize),
-		maxMetadataValueSize: getEnvInt("CHRONOQUEUE_MAX_METADATA_VALUE_SIZE", DefaultMaxMetadataValueSize),
-		maxMessageIDSize:     getEnvInt("CHRONOQUEUE_MAX_MESSAGE_ID_SIZE", DefaultMaxMessageIDSize),
+		maxMessageSize:       getEnvInt("NZOVU_MAX_MESSAGE_SIZE", DefaultMaxMessageSize),
+		maxPayloadSize:       getEnvInt("NZOVU_MAX_PAYLOAD_SIZE", DefaultMaxPayloadSize),
+		maxMetadataKeySize:   getEnvInt("NZOVU_MAX_METADATA_KEY_SIZE", DefaultMaxMetadataKeySize),
+		maxMetadataValueSize: getEnvInt("NZOVU_MAX_METADATA_VALUE_SIZE", DefaultMaxMetadataValueSize),
+		maxMessageIDSize:     getEnvInt("NZOVU_MAX_MESSAGE_ID_SIZE", DefaultMaxMessageIDSize),
 		queueMeta:            queueMeta,
 	}
 
@@ -147,7 +147,7 @@ func calculateDataSize(data interface{}) int {
 
 // getEnvInt gets an integer from environment variable with fallback
 func getEnvInt(key string, fallback int) int {
-	if value := os.Getenv(key); value != "" {
+	if value := runtimeenv.Get(key); value != "" {
 		if intValue, err := strconv.Atoi(value); err == nil {
 			return intValue
 		}

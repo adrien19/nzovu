@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: "ChronoQueue Dashboards"
+  - name: "Nzovu Dashboards"
     orgId: 1
-    folder: "ChronoQueue"
+    folder: "Nzovu"
     type: file
     disableDeletion: false
     updateIntervalSeconds: 10

@@ -130,3 +130,6 @@ exit $LASTEXITCODE
     $env:NZOVU_INSTALL_DIR = $originalInstallDir
     if (Test-Path $testRoot) { Remove-Item -Recurse -Force $testRoot }
 }
+
+# Expected installer failures must not become the GitHub Actions step's exit code.
+exit 0

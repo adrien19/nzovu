@@ -32,8 +32,8 @@ func TestMetricsReporterEmitsDatabaseAndDLQGauges(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	registry.Handler().ServeHTTP(recorder, httptest.NewRequest("GET", "/metrics", nil))
 	body := recorder.Body.String()
-	require.True(t, strings.Contains(body, `chronoqueue_db_connections_active{backend="sqlite"}`))
-	require.True(t, strings.Contains(body, `chronoqueue_dlq_messages_total{dlq_name="source-dlq"} 0`))
+	require.True(t, strings.Contains(body, `nzovu_db_connections_active{backend="sqlite"}`))
+	require.True(t, strings.Contains(body, `nzovu_dlq_messages_total{dlq_name="source-dlq"} 0`))
 }
 
 func TestMetricsReporterRecordsQueryFailureWithoutAdvancingLastReportedAt(t *testing.T) {
@@ -42,14 +42,14 @@ func TestMetricsReporterRecordsQueryFailureWithoutAdvancingLastReportedAt(t *tes
 	t.Cleanup(func() { require.NoError(t, storage.Close()) })
 	registry := metrics.NewMetricsRegistry()
 	reporter := NewMetricsReporterService(storage.BaseSQL, time.Second)
-	before := metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="error"}`)
+	before := metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="error"}`)
 	_, err := storage.DB.ExecContext(ctx, "DROP TABLE cq_queues")
 	require.NoError(t, err)
 
 	reporter.reportMetrics(ctx)
 
 	require.True(t, reporter.LastReportedAt().IsZero())
-	after := metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="error"}`)
+	after := metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="error"}`)
 	require.Equal(t, before+1, after)
 }
 
@@ -63,14 +63,14 @@ func TestMetricsReporterRecordsMetadataFailureWithoutAdvancingLastReportedAt(t *
 	require.NoError(t, err)
 	registry := metrics.NewMetricsRegistry()
 	reporter := NewMetricsReporterService(storage.BaseSQL, time.Second)
-	before := metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="error"}`)
-	successBefore := metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="success"}`)
+	before := metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="error"}`)
+	successBefore := metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="success"}`)
 
 	reporter.reportMetrics(ctx)
 
 	require.True(t, reporter.LastReportedAt().IsZero())
-	require.Equal(t, before+1, metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="error"}`))
-	require.Equal(t, successBefore, metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="success"}`))
+	require.Equal(t, before+1, metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="error"}`))
+	require.Equal(t, successBefore, metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="success"}`))
 }
 
 func TestMetricsReporterReportsSharedDLQOnce(t *testing.T) {
@@ -89,7 +89,7 @@ func TestMetricsReporterReportsSharedDLQOnce(t *testing.T) {
 
 	lines := 0
 	for _, line := range strings.Split(recorder.Body.String(), "\n") {
-		if strings.HasPrefix(line, `chronoqueue_dlq_messages_total{dlq_name="shared-dlq"}`) {
+		if strings.HasPrefix(line, `nzovu_dlq_messages_total{dlq_name="shared-dlq"}`) {
 			lines++
 		}
 	}
@@ -106,12 +106,12 @@ func TestMetricsReporterDLQCountFailureDoesNotRecordSuccess(t *testing.T) {
 	require.NoError(t, err)
 	registry := metrics.NewMetricsRegistry()
 	reporter := NewMetricsReporterService(storage.BaseSQL, time.Second)
-	successBefore := metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="success"}`)
+	successBefore := metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="success"}`)
 
 	err = reporter.updateDLQMetrics(ctx, "source", make(map[string]struct{}))
 	require.ErrorContains(t, err, "count DLQ messages")
 	require.True(t, reporter.LastReportedAt().IsZero())
-	require.Equal(t, successBefore, metricValue(t, registry, `chronoqueue_background_service_iterations_total{service="metrics_reporter",status="success"}`))
+	require.Equal(t, successBefore, metricValue(t, registry, `nzovu_background_service_iterations_total{service="metrics_reporter",status="success"}`))
 }
 
 func metricValue(t *testing.T, registry *metrics.MetricsRegistry, metric string) float64 {

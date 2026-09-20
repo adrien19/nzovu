@@ -553,16 +553,16 @@ ifneq ($(filter postgres,$(STORAGE) $(STORAGE_TYPE)),)
 	if [ -n "$(POSTGRES_PASSWORD)" ]; then PG_ARGS="$$PG_ARGS --postgres-password $(POSTGRES_PASSWORD)"; fi; \
 	if [ -n "$(POSTGRES_DB)" ]; then PG_ARGS="$$PG_ARGS --postgres-db $(POSTGRES_DB)"; fi; \
 	if [ -n "$(POSTGRES_SSLMODE)" ]; then PG_ARGS="$$PG_ARGS --postgres-sslmode $(POSTGRES_SSLMODE)"; fi; \
-	./$(NZOVU_OUT_DIR)/nzovu server --dev --insecure $$PG_ARGS 2>&1 | tee logs/chronoqueue.log
+	./$(NZOVU_OUT_DIR)/nzovu server --dev --insecure $$PG_ARGS 2>&1 | tee logs/nzovu.log
 else ifdef DATABASE
 	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DATABASE))..."
-	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/chronoqueue.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/nzovu.log
 else ifdef DB
 	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DB))..."
-	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/chronoqueue.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/nzovu.log
 else
 	@echo "Starting ChronoQueue in development mode with SQLite storage (default)..."
-	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/chronoqueue.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/nzovu.log
 endif
 
 
@@ -752,9 +752,9 @@ deploy-clean: ## Stop all services and remove volumes
 deploy-rebuild: ## Rebuild and restart ChronoQueue
 	@echo "Rebuilding ChronoQueue with $(STORAGE) storage..."
 	@echo "Building images without cache..."
-	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) build --no-cache chronoqueuesvc chronoqueueui
+	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) build --no-cache nzovusvc nzovu-ui
 	@echo "Recreating and starting containers..."
-	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) up -d --force-recreate chronoqueuesvc chronoqueueui
+	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) up -d --force-recreate nzovusvc nzovu-ui
 	@echo "Rebuild complete."
 
 .PHONY: deploy-validate
