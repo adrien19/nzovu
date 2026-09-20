@@ -1,18 +1,18 @@
 .PHONY: help stop clean build-api build-workers build-frontend build-all start-chronoqueue start-api start-workers start-frontend start-all run kill-all health logs
 
 # Absolute paths
-WORKSPACE := /workspaces/chronoqueue
+WORKSPACE := $(abspath ../..)
 BACKEND_DIR := $(WORKSPACE)/examples/interview-platform/backend
 FRONTEND_DIR := $(WORKSPACE)/examples/interview-platform/frontend
 LOGS_DIR := $(WORKSPACE)/examples/interview-platform/logs
-CHRONOQUEUE_BIN := $(WORKSPACE)/dist/linux_arm64/release/chronoqueue-server
+NZOVU_BIN := $(WORKSPACE)/dist/$(shell go env GOOS)_$(shell go env GOARCH)/release/nzovu
 
 # Binary paths
 API_BIN := $(BACKEND_DIR)/bin/api
 WORKERS_BIN := $(BACKEND_DIR)/bin/workers
 
 # Process names for matching
-CHRONOQUEUE_PROC := chronoqueue-server
+NZOVU_PROC := $(NZOVU_BIN)
 API_PROC := bin/api
 WORKERS_PROC := bin/workers
 FRONTEND_PROC := next dev
@@ -143,7 +143,7 @@ build-all: build-api build-workers
 start-chronoqueue:
 	@echo "$(YELLOW)Starting ChronoQueue server...$(NC)"
 	@mkdir -p $(LOGS_DIR)
-	@nohup $(CHRONOQUEUE_BIN) server --grpc-addr :50051 --http-addr :8090 --dev > $(LOGS_DIR)/chronoqueue.log 2>&1 & echo "$(GREEN)ChronoQueue started with PID: $$!$(NC)"
+	@nohup $(NZOVU_BIN) server --grpc-addr :50051 --http-addr :8090 --dev > $(LOGS_DIR)/chronoqueue.log 2>&1 & echo "$(GREEN)ChronoQueue started with PID: $$!$(NC)"
 	@sleep 2
 	@curl -s http://localhost:8090/health && echo "" || echo "$(RED)ChronoQueue health check failed$(NC)"
 
@@ -225,7 +225,7 @@ health:
 	@curl -s http://localhost:3000 > /dev/null 2>&1 && echo "$(GREEN)✓ Running$(NC)" || echo "$(RED)✗ Not responding$(NC)"
 	@echo ""
 	@echo "Running processes:"
-	@ps aux | grep -E '$(CHRONOQUEUE_PROC)|$(API_PROC)|$(WORKERS_PROC)|$(FRONTEND_PROC)' | grep -v grep || echo "$(RED)No services running$(NC)"
+	@ps aux | grep -E '$(NZOVU_PROC)|$(API_PROC)|$(WORKERS_PROC)|$(FRONTEND_PROC)' | grep -v grep || echo "$(RED)No services running$(NC)"
 
 ## check-ports: Check which ports are in use
 check-ports:
@@ -281,7 +281,7 @@ rebuild-workers: build-workers
 ## restart-chronoqueue: Restart ChronoQueue only
 restart-chronoqueue:
 	@echo "$(YELLOW)Restarting ChronoQueue...$(NC)"
-	-@pkill -f '$(CHRONOQUEUE_PROC)' 2>/dev/null || true
+	-@pkill -f '$(NZOVU_PROC)' 2>/dev/null || true
 	@sleep 2
 	@$(MAKE) start-chronoqueue
 

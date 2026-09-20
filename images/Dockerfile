@@ -20,7 +20,7 @@ COPY pkg pkg
 COPY main.go ./
 
 # Build arguments for version injection
-ARG VERSION=1.0.0
+ARG VERSION=dev
 ARG GIT_COMMIT=unknown
 ARG BUILD_DATE=unknown
 ARG TARGETOS
@@ -36,11 +36,20 @@ RUN target_os="${TARGETOS:-$(go env GOOS)}" && \
     -ldflags="-w -s -X 'github.com/adrien19/nzovu/pkg/version.Version=${VERSION}' \
     -X 'github.com/adrien19/nzovu/pkg/version.GitCommit=${GIT_COMMIT}' \
     -X 'github.com/adrien19/nzovu/pkg/version.BuildDate=${BUILD_DATE}'" \
-    -o chronoqueue \
+    -o nzovu \
     main.go
 
 ## Runtime stage - minimal image with just the binary
 FROM alpine:3.24
+
+ARG VERSION=dev
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+LABEL org.opencontainers.image.title="Nzovu" \
+      org.opencontainers.image.source="https://github.com/adrien19/nzovu" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.revision="${GIT_COMMIT}" \
+      org.opencontainers.image.created="${BUILD_DATE}"
 
 # Install CA certificates for HTTPS/TLS and timezone data for calendar schedules
 RUN apk upgrade --no-cache && apk add --no-cache ca-certificates tzdata
@@ -52,7 +61,7 @@ WORKDIR /
 RUN mkdir -p /config /secrets
 
 # Copy binary from builder
-COPY --from=builder /build/chronoqueue /chronoqueue
+COPY --from=builder /build/nzovu /nzovu
 
 # Copy entrypoint script
 COPY images/entrypoint.sh /entrypoint.sh

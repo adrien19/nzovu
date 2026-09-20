@@ -258,7 +258,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
-          BINARY_NAME="chronoqueue-${TAG}-${TARGET_OS}-${TARGET_ARCH}"; [[ "${TARGET_OS}" == windows ]] && BINARY_NAME="${BINARY_NAME}.exe"
+          BINARY_NAME="nzovu-${TAG}-${TARGET_OS}-${TARGET_ARCH}"; [[ "${TARGET_OS}" == windows ]] && BINARY_NAME="${BINARY_NAME}.exe"
           LDFLAGS="-s -w -X github.com/adrien19/nzovu/pkg/version.Version=${VERSION} -X github.com/adrien19/nzovu/pkg/version.GitCommit=${COMMIT} -X github.com/adrien19/nzovu/pkg/version.BuildDate=${BUILD_DATE}"
           GOOS="${TARGET_OS}" GOARCH="${TARGET_ARCH}" CGO_ENABLED=0 go build -trimpath -ldflags="${LDFLAGS}" -o "dist/${BINARY_NAME}" .
           strings "dist/${BINARY_NAME}" | grep -Fx -- "${VERSION}"
@@ -342,8 +342,8 @@ jobs:
             temp_dir="$(mktemp -d)"; tar -xzf "${archive}" -C "${temp_dir}"; metadata="$(find "${temp_dir}" -name '*.release' -type f -print -quit)"
             grep -Fx "version=${TAG}" "${metadata}"; grep -Fx "commit=${COMMIT}" "${metadata}"; grep -Fx "build_date=${BUILD_DATE}" "${metadata}"; rm -rf "${temp_dir}"
           done
-          temp_dir="$(mktemp -d)"; tar -xzf "artifacts/chronoqueue-${TAG}-linux-amd64.tar.gz" -C "${temp_dir}"
-          output="$("${temp_dir}/chronoqueue-${TAG}-linux-amd64" --version)"
+          temp_dir="$(mktemp -d)"; tar -xzf "artifacts/nzovu-${TAG}-linux-amd64.tar.gz" -C "${temp_dir}"
+          output="$("${temp_dir}/nzovu-${TAG}-linux-amd64" --version)"
           grep -Fq "Nzovu v${VERSION}" <<<"${output}"; grep -Fq "Git Commit: ${COMMIT}" <<<"${output}"; grep -Fq "Built:      ${BUILD_DATE}" <<<"${output}"
       - name: Exercise Unix installer against built release
         env:
@@ -352,9 +352,9 @@ jobs:
         run: |
           set -euo pipefail
           release_root="$(mktemp -d)"; install_dir="$(mktemp -d)"; mkdir -p "${release_root}/download/${TAG}"
-          cp "artifacts/chronoqueue-${TAG}-linux-amd64.tar.gz"* "${release_root}/download/${TAG}/"
-          CHRONOQUEUE_RELEASES_URL="file://${release_root}" CHRONOQUEUE_INSTALL_DIR="${install_dir}" bash install/install.sh "${VERSION}"
-          "${install_dir}/chronoqueue" --version
+          cp "artifacts/nzovu-${TAG}-linux-amd64.tar.gz"* "${release_root}/download/${TAG}/"
+          NZOVU_RELEASES_URL="file://${release_root}" NZOVU_INSTALL_DIR="${install_dir}" bash install/install.sh "${VERSION}"
+          "${install_dir}/nzovu" --version
 
   verify-staging-image:
     name: Verify Container
@@ -442,18 +442,18 @@ jobs:
           VERSION: ${{ needs.prepare-release.outputs.version }}
           TAG: ${{ needs.prepare-release.outputs.tag }}
         run: |
-          $releaseRoot = Join-Path $env:RUNNER_TEMP "chronoqueue-release"
+          $releaseRoot = Join-Path $env:RUNNER_TEMP "nzovu-release"
           $downloadDir = Join-Path $releaseRoot "download/$env:TAG"
-          $installDir = Join-Path $env:RUNNER_TEMP "chronoqueue-install"
+          $installDir = Join-Path $env:RUNNER_TEMP "nzovu-install"
           New-Item -ItemType Directory -Force -Path $downloadDir | Out-Null
           Copy-Item "artifacts/*" $downloadDir
           $server = Start-Process python -ArgumentList "-m", "http.server", "8765", "--directory", $releaseRoot -PassThru
           try {
             Start-Sleep -Seconds 1
-            $env:CHRONOQUEUE_RELEASES_URL = "http://127.0.0.1:8765"
+            $env:NZOVU_RELEASES_URL = "http://127.0.0.1:8765"
             & ./install/install.ps1 -Version $env:VERSION -InstallDir $installDir
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-            & (Join-Path $installDir "chronoqueue.exe") --version
+            & (Join-Path $installDir "nzovu.exe") --version
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           } finally { Stop-Process -Id $server.Id -Force }
 

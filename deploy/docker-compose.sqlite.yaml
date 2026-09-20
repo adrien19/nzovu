@@ -36,7 +36,7 @@ services:
     build:
       context: ..
       dockerfile: ./images/Dockerfile.sqlite
-    entrypoint: ["/chronoqueue"]
+    entrypoint: ["/nzovu"]
     environment:
       - CHRONOQUEUE_UI_AUTH_ENABLED=true
       - CHRONOQUEUE_UI_AUTH_USERNAME=${CHRONOQUEUE_UI_AUTH_USERNAME:?Set CHRONOQUEUE_UI_AUTH_USERNAME}

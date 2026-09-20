@@ -1,4 +1,4 @@
-IMAGE ?= chronoqueue
+IMAGE ?= nzovu
 PROJECT ?= adrien19
 DOCKER_REGISTRY ?= ghcr.io
 
@@ -12,7 +12,7 @@ else
 endif
 
 build-image:
-	@echo "Building ChronoQueue Docker image: $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION)"
+	@echo "Building Nzovu Docker image: $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION)"
 	docker build -t $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION) \
 		--build-arg VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(GIT_COMMIT) \
@@ -20,12 +20,7 @@ build-image:
 		-f Dockerfile ..
 
 build-push: build-image
-	@echo "Pushing ChronoQueue Docker image: $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION)"
+	@echo "Pushing Nzovu Docker image: $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION)"
 	docker push $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION)
-ifdef LATEST_RELEASE
-	@echo "Tagging and pushing as latest..."
-	docker tag $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):$(VERSION) $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):latest
-	docker push $(DOCKER_REGISTRY)/$(PROJECT)/$(IMAGE):latest
-endif
 
 .PHONY: build-image build-push

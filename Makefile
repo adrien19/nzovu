@@ -14,9 +14,6 @@ GIT_VERSION ?= $(shell git describe --always --abbrev=7 --dirty)
 CGO         ?= 0
 BINARIES    ?= nzovu
 
-# Add latest tag if LATEST_RELEASE is true
-LATEST_RELEASE ?=
-
 PROTOC ?= protoc
 
 # Version of "protoc" to use
@@ -27,9 +24,9 @@ PROTOBUF_SUITE_VERSION = 32.0
 # name of protoc-gen-go when protoc-gen-go --version is run.
 PROTOC_GEN_GO_NAME = "protoc-gen-go"
 ifdef REL_VERSION
-	CHRONOQUEUE_VERSION := $(REL_VERSION)
+	NZOVU_VERSION := $(REL_VERSION)
 else
-	CHRONOQUEUE_VERSION := edge
+	NZOVU_VERSION := edge
 endif
 
 LOCAL_ARCH := $(shell uname -m)
@@ -112,7 +109,7 @@ BASE_PACKAGE_NAME := github.com/adrien19/nzovu
 # Version information to inject at build time
 BUILD_DATE := $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 VERSION_PKG := $(BASE_PACKAGE_NAME)/pkg/version
-LDFLAGS := -X '$(VERSION_PKG).Version=$(CHRONOQUEUE_VERSION)' \
+LDFLAGS := -X '$(VERSION_PKG).Version=$(NZOVU_VERSION)' \
            -X '$(VERSION_PKG).GitCommit=$(GIT_COMMIT)' \
            -X '$(VERSION_PKG).BuildDate=$(BUILD_DATE)'
 
@@ -126,29 +123,29 @@ else
   $(info Build with debugger information)
 endif
 
-CHRONOQUEUE_OUT_DIR := $(OUT_DIR)/$(GOOS)_$(GOARCH)/$(BUILDTYPE_DIR)
-CHRONOQUEUE_LINUX_OUT_DIR := $(OUT_DIR)/linux_$(GOARCH)/$(BUILDTYPE_DIR)
+NZOVU_OUT_DIR := $(OUT_DIR)/$(GOOS)_$(GOARCH)/$(BUILDTYPE_DIR)
+NZOVU_LINUX_OUT_DIR := $(OUT_DIR)/linux_$(GOARCH)/$(BUILDTYPE_DIR)
 
 
 ################################################################################
 # Target: build                                                                #
 ################################################################################
 .PHONY: build
-CHRONOQUEUE_BINS:=$(foreach ITEM,$(BINARIES),$(CHRONOQUEUE_OUT_DIR)/$(ITEM)$(BINARY_EXT))
-build: $(CHRONOQUEUE_BINS)
+NZOVU_BINS:=$(foreach ITEM,$(BINARIES),$(NZOVU_OUT_DIR)/$(ITEM)$(BINARY_EXT))
+build: $(NZOVU_BINS)
 
 ################################################################################
 # Target: build-full (build with ALL storage backends including SQLite)       #
 ################################################################################
 .PHONY: build-full
 build-full:
-	@echo "Building ChronoQueue with SQLite support..."
-	@mkdir -p $(CHRONOQUEUE_OUT_DIR)
+	@echo "Building Nzovu with SQLite support..."
+	@mkdir -p $(NZOVU_OUT_DIR)
 	CGO_ENABLED=1 go build $(GCFLAGS) -ldflags="$(LDFLAGS)" -tags=sqlite \
-	  -o $(CHRONOQUEUE_OUT_DIR)/nzovu$(BINARY_EXT) .
+	  -o $(NZOVU_OUT_DIR)/nzovu$(BINARY_EXT) .
 	@echo "✓ Binary built with SQLite and Schema Registry support"
 
-# Generate builds for chronoqueue binaries for the target
+# Generate builds for nzovu binaries for the target
 # Params:
 # $(1): the file name for the target
 # $(2): the binary name for the target
@@ -158,13 +155,13 @@ build-full:
 define genBinariesForTarget
 .PHONY: $(5)/$(1)
 $(5)/$(1):
-	CGO_ENABLED=$(CGO) GOOS=$(3) GOARCH=$(4) go build $(GCFLAGS) -ldflags="$(LDFLAGS)" -tags=$(CHRONOQUEUE_GO_BUILD_TAGS) \
+	CGO_ENABLED=$(CGO) GOOS=$(3) GOARCH=$(4) go build $(GCFLAGS) -ldflags="$(LDFLAGS)" -tags=$(NZOVU_GO_BUILD_TAGS) \
 	  -o $(5)/$(1) \
 	  .
 endef
 
 # Generate binary targets
-$(foreach ITEM,$(BINARIES),$(eval $(call genBinariesForTarget,$(ITEM)$(BINARY_EXT),.,$(GOOS),$(GOARCH),$(CHRONOQUEUE_OUT_DIR))))
+$(foreach ITEM,$(BINARIES),$(eval $(call genBinariesForTarget,$(ITEM)$(BINARY_EXT),.,$(GOOS),$(GOARCH),$(NZOVU_OUT_DIR))))
 
 
 ################################################################################
@@ -183,7 +180,7 @@ ci-build:
 ################################################################################
 # Target: build-linux                                                          #
 ################################################################################
-BUILD_LINUX_BINS:=$(foreach ITEM,$(BINARIES),$(CHRONOQUEUE_LINUX_OUT_DIR)/$(ITEM))
+BUILD_LINUX_BINS:=$(foreach ITEM,$(BINARIES),$(NZOVU_LINUX_OUT_DIR)/$(ITEM))
 build-linux: $(BUILD_LINUX_BINS)
 
 # Generate linux binaries targets to build linux docker image
@@ -302,14 +299,14 @@ test-race:
 ################################################################################
 .PHONY: build-test-image
 build-test-image:
-	@echo "Building ChronoQueue test image with Postgres and SQLite support..."
+	@echo "Building Nzovu test image with Postgres and SQLite support..."
 	DOCKER_BUILDKIT=0 docker build -f images/Dockerfile.sqlite \
-		--build-arg VERSION=$(CHRONOQUEUE_VERSION) \
+		--build-arg VERSION=$(NZOVU_VERSION) \
 		--build-arg GIT_COMMIT=$(GIT_COMMIT) \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
-		-t chronoqueue:test-latest .
+		-t nzovu:test-latest .
 	@echo "Verifying image was built..."
-	@docker images chronoqueue:test-latest --format "{{.Repository}}:{{.Tag}} ({{.ID}})" || (echo "ERROR: Image chronoqueue:test-latest not found!" && exit 1)
+	@docker images nzovu:test-latest --format "{{.Repository}}:{{.Tag}} ({{.ID}})" || (echo "ERROR: Image nzovu:test-latest not found!" && exit 1)
 
 ################################################################################
 # Target: test-integration                                                     #
@@ -334,8 +331,8 @@ test-integration: check-gotestsum build-test-image
 ci-test-integration: check-gotestsum build-test-image
 	@echo "Running integration tests in CI mode..."
 	@echo "Verifying Docker image availability..."
-	@docker images | grep chronoqueue | grep test-latest || (echo "ERROR: chronoqueue:test-latest not found in local images!" && docker images && exit 1)
-	@docker inspect chronoqueue:test-latest >/dev/null 2>&1 && echo "✓ Image chronoqueue:test-latest is available" || (echo "ERROR: Cannot inspect image!" && exit 1)
+	@docker images | grep nzovu | grep test-latest || (echo "ERROR: nzovu:test-latest not found in local images!" && docker images && exit 1)
+	@docker inspect nzovu:test-latest >/dev/null 2>&1 && echo "✓ Image nzovu:test-latest is available" || (echo "ERROR: Cannot inspect image!" && exit 1)
 	@echo "Docker info:"
 	@docker info | grep -E "Server Version|Operating System|Storage Driver" || true
 	CGO_ENABLED=$(CGO) \
@@ -505,8 +502,8 @@ ui-build: ui-deps
 	@echo "Building UI CSS..."
 	@cd cmd/chronoq/web-ui && npm run build:css
 	@echo "Building UI binary..."
-	@mkdir -p $(CHRONOQUEUE_OUT_DIR)
-	@go build -ldflags "$(LDFLAGS)" -o $(CHRONOQUEUE_OUT_DIR)/nzovu .
+	@mkdir -p $(NZOVU_OUT_DIR)
+	@go build -ldflags "$(LDFLAGS)" -o $(NZOVU_OUT_DIR)/nzovu .
 
 ################################################################################
 # Target: ui-watch (watch and rebuild UI CSS)                                  #
@@ -530,7 +527,7 @@ UI_PORT?=8081
 .PHONY: ui-dev
 ui-dev: ui-build
 	@echo "Starting ChronoQueue with UI on :$(UI_PORT) (gRPC: $(UI_GRPC_ADDR))..."
-	@./$(CHRONOQUEUE_OUT_DIR)/nzovu web-ui start --port $(UI_PORT) --grpc-address $(UI_GRPC_ADDR) --skip-ssl
+	@./$(NZOVU_OUT_DIR)/nzovu web-ui start --port $(UI_PORT) --grpc-address $(UI_GRPC_ADDR) --skip-ssl
 
 
 ################################################################################
@@ -556,16 +553,16 @@ ifneq ($(filter postgres,$(STORAGE) $(STORAGE_TYPE)),)
 	if [ -n "$(POSTGRES_PASSWORD)" ]; then PG_ARGS="$$PG_ARGS --postgres-password $(POSTGRES_PASSWORD)"; fi; \
 	if [ -n "$(POSTGRES_DB)" ]; then PG_ARGS="$$PG_ARGS --postgres-db $(POSTGRES_DB)"; fi; \
 	if [ -n "$(POSTGRES_SSLMODE)" ]; then PG_ARGS="$$PG_ARGS --postgres-sslmode $(POSTGRES_SSLMODE)"; fi; \
-	./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --insecure $$PG_ARGS 2>&1 | tee logs/chronoqueue.log
+	./$(NZOVU_OUT_DIR)/nzovu server --dev --insecure $$PG_ARGS 2>&1 | tee logs/chronoqueue.log
 else ifdef DATABASE
 	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DATABASE))..."
-	@./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/chronoqueue.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/chronoqueue.log
 else ifdef DB
 	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DB))..."
-	@./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/chronoqueue.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/chronoqueue.log
 else
 	@echo "Starting ChronoQueue in development mode with SQLite storage (default)..."
-	@./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/chronoqueue.log
+	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/chronoqueue.log
 endif
 
 

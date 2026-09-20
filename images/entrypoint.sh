@@ -2,7 +2,7 @@
 set -e
 
 if [ "$#" -gt 0 ]; then
-    exec /chronoqueue "$@"
+    exec /nzovu "$@"
 fi
 
 RED='\033[0;31m'
@@ -28,7 +28,7 @@ LOG_LEVEL="${LOG_LEVEL:-info}"
 GRPC_ADDR="${GRPC_ADDR:-:9000}"
 HTTP_ADDR="${HTTP_ADDR:-:8080}"
 
-log_info "ChronoQueue Server Startup"
+log_info "Nzovu Server Startup"
 log_info "=========================="
 log_info "Server Mode: $SERVER_MODE"
 log_info "Storage Type: $STORAGE_TYPE"
@@ -77,7 +77,7 @@ case "$STORAGE_TYPE" in
     postgres)
         # Note: POSTGRES_PASSWORD and POSTGRES_DSN are NOT passed as CLI arguments
         # for security reasons (visible in ps, /proc/<pid>/cmdline, logs).
-        # The chronoqueue binary reads them directly from environment variables.
+        # The nzovu binary reads them directly from environment variables.
         if [ -n "$POSTGRES_DSN" ]; then
             log_info "Using PostgreSQL DSN from environment variable (not shown for security)"
             # DSN contains embedded credentials, so we don't pass it via CLI
@@ -160,8 +160,8 @@ if [ "$ENABLE_API_DOCS" = "true" ]; then
     fi
 fi
 
-log_info "Starting ChronoQueue server..."
-log_info "Command: /chronoqueue $CMD_ARGS"
+log_info "Starting Nzovu server..."
+log_info "Command: /nzovu $CMD_ARGS"
 log_info ""
 
-exec /chronoqueue $CMD_ARGS
+exec /nzovu $CMD_ARGS

@@ -57,10 +57,10 @@ case "$SERVICE" in
     chronoqueue)
         echo "Stopping ChronoQueue server..."
         # Kill by process name
-        pkill -f "chronoqueue-server" 2>/dev/null || true
+        pkill -f "/release/nzovu server" 2>/dev/null || true
         # Double-check and kill any remaining
-        for pid in $(pgrep -f "chronoqueue-server"); do
-            if ps -p $pid -o cmd= | grep -q "chronoqueue-server"; then
+        for pid in $(pgrep -f "/release/nzovu server"); do
+            if ps -p $pid -o cmd= | grep -q "/release/nzovu server"; then
                 kill -9 $pid 2>/dev/null || true
             fi
         done

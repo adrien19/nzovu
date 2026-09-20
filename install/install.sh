@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
-# ChronoQueue install script
+# Nzovu install script
 #
 # Usage:
 #   # Install latest version to /usr/local/bin (uses sudo if required)
-#   curl -fsSL https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.sh | bash
 #
 #   # Install a specific version
-#   curl -fsSL https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.sh | bash -s 0.1.0
+#   curl -fsSL https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.sh | bash -s 0.1.0
 #
 #   # Install to a custom directory (no sudo)
-#   curl -fsSL https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.sh | CHRONOQUEUE_INSTALL_DIR="$HOME/.chronoqueue" bash
+#   curl -fsSL https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.sh | NZOVU_INSTALL_DIR="$HOME/.nzovu" bash
 #
 #   # Install a specific version to a custom directory (no sudo)
-#   curl -fsSL https://raw.githubusercontent.com/adrien19/chronoqueue/develop/install/install.sh | CHRONOQUEUE_INSTALL_DIR="$HOME/.chronoqueue" bash -s 0.1.0
+#   curl -fsSL https://raw.githubusercontent.com/adrien19/nzovu/main/install/install.sh | NZOVU_INSTALL_DIR="$HOME/.nzovu" bash -s 0.1.0
 
 set -euo pipefail
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
 GITHUB_ORG="adrien19"
-GITHUB_REPO="chronoqueue"
-BINARY_NAME="chronoqueue"
-RELEASES_URL="${CHRONOQUEUE_RELEASES_URL:-https://github.com/${GITHUB_ORG}/${GITHUB_REPO}/releases}"
-API_URL="${CHRONOQUEUE_API_URL:-https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/releases/latest}"
+GITHUB_REPO="nzovu"
+BINARY_NAME="nzovu"
+RELEASES_URL="${NZOVU_RELEASES_URL:-https://github.com/${GITHUB_ORG}/${GITHUB_REPO}/releases}"
+API_URL="${NZOVU_API_URL:-https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/releases/latest}"
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -188,8 +188,8 @@ main() {
     local archive_url="${RELEASES_URL}/download/v${version}/${archive_name}"
 
     # ── Install dir ──────────────────────────────────────────────────────────
-    local install_dir="${CHRONOQUEUE_INSTALL_DIR:-/usr/local/bin}"
-    local user_set_dir="${CHRONOQUEUE_INSTALL_DIR:+true}"
+    local install_dir="${NZOVU_INSTALL_DIR:-/usr/local/bin}"
+    local user_set_dir="${NZOVU_INSTALL_DIR:+true}"
 
     # ── Temporary work dir (cleaned up on exit) ───────────────────────────────
     local tmp_dir
@@ -229,7 +229,7 @@ main() {
 
     # ── Install ───────────────────────────────────────────────────────────────
     # Determine whether sudo is needed:
-    # - Never use sudo if the user explicitly set CHRONOQUEUE_INSTALL_DIR
+    # - Never use sudo if the user explicitly set NZOVU_INSTALL_DIR
     # - Use sudo only if the default /usr/local/bin is not writable
     local use_sudo="false"
     if [[ "${user_set_dir}" != "true" ]] && [[ ! -w "${install_dir}" ]]; then
