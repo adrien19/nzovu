@@ -47,7 +47,7 @@
 
 syntax = "proto3";
 
-package chronoqueue.api.queueservice.v1;
+package nzovu.api.queueservice.v1;
 
 option go_package = "github.com/adrien19/nzovu/api/queueservice/v1;queueservice";
 
@@ -63,7 +63,7 @@ import "proto/schema/v1/schema.proto";
 // Create queue
 message CreateQueueRequest {
   string                                          name     = 1;
-  optional chronoqueue.api.queue.v1.QueueMetadata metadata = 2;
+  optional nzovu.api.queue.v1.QueueMetadata metadata = 2;
 }
 
 message CreateQueueResponse {
@@ -82,7 +82,7 @@ message DeleteQueueResponse {
 // Post a message to the queue
 message PostMessageRequest{
   string                             queue_name = 1;
-  chronoqueue.api.message.v1.Message message    = 2;
+  nzovu.api.message.v1.Message message    = 2;
 }
 
 message PostMessageResponse{
@@ -94,7 +94,7 @@ message PostMessagesBulkRequest {
   string queue_name = 1;
 
   // Messages to post (recommended max: 1000 per request)
-  repeated chronoqueue.api.message.v1.Message messages = 2;
+  repeated nzovu.api.message.v1.Message messages = 2;
 
   // Transaction mode for batch processing
   enum TransactionMode {
@@ -161,7 +161,7 @@ message GetNextMessageRequest{
 }
 
 message GetNextMessageResponse{
-  chronoqueue.api.message.v1.Message message = 1;
+  nzovu.api.message.v1.Message message = 1;
     // Echo or assign the worker_id used for this lease
   optional string worker_id = 2;
     // Attempt identifier for this lease
@@ -172,7 +172,7 @@ message GetNextMessageResponse{
 message AcknowledgeMessageRequest{
   string                                            queue_name = 1;
   string                                            message_id = 2;
-  chronoqueue.api.message.v1.Message.Metadata.State state      = 3;
+  nzovu.api.message.v1.Message.Metadata.State state      = 3;
     // Required worker identifier returned by GetNextMessage.
   optional string worker_id = 4;
     // Required attempt identifier returned by GetNextMessage.
@@ -208,7 +208,7 @@ message RenewMessageLeaseRequest{
 
 message RenewMessageLeaseResponse{
   google.protobuf.Duration                          remaining_time = 1;
-  chronoqueue.api.message.v1.Message.Metadata.State state          = 2;
+  nzovu.api.message.v1.Message.Metadata.State state          = 2;
 }
 
 // View pending messages on a queueu
@@ -224,7 +224,7 @@ message PeekQueueMessagesRequest{
 }
 
 message PeekQueueMessagesResponse{
-  repeated chronoqueue.api.message.v1.Message messages = 1;
+  repeated nzovu.api.message.v1.Message messages = 1;
   string next_page_token = 2;
 }
 
@@ -250,7 +250,7 @@ message SendMessageHeartBeatRequest {
 
 message SendMessageHeartBeatResponse {
   google.protobuf.Duration                          remaining_time = 1;
-  chronoqueue.api.message.v1.Message.Metadata.State state          = 2;
+  nzovu.api.message.v1.Message.Metadata.State state          = 2;
 }
 
 // List queues
@@ -261,13 +261,13 @@ message ListQueuesRequest {
 }
 
 message ListQueuesResponse {
-  repeated chronoqueue.api.queue.v1.Queue queues = 1;
+  repeated nzovu.api.queue.v1.Queue queues = 1;
   string next_page_token = 2;
 }
 
 // Create a schedule
 message CreateScheduleRequest {
-  chronoqueue.api.schedule.v1.Schedule schedule = 1;
+  nzovu.api.schedule.v1.Schedule schedule = 1;
 }
 
 message CreateScheduleResponse {
@@ -307,7 +307,7 @@ message GetScheduleRequest {
 }
 
 message GetScheduleResponse {
-  chronoqueue.api.schedule.v1.Schedule schedule = 1;
+  nzovu.api.schedule.v1.Schedule schedule = 1;
 }
 
 // List schedules
@@ -318,7 +318,7 @@ message ListSchedulesRequest {
 }
 
 message ListSchedulesResponse {
-  repeated chronoqueue.api.schedule.v1.Schedule schedules = 1;
+  repeated nzovu.api.schedule.v1.Schedule schedules = 1;
   string next_page_token = 2;
 }
 
@@ -330,7 +330,7 @@ message GetScheduleHistoryRequest {
 }
 
 message GetScheduleHistoryResponse {
-  chronoqueue.api.schedule.v1.ScheduleHistory schedule_history = 1;
+  nzovu.api.schedule.v1.ScheduleHistory schedule_history = 1;
   string next_page_token = 2;
 }
 
@@ -344,7 +344,7 @@ message GetDLQMessagesRequest {
 }
 
 message GetDLQMessagesResponse {
-  repeated chronoqueue.api.message.v1.Message messages = 1;
+  repeated nzovu.api.message.v1.Message messages = 1;
   string next_page_token = 2;
 }
 
@@ -395,7 +395,7 @@ message GetDLQStatsResponse {
 
 // Validate a calendar schedule configuration
 message ValidateCalendarScheduleRequest {
-  chronoqueue.api.schedule.v1.CalendarSchedule calendar_schedule = 1;
+  nzovu.api.schedule.v1.CalendarSchedule calendar_schedule = 1;
 }
 
 message ValidateCalendarScheduleResponse {
@@ -406,7 +406,7 @@ message ValidateCalendarScheduleResponse {
 
 // Preview upcoming execution times for a calendar schedule
 message PreviewCalendarScheduleRequest {
-  chronoqueue.api.schedule.v1.CalendarSchedule calendar_schedule = 1;
+  nzovu.api.schedule.v1.CalendarSchedule calendar_schedule = 1;
   int32                                        count             = 2; // Number of execution times to preview (default: 10, max: 100)
 }
 
@@ -451,7 +451,7 @@ message GetSchemaRequest {
 }
 
 message GetSchemaResponse {
-  chronoqueue.api.schema.v1.Schema schema = 1; // Full schema object
+  nzovu.api.schema.v1.Schema schema = 1; // Full schema object
 }
 
 // List schema families with optional filtering.
@@ -502,7 +502,7 @@ message ValidatePayloadRequest {
 
 message ValidatePayloadResponse {
   bool                                               valid          = 1;
-  repeated chronoqueue.api.schema.v1.ValidationError errors         = 2; // Validation errors from schema.proto
+  repeated nzovu.api.schema.v1.ValidationError errors         = 2; // Validation errors from schema.proto
   string                                             schema_id      = 3;
   int32                                              schema_version = 4;
 }

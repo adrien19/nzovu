@@ -4,7 +4,7 @@
 // Messages are the fundamental unit of work in ChronoQueue.
 
 syntax = "proto3";
-package chronoqueue.api.message.v1;
+package nzovu.api.message.v1;
 
 option go_package = "github.com/adrien19/nzovu/api/message/v1;message";
 
@@ -62,7 +62,7 @@ message Message {
 
         // payload: The business data and metadata to be processed.
         // This is what your workers receive and act upon.
-    chronoqueue.api.common.v1.Payload payload = 1;
+    nzovu.api.common.v1.Payload payload = 1;
 
         // State represents the message lifecycle stage.
         //
@@ -129,7 +129,7 @@ message Message {
         // - Unset fields inherit from the queue lease policy.
         //
         // This lets you avoid *_override fields; presence is the override.
-    chronoqueue.api.common.v1.LeasePolicy lease_policy = 11;
+    nzovu.api.common.v1.LeasePolicy lease_policy = 11;
 
         // -----------------------------------------------------------------------
         // Current attempt runtime

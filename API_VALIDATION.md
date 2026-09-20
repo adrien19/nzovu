@@ -1,6 +1,8 @@
 # API validation and error contract
 
-**Scope: `v2.0.0-rc.1` / preparation for 2.0.0. Incompatible with `v1.2.1`.** `/v1` routes and protobuf packages retain their names; use matching 2.0 clients. See the [release and migration guide](./RELEASE_2.0.md).
+**Scope: Nzovu, preparing for `v0.0.1`.** Protobuf packages use `nzovu.api.*`; regenerate clients from this repository and deploy them with the matching server. Calls to `chronoqueue.api.queueservice.v1.QueueService` return `Unimplemented`.
+
+HTTP `/v1` routes and protobuf field numbers remain unchanged. Existing typed SQL payloads remain readable; no database rewrite is required for this namespace change. The storage format does not use `google.protobuf.Any`. External consumers that wrap these messages in `Any` must migrate their `type.googleapis.com/chronoqueue.api.*` type URLs to `type.googleapis.com/nzovu.api.*`; no legacy type resolver is registered.
 
 ChronoQueue applies the same validation and error mapping to gRPC requests and requests received through the HTTP gateway. Invalid-argument responses include `google.rpc.BadRequest` field violations when a specific field caused the rejection.
 
@@ -56,7 +58,7 @@ Internal errors use the public message `internal server error`. Database and enc
 - The old `limit` request field is replaced by `page_size`. Generated REST query names are `pageSize` and `pageToken`; response JSON uses `nextPageToken`.
 - Tokens are opaque cursors. Invalid tokens or tokens inconsistent with the operation/filter are rejected; they are not authentication credentials or a snapshot guarantee.
 
-Sources: [request definitions](./proto/queueservice/v1/request_response.proto), [pagination implementation](./internal/pagination/pagination.go), [OpenAPI](./pkg/gateway/chronoqueue.swagger.json).
+Sources: [request definitions](./proto/queueservice/v1/request_response.proto), [pagination implementation](./internal/pagination/pagination.go), [OpenAPI](./pkg/gateway/nzovu.swagger.json).
 
 ## Dead-letter queue operations
 

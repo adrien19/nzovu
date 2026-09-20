@@ -200,7 +200,7 @@ type Message_Metadata struct {
 	// payload: The business data and metadata to be processed.
 	// This is what your workers receive and act upon.
 	Payload *v1.Payload            `protobuf:"bytes,1,opt,name=payload,proto3" json:"payload,omitempty"`
-	State   Message_Metadata_State `protobuf:"varint,2,opt,name=state,proto3,enum=chronoqueue.api.message.v1.Message_Metadata_State" json:"state,omitempty"`
+	State   Message_Metadata_State `protobuf:"varint,2,opt,name=state,proto3,enum=nzovu.api.message.v1.Message_Metadata_State" json:"state,omitempty"`
 	// attempts_left: Number of retry attempts remaining before moving to DLQ.
 	// Decrements with each processing failure. When reaches 0 and fails, moves to ERRORED state.
 	// Set max_attempts when posting to control retry behavior.
@@ -548,27 +548,27 @@ var File_proto_message_v1_message_proto protoreflect.FileDescriptor
 
 const file_proto_message_v1_message_proto_rawDesc = "" +
 	"\n" +
-	"\x1eproto/message/v1/message.proto\x12\x1achronoqueue.api.message.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a%proto/google/api/field_behavior.proto\x1a\x1cproto/common/v1/common.proto\"\xdd\v\n" +
+	"\x1eproto/message/v1/message.proto\x12\x14nzovu.api.message.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a%proto/google/api/field_behavior.proto\x1a\x1cproto/common/v1/common.proto\"\xb9\v\n" +
 	"\aMessage\x12\"\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\tB\x03\xe0A\x02R\tmessageId\x12H\n" +
-	"\bmetadata\x18\x03 \x01(\v2,.chronoqueue.api.message.v1.Message.MetadataR\bmetadata\x1a\xe3\n" +
+	"message_id\x18\x01 \x01(\tB\x03\xe0A\x02R\tmessageId\x12B\n" +
+	"\bmetadata\x18\x03 \x01(\v2&.nzovu.api.message.v1.Message.MetadataR\bmetadata\x1a\xc5\n" +
 	"\n" +
-	"\bMetadata\x12<\n" +
-	"\apayload\x18\x01 \x01(\v2\".chronoqueue.api.common.v1.PayloadR\apayload\x12H\n" +
-	"\x05state\x18\x02 \x01(\x0e22.chronoqueue.api.message.v1.Message.Metadata.StateR\x05state\x12#\n" +
+	"\bMetadata\x126\n" +
+	"\apayload\x18\x01 \x01(\v2\x1c.nzovu.api.common.v1.PayloadR\apayload\x12B\n" +
+	"\x05state\x18\x02 \x01(\x0e2,.nzovu.api.message.v1.Message.Metadata.StateR\x05state\x12#\n" +
 	"\rattempts_left\x18\x04 \x01(\x05R\fattemptsLeft\x12@\n" +
 	"\x0elease_duration\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\rleaseDuration\x12!\n" +
 	"\flease_expiry\x18\x06 \x01(\x03R\vleaseExpiry\x12.\n" +
 	"\x13lease_renewal_count\x18\a \x01(\x05R\x11leaseRenewalCount\x12\x1a\n" +
 	"\bpriority\x18\t \x01(\x03R\bpriority\x12!\n" +
 	"\fmax_attempts\x18\n" +
-	" \x01(\x05R\vmaxAttempts\x12I\n" +
-	"\flease_policy\x18\v \x01(\v2&.chronoqueue.api.common.v1.LeasePolicyR\vleasePolicy\x12d\n" +
-	"\x0fcurrent_attempt\x18\f \x01(\v2;.chronoqueue.api.message.v1.Message.Metadata.AttemptRuntimeR\x0ecurrentAttempt\x12A\n" +
+	" \x01(\x05R\vmaxAttempts\x12C\n" +
+	"\flease_policy\x18\v \x01(\v2 .nzovu.api.common.v1.LeasePolicyR\vleasePolicy\x12^\n" +
+	"\x0fcurrent_attempt\x18\f \x01(\v25.nzovu.api.message.v1.Message.Metadata.AttemptRuntimeR\x0ecurrentAttempt\x12A\n" +
 	"\x0escheduled_time\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\rscheduledTime\x12%\n" +
-	"\x0epriority_level\x18\x15 \x01(\x05R\rpriorityLevel\x12M\n" +
-	"\aheaders\x18\x16 \x03(\v23.chronoqueue.api.message.v1.Message.Metadata.HeaderR\aheaders\x1a\xa5\x03\n" +
+	"\x0epriority_level\x18\x15 \x01(\x05R\rpriorityLevel\x12G\n" +
+	"\aheaders\x18\x16 \x03(\v2-.nzovu.api.message.v1.Message.Metadata.HeaderR\aheaders\x1a\xa5\x03\n" +
 	"\x0eAttemptRuntime\x12\x1d\n" +
 	"\n" +
 	"attempt_id\x18\x01 \x01(\tR\tattemptId\x12\x1b\n" +
@@ -605,28 +605,28 @@ func file_proto_message_v1_message_proto_rawDescGZIP() []byte {
 var file_proto_message_v1_message_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_proto_message_v1_message_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_proto_message_v1_message_proto_goTypes = []any{
-	(Message_Metadata_State)(0),             // 0: chronoqueue.api.message.v1.Message.Metadata.State
-	(*Message)(nil),                         // 1: chronoqueue.api.message.v1.Message
-	(*Message_Metadata)(nil),                // 2: chronoqueue.api.message.v1.Message.Metadata
-	(*Message_Metadata_AttemptRuntime)(nil), // 3: chronoqueue.api.message.v1.Message.Metadata.AttemptRuntime
-	(*Message_Metadata_Header)(nil),         // 4: chronoqueue.api.message.v1.Message.Metadata.Header
-	(*v1.Payload)(nil),                      // 5: chronoqueue.api.common.v1.Payload
+	(Message_Metadata_State)(0),             // 0: nzovu.api.message.v1.Message.Metadata.State
+	(*Message)(nil),                         // 1: nzovu.api.message.v1.Message
+	(*Message_Metadata)(nil),                // 2: nzovu.api.message.v1.Message.Metadata
+	(*Message_Metadata_AttemptRuntime)(nil), // 3: nzovu.api.message.v1.Message.Metadata.AttemptRuntime
+	(*Message_Metadata_Header)(nil),         // 4: nzovu.api.message.v1.Message.Metadata.Header
+	(*v1.Payload)(nil),                      // 5: nzovu.api.common.v1.Payload
 	(*durationpb.Duration)(nil),             // 6: google.protobuf.Duration
-	(*v1.LeasePolicy)(nil),                  // 7: chronoqueue.api.common.v1.LeasePolicy
+	(*v1.LeasePolicy)(nil),                  // 7: nzovu.api.common.v1.LeasePolicy
 	(*timestamppb.Timestamp)(nil),           // 8: google.protobuf.Timestamp
 }
 var file_proto_message_v1_message_proto_depIdxs = []int32{
-	2,  // 0: chronoqueue.api.message.v1.Message.metadata:type_name -> chronoqueue.api.message.v1.Message.Metadata
-	5,  // 1: chronoqueue.api.message.v1.Message.Metadata.payload:type_name -> chronoqueue.api.common.v1.Payload
-	0,  // 2: chronoqueue.api.message.v1.Message.Metadata.state:type_name -> chronoqueue.api.message.v1.Message.Metadata.State
-	6,  // 3: chronoqueue.api.message.v1.Message.Metadata.lease_duration:type_name -> google.protobuf.Duration
-	7,  // 4: chronoqueue.api.message.v1.Message.Metadata.lease_policy:type_name -> chronoqueue.api.common.v1.LeasePolicy
-	3,  // 5: chronoqueue.api.message.v1.Message.Metadata.current_attempt:type_name -> chronoqueue.api.message.v1.Message.Metadata.AttemptRuntime
-	8,  // 6: chronoqueue.api.message.v1.Message.Metadata.scheduled_time:type_name -> google.protobuf.Timestamp
-	4,  // 7: chronoqueue.api.message.v1.Message.Metadata.headers:type_name -> chronoqueue.api.message.v1.Message.Metadata.Header
-	8,  // 8: chronoqueue.api.message.v1.Message.Metadata.AttemptRuntime.lease_started_at:type_name -> google.protobuf.Timestamp
-	6,  // 9: chronoqueue.api.message.v1.Message.Metadata.AttemptRuntime.lease_extension_used:type_name -> google.protobuf.Duration
-	8,  // 10: chronoqueue.api.message.v1.Message.Metadata.AttemptRuntime.last_heartbeat_at:type_name -> google.protobuf.Timestamp
+	2,  // 0: nzovu.api.message.v1.Message.metadata:type_name -> nzovu.api.message.v1.Message.Metadata
+	5,  // 1: nzovu.api.message.v1.Message.Metadata.payload:type_name -> nzovu.api.common.v1.Payload
+	0,  // 2: nzovu.api.message.v1.Message.Metadata.state:type_name -> nzovu.api.message.v1.Message.Metadata.State
+	6,  // 3: nzovu.api.message.v1.Message.Metadata.lease_duration:type_name -> google.protobuf.Duration
+	7,  // 4: nzovu.api.message.v1.Message.Metadata.lease_policy:type_name -> nzovu.api.common.v1.LeasePolicy
+	3,  // 5: nzovu.api.message.v1.Message.Metadata.current_attempt:type_name -> nzovu.api.message.v1.Message.Metadata.AttemptRuntime
+	8,  // 6: nzovu.api.message.v1.Message.Metadata.scheduled_time:type_name -> google.protobuf.Timestamp
+	4,  // 7: nzovu.api.message.v1.Message.Metadata.headers:type_name -> nzovu.api.message.v1.Message.Metadata.Header
+	8,  // 8: nzovu.api.message.v1.Message.Metadata.AttemptRuntime.lease_started_at:type_name -> google.protobuf.Timestamp
+	6,  // 9: nzovu.api.message.v1.Message.Metadata.AttemptRuntime.lease_extension_used:type_name -> google.protobuf.Duration
+	8,  // 10: nzovu.api.message.v1.Message.Metadata.AttemptRuntime.last_heartbeat_at:type_name -> google.protobuf.Timestamp
 	11, // [11:11] is the sub-list for method output_type
 	11, // [11:11] is the sub-list for method input_type
 	11, // [11:11] is the sub-list for extension type_name

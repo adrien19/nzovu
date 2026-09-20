@@ -487,7 +487,7 @@ type CalendarSchedule struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// type: Primary scheduling pattern.
 	// Constrains which rule types can be used in rules field.
-	Type CalendarSchedule_ScheduleType `protobuf:"varint,1,opt,name=type,proto3,enum=chronoqueue.api.schedule.v1.CalendarSchedule_ScheduleType" json:"type,omitempty"`
+	Type CalendarSchedule_ScheduleType `protobuf:"varint,1,opt,name=type,proto3,enum=nzovu.api.schedule.v1.CalendarSchedule_ScheduleType" json:"type,omitempty"`
 	// rules: Specific scheduling rules (when to execute).
 	// Multiple rules = union of all matching times.
 	// Example: Two rules for "weekdays at 9 AM" and "weekdays at 5 PM"
@@ -810,7 +810,7 @@ func (*CalendarRule_Custom) isCalendarRule_Rule() {}
 type MonthlyRule struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// day_type: How to interpret day_value.
-	DayType MonthlyRule_DayType `protobuf:"varint,1,opt,name=day_type,json=dayType,proto3,enum=chronoqueue.api.schedule.v1.MonthlyRule_DayType" json:"day_type,omitempty"`
+	DayType MonthlyRule_DayType `protobuf:"varint,1,opt,name=day_type,json=dayType,proto3,enum=nzovu.api.schedule.v1.MonthlyRule_DayType" json:"day_type,omitempty"`
 	// day_value: Day number or weekday.
 	// For DAY_OF_MONTH: 1-31 (values > month length skip that month)
 	// For WEEKDAY_OF_MONTH/LAST_WEEKDAY: 1=Monday through 7=Sunday (ISO 8601)
@@ -1870,7 +1870,7 @@ type CalendarException struct {
 	// date: Date this exception applies to.
 	Date *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
 	// type: What kind of exception to apply.
-	Type CalendarException_ExceptionType `protobuf:"varint,2,opt,name=type,proto3,enum=chronoqueue.api.schedule.v1.CalendarException_ExceptionType" json:"type,omitempty"`
+	Type CalendarException_ExceptionType `protobuf:"varint,2,opt,name=type,proto3,enum=nzovu.api.schedule.v1.CalendarException_ExceptionType" json:"type,omitempty"`
 	// reschedule_to: Target date for RESCHEDULE exceptions.
 	// Required if type = RESCHEDULE.
 	RescheduleTo *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=reschedule_to,json=rescheduleTo,proto3" json:"reschedule_to,omitempty"`
@@ -1958,7 +1958,7 @@ type Schedule_Metadata struct {
 	// Each scheduled execution creates a new message with this payload.
 	// You can include template variables that get resolved at execution time.
 	Payload *v11.Payload            `protobuf:"bytes,1,opt,name=payload,proto3" json:"payload,omitempty"`
-	State   Schedule_Metadata_State `protobuf:"varint,2,opt,name=state,proto3,enum=chronoqueue.api.schedule.v1.Schedule_Metadata_State" json:"state,omitempty"`
+	State   Schedule_Metadata_State `protobuf:"varint,2,opt,name=state,proto3,enum=nzovu.api.schedule.v1.Schedule_Metadata_State" json:"state,omitempty"`
 	// schedule_config: Defines WHEN messages are posted.
 	// Choose one: cron_schedule (simple) or calendar_schedule (advanced).
 	//
@@ -2313,16 +2313,16 @@ var File_proto_schedule_v1_schedule_proto protoreflect.FileDescriptor
 
 const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\n" +
-	" proto/schedule/v1/schedule.proto\x12\x1bchronoqueue.api.schedule.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cproto/common/v1/common.proto\x1a\x1eproto/message/v1/message.proto\"\x9c\t\n" +
+	" proto/schedule/v1/schedule.proto\x12\x15nzovu.api.schedule.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cproto/common/v1/common.proto\x1a\x1eproto/message/v1/message.proto\"\xfe\b\n" +
 	"\bSchedule\x12\x1f\n" +
 	"\vschedule_id\x18\x01 \x01(\tR\n" +
-	"scheduleId\x12J\n" +
-	"\bmetadata\x18\x02 \x01(\v2..chronoqueue.api.schedule.v1.Schedule.MetadataR\bmetadata\x1a\xa2\b\n" +
-	"\bMetadata\x12<\n" +
-	"\apayload\x18\x01 \x01(\v2\".chronoqueue.api.common.v1.PayloadR\apayload\x12J\n" +
-	"\x05state\x18\x02 \x01(\x0e24.chronoqueue.api.schedule.v1.Schedule.Metadata.StateR\x05state\x12%\n" +
-	"\rcron_schedule\x18\x03 \x01(\tH\x00R\fcronSchedule\x12\\\n" +
-	"\x11calendar_schedule\x18\x10 \x01(\v2-.chronoqueue.api.schedule.v1.CalendarScheduleH\x00R\x10calendarSchedule\x12\x1d\n" +
+	"scheduleId\x12D\n" +
+	"\bmetadata\x18\x02 \x01(\v2(.nzovu.api.schedule.v1.Schedule.MetadataR\bmetadata\x1a\x8a\b\n" +
+	"\bMetadata\x126\n" +
+	"\apayload\x18\x01 \x01(\v2\x1c.nzovu.api.common.v1.PayloadR\apayload\x12D\n" +
+	"\x05state\x18\x02 \x01(\x0e2..nzovu.api.schedule.v1.Schedule.Metadata.StateR\x05state\x12%\n" +
+	"\rcron_schedule\x18\x03 \x01(\tH\x00R\fcronSchedule\x12V\n" +
+	"\x11calendar_schedule\x18\x10 \x01(\v2'.nzovu.api.schedule.v1.CalendarScheduleH\x00R\x10calendarSchedule\x12\x1d\n" +
 	"\n" +
 	"queue_name\x18\x04 \x01(\tR\tqueueName\x12#\n" +
 	"\vmessage_ids\x18\x05 \x03(\tB\x02\x18\x01R\n" +
@@ -2339,8 +2339,8 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\fmax_messages\x18\x0e \x01(\x03R\vmaxMessages\x12@\n" +
 	"\x0elease_duration\x18\x0f \x01(\v2\x19.google.protobuf.DurationR\rleaseDuration\x12\x1e\n" +
 	"\btimezone\x18\x11 \x01(\tB\x02\x18\x01R\btimezone\x127\n" +
-	"\tnext_runs\x18\x12 \x03(\v2\x1a.google.protobuf.TimestampR\bnextRuns\x12M\n" +
-	"\aheaders\x18\x13 \x03(\v23.chronoqueue.api.message.v1.Message.Metadata.HeaderR\aheaders\"=\n" +
+	"\tnext_runs\x18\x12 \x03(\v2\x1a.google.protobuf.TimestampR\bnextRuns\x12G\n" +
+	"\aheaders\x18\x13 \x03(\v2-.nzovu.api.message.v1.Message.Metadata.HeaderR\aheaders\"=\n" +
 	"\x05State\x12\r\n" +
 	"\tSCHEDULED\x10\x00\x12\f\n" +
 	"\bCANCELED\x10\x01\x12\v\n" +
@@ -2348,9 +2348,9 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\n" +
 	"\x06PAUSED\x10\x03B\x11\n" +
 	"\x0fschedule_configJ\x04\b\n" +
-	"\x10\vR\x0fexclusivity_key\"\x97\x05\n" +
-	"\x0fScheduleHistory\x12?\n" +
-	"\bmessages\x18\x01 \x03(\v2#.chronoqueue.api.message.v1.MessageR\bmessages\x12\x1f\n" +
+	"\x10\vR\x0fexclusivity_key\"\x85\x05\n" +
+	"\x0fScheduleHistory\x129\n" +
+	"\bmessages\x18\x01 \x03(\v2\x1d.nzovu.api.message.v1.MessageR\bmessages\x12\x1f\n" +
 	"\vschedule_id\x18\x02 \x01(\tR\n" +
 	"scheduleId\x125\n" +
 	"\bnext_run\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\anextRun\x125\n" +
@@ -2358,25 +2358,25 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12V\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12P\n" +
 	"\n" +
-	"executions\x18\a \x03(\v26.chronoqueue.api.schedule.v1.ScheduleHistory.ExecutionR\n" +
-	"executions\x1a\xe5\x01\n" +
+	"executions\x18\a \x03(\v20.nzovu.api.schedule.v1.ScheduleHistory.ExecutionR\n" +
+	"executions\x1a\xdf\x01\n" +
 	"\tExecution\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\tR\tmessageId\x12;\n" +
 	"\vexecuted_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"executedAt\x12\x18\n" +
 	"\asuccess\x18\x03 \x01(\bR\asuccess\x12#\n" +
-	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage\x12=\n" +
-	"\amessage\x18\x05 \x01(\v2#.chronoqueue.api.message.v1.MessageR\amessage\"\xca\x03\n" +
-	"\x10CalendarSchedule\x12N\n" +
-	"\x04type\x18\x01 \x01(\x0e2:.chronoqueue.api.schedule.v1.CalendarSchedule.ScheduleTypeR\x04type\x12?\n" +
-	"\x05rules\x18\x02 \x03(\v2).chronoqueue.api.schedule.v1.CalendarRuleR\x05rules\x12\x1a\n" +
-	"\btimezone\x18\x03 \x01(\tR\btimezone\x12Z\n" +
-	"\x11business_calendar\x18\x04 \x01(\v2-.chronoqueue.api.schedule.v1.BusinessCalendarR\x10businessCalendar\x12N\n" +
+	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage\x127\n" +
+	"\amessage\x18\x05 \x01(\v2\x1d.nzovu.api.message.v1.MessageR\amessage\"\xb2\x03\n" +
+	"\x10CalendarSchedule\x12H\n" +
+	"\x04type\x18\x01 \x01(\x0e24.nzovu.api.schedule.v1.CalendarSchedule.ScheduleTypeR\x04type\x129\n" +
+	"\x05rules\x18\x02 \x03(\v2#.nzovu.api.schedule.v1.CalendarRuleR\x05rules\x12\x1a\n" +
+	"\btimezone\x18\x03 \x01(\tR\btimezone\x12T\n" +
+	"\x11business_calendar\x18\x04 \x01(\v2'.nzovu.api.schedule.v1.BusinessCalendarR\x10businessCalendar\x12H\n" +
 	"\n" +
-	"exceptions\x18\x05 \x03(\v2..chronoqueue.api.schedule.v1.CalendarExceptionR\n" +
+	"exceptions\x18\x05 \x03(\v2(.nzovu.api.schedule.v1.CalendarExceptionR\n" +
 	"exceptions\"]\n" +
 	"\fScheduleType\x12\v\n" +
 	"\aMONTHLY\x10\x00\x12\n" +
@@ -2387,22 +2387,22 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\x06YEARLY\x10\x03\x12\x11\n" +
 	"\rBUSINESS_DAYS\x10\x04\x12\n" +
 	"\n" +
-	"\x06CUSTOM\x10\x05\"\x84\x05\n" +
-	"\fCalendarRule\x12D\n" +
-	"\amonthly\x18\x01 \x01(\v2(.chronoqueue.api.schedule.v1.MonthlyRuleH\x00R\amonthly\x12A\n" +
-	"\x06weekly\x18\x02 \x01(\v2'.chronoqueue.api.schedule.v1.WeeklyRuleH\x00R\x06weekly\x12>\n" +
-	"\x05daily\x18\x03 \x01(\v2&.chronoqueue.api.schedule.v1.DailyRuleH\x00R\x05daily\x12A\n" +
-	"\x06yearly\x18\x04 \x01(\v2'.chronoqueue.api.schedule.v1.YearlyRuleH\x00R\x06yearly\x12T\n" +
-	"\rbusiness_days\x18\x05 \x01(\v2-.chronoqueue.api.schedule.v1.BusinessDaysRuleH\x00R\fbusinessDays\x12A\n" +
-	"\x06custom\x18\x06 \x01(\v2'.chronoqueue.api.schedule.v1.CustomRuleH\x00R\x06custom\x12O\n" +
-	"\x0fexecution_times\x18\a \x03(\v2&.chronoqueue.api.schedule.v1.TimeOfDayR\x0eexecutionTimes\x129\n" +
+	"\x06CUSTOM\x10\x05\"\xda\x04\n" +
+	"\fCalendarRule\x12>\n" +
+	"\amonthly\x18\x01 \x01(\v2\".nzovu.api.schedule.v1.MonthlyRuleH\x00R\amonthly\x12;\n" +
+	"\x06weekly\x18\x02 \x01(\v2!.nzovu.api.schedule.v1.WeeklyRuleH\x00R\x06weekly\x128\n" +
+	"\x05daily\x18\x03 \x01(\v2 .nzovu.api.schedule.v1.DailyRuleH\x00R\x05daily\x12;\n" +
+	"\x06yearly\x18\x04 \x01(\v2!.nzovu.api.schedule.v1.YearlyRuleH\x00R\x06yearly\x12N\n" +
+	"\rbusiness_days\x18\x05 \x01(\v2'.nzovu.api.schedule.v1.BusinessDaysRuleH\x00R\fbusinessDays\x12;\n" +
+	"\x06custom\x18\x06 \x01(\v2!.nzovu.api.schedule.v1.CustomRuleH\x00R\x06custom\x12I\n" +
+	"\x0fexecution_times\x18\a \x03(\v2 .nzovu.api.schedule.v1.TimeOfDayR\x0eexecutionTimes\x129\n" +
 	"\n" +
 	"valid_from\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tvalidFrom\x12;\n" +
 	"\vvalid_until\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"validUntilB\x06\n" +
-	"\x04rule\"\x82\x02\n" +
-	"\vMonthlyRule\x12K\n" +
-	"\bday_type\x18\x01 \x01(\x0e20.chronoqueue.api.schedule.v1.MonthlyRule.DayTypeR\adayType\x12\x1b\n" +
+	"\x04rule\"\xfc\x01\n" +
+	"\vMonthlyRule\x12E\n" +
+	"\bday_type\x18\x01 \x01(\x0e2*.nzovu.api.schedule.v1.MonthlyRule.DayTypeR\adayType\x12\x1b\n" +
 	"\tday_value\x18\x02 \x01(\x05R\bdayValue\x12\x1e\n" +
 	"\n" +
 	"occurrence\x18\x03 \x01(\x05R\n" +
@@ -2433,15 +2433,15 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\x10BusinessDaysRule\x120\n" +
 	"\x14business_calendar_id\x18\x01 \x01(\tR\x12businessCalendarId\x12\x1d\n" +
 	"\n" +
-	"day_offset\x18\x02 \x01(\x05R\tdayOffset\"\xe1\x01\n" +
+	"day_offset\x18\x02 \x01(\x05R\tdayOffset\"\xdb\x01\n" +
 	"\n" +
 	"CustomRule\x12\x1e\n" +
 	"\n" +
 	"expression\x18\x01 \x01(\tR\n" +
 	"expression\x12\x1b\n" +
-	"\trule_type\x18\x02 \x01(\tR\bruleType\x12W\n" +
+	"\trule_type\x18\x02 \x01(\tR\bruleType\x12Q\n" +
 	"\n" +
-	"parameters\x18\x03 \x03(\v27.chronoqueue.api.schedule.v1.CustomRule.ParametersEntryR\n" +
+	"parameters\x18\x03 \x03(\v21.nzovu.api.schedule.v1.CustomRule.ParametersEntryR\n" +
 	"parameters\x1a=\n" +
 	"\x0fParametersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -2449,24 +2449,24 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\tTimeOfDay\x12\x12\n" +
 	"\x04hour\x18\x01 \x01(\x05R\x04hour\x12\x16\n" +
 	"\x06minute\x18\x02 \x01(\x05R\x06minute\x12\x16\n" +
-	"\x06second\x18\x03 \x01(\x05R\x06second\"\xea\x01\n" +
+	"\x06second\x18\x03 \x01(\x05R\x06second\"\xe4\x01\n" +
 	"\x10BusinessCalendar\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\tR\n" +
 	"calendarId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12@\n" +
-	"\bholidays\x18\x04 \x03(\v2$.chronoqueue.api.schedule.v1.HolidayR\bholidays\x12!\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12:\n" +
+	"\bholidays\x18\x04 \x03(\v2\x1e.nzovu.api.schedule.v1.HolidayR\bholidays\x12!\n" +
 	"\fweekend_days\x18\x05 \x03(\x05R\vweekendDays\x12\x1a\n" +
-	"\btimezone\x18\x06 \x01(\tR\btimezone\"\xb6\x01\n" +
+	"\btimezone\x18\x06 \x01(\tR\btimezone\"\xb0\x01\n" +
 	"\aHoliday\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12.\n" +
 	"\x04date\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04date\x12)\n" +
-	"\x10recurring_yearly\x18\x03 \x01(\bR\x0frecurringYearly\x12<\n" +
-	"\x04rule\x18\x04 \x01(\v2(.chronoqueue.api.schedule.v1.HolidayRuleR\x04rule\"\xf0\x01\n" +
-	"\vHolidayRule\x12>\n" +
-	"\x05fixed\x18\x01 \x01(\v2&.chronoqueue.api.schedule.v1.FixedDateH\x00R\x05fixed\x12G\n" +
-	"\brelative\x18\x02 \x01(\v2).chronoqueue.api.schedule.v1.RelativeDateH\x00R\brelative\x12P\n" +
-	"\reaster_offset\x18\x03 \x01(\v2).chronoqueue.api.schedule.v1.EasterOffsetH\x00R\feasterOffsetB\x06\n" +
+	"\x10recurring_yearly\x18\x03 \x01(\bR\x0frecurringYearly\x126\n" +
+	"\x04rule\x18\x04 \x01(\v2\".nzovu.api.schedule.v1.HolidayRuleR\x04rule\"\xde\x01\n" +
+	"\vHolidayRule\x128\n" +
+	"\x05fixed\x18\x01 \x01(\v2 .nzovu.api.schedule.v1.FixedDateH\x00R\x05fixed\x12A\n" +
+	"\brelative\x18\x02 \x01(\v2#.nzovu.api.schedule.v1.RelativeDateH\x00R\brelative\x12J\n" +
+	"\reaster_offset\x18\x03 \x01(\v2#.nzovu.api.schedule.v1.EasterOffsetH\x00R\feasterOffsetB\x06\n" +
 	"\x04rule\"3\n" +
 	"\tFixedDate\x12\x14\n" +
 	"\x05month\x18\x01 \x01(\x05R\x05month\x12\x10\n" +
@@ -2479,12 +2479,12 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"occurrence\"/\n" +
 	"\fEasterOffset\x12\x1f\n" +
 	"\vdays_offset\x18\x01 \x01(\x05R\n" +
-	"daysOffset\"\xed\x02\n" +
+	"daysOffset\"\xe1\x02\n" +
 	"\x11CalendarException\x12.\n" +
-	"\x04date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04date\x12P\n" +
-	"\x04type\x18\x02 \x01(\x0e2<.chronoqueue.api.schedule.v1.CalendarException.ExceptionTypeR\x04type\x12?\n" +
-	"\rreschedule_to\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\frescheduleTo\x12G\n" +
-	"\vextra_times\x18\x04 \x03(\v2&.chronoqueue.api.schedule.v1.TimeOfDayR\n" +
+	"\x04date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04date\x12J\n" +
+	"\x04type\x18\x02 \x01(\x0e26.nzovu.api.schedule.v1.CalendarException.ExceptionTypeR\x04type\x12?\n" +
+	"\rreschedule_to\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\frescheduleTo\x12A\n" +
+	"\vextra_times\x18\x04 \x03(\v2 .nzovu.api.schedule.v1.TimeOfDayR\n" +
 	"extraTimes\x12\x16\n" +
 	"\x06reason\x18\x05 \x01(\tR\x06reason\"4\n" +
 	"\rExceptionType\x12\b\n" +
@@ -2508,84 +2508,84 @@ func file_proto_schedule_v1_schedule_proto_rawDescGZIP() []byte {
 var file_proto_schedule_v1_schedule_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_proto_schedule_v1_schedule_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_proto_schedule_v1_schedule_proto_goTypes = []any{
-	(Schedule_Metadata_State)(0),         // 0: chronoqueue.api.schedule.v1.Schedule.Metadata.State
-	(CalendarSchedule_ScheduleType)(0),   // 1: chronoqueue.api.schedule.v1.CalendarSchedule.ScheduleType
-	(MonthlyRule_DayType)(0),             // 2: chronoqueue.api.schedule.v1.MonthlyRule.DayType
-	(CalendarException_ExceptionType)(0), // 3: chronoqueue.api.schedule.v1.CalendarException.ExceptionType
-	(*Schedule)(nil),                     // 4: chronoqueue.api.schedule.v1.Schedule
-	(*ScheduleHistory)(nil),              // 5: chronoqueue.api.schedule.v1.ScheduleHistory
-	(*CalendarSchedule)(nil),             // 6: chronoqueue.api.schedule.v1.CalendarSchedule
-	(*CalendarRule)(nil),                 // 7: chronoqueue.api.schedule.v1.CalendarRule
-	(*MonthlyRule)(nil),                  // 8: chronoqueue.api.schedule.v1.MonthlyRule
-	(*WeeklyRule)(nil),                   // 9: chronoqueue.api.schedule.v1.WeeklyRule
-	(*DailyRule)(nil),                    // 10: chronoqueue.api.schedule.v1.DailyRule
-	(*YearlyRule)(nil),                   // 11: chronoqueue.api.schedule.v1.YearlyRule
-	(*BusinessDaysRule)(nil),             // 12: chronoqueue.api.schedule.v1.BusinessDaysRule
-	(*CustomRule)(nil),                   // 13: chronoqueue.api.schedule.v1.CustomRule
-	(*TimeOfDay)(nil),                    // 14: chronoqueue.api.schedule.v1.TimeOfDay
-	(*BusinessCalendar)(nil),             // 15: chronoqueue.api.schedule.v1.BusinessCalendar
-	(*Holiday)(nil),                      // 16: chronoqueue.api.schedule.v1.Holiday
-	(*HolidayRule)(nil),                  // 17: chronoqueue.api.schedule.v1.HolidayRule
-	(*FixedDate)(nil),                    // 18: chronoqueue.api.schedule.v1.FixedDate
-	(*RelativeDate)(nil),                 // 19: chronoqueue.api.schedule.v1.RelativeDate
-	(*EasterOffset)(nil),                 // 20: chronoqueue.api.schedule.v1.EasterOffset
-	(*CalendarException)(nil),            // 21: chronoqueue.api.schedule.v1.CalendarException
-	(*Schedule_Metadata)(nil),            // 22: chronoqueue.api.schedule.v1.Schedule.Metadata
-	(*ScheduleHistory_Execution)(nil),    // 23: chronoqueue.api.schedule.v1.ScheduleHistory.Execution
-	nil,                                  // 24: chronoqueue.api.schedule.v1.CustomRule.ParametersEntry
-	(*v1.Message)(nil),                   // 25: chronoqueue.api.message.v1.Message
+	(Schedule_Metadata_State)(0),         // 0: nzovu.api.schedule.v1.Schedule.Metadata.State
+	(CalendarSchedule_ScheduleType)(0),   // 1: nzovu.api.schedule.v1.CalendarSchedule.ScheduleType
+	(MonthlyRule_DayType)(0),             // 2: nzovu.api.schedule.v1.MonthlyRule.DayType
+	(CalendarException_ExceptionType)(0), // 3: nzovu.api.schedule.v1.CalendarException.ExceptionType
+	(*Schedule)(nil),                     // 4: nzovu.api.schedule.v1.Schedule
+	(*ScheduleHistory)(nil),              // 5: nzovu.api.schedule.v1.ScheduleHistory
+	(*CalendarSchedule)(nil),             // 6: nzovu.api.schedule.v1.CalendarSchedule
+	(*CalendarRule)(nil),                 // 7: nzovu.api.schedule.v1.CalendarRule
+	(*MonthlyRule)(nil),                  // 8: nzovu.api.schedule.v1.MonthlyRule
+	(*WeeklyRule)(nil),                   // 9: nzovu.api.schedule.v1.WeeklyRule
+	(*DailyRule)(nil),                    // 10: nzovu.api.schedule.v1.DailyRule
+	(*YearlyRule)(nil),                   // 11: nzovu.api.schedule.v1.YearlyRule
+	(*BusinessDaysRule)(nil),             // 12: nzovu.api.schedule.v1.BusinessDaysRule
+	(*CustomRule)(nil),                   // 13: nzovu.api.schedule.v1.CustomRule
+	(*TimeOfDay)(nil),                    // 14: nzovu.api.schedule.v1.TimeOfDay
+	(*BusinessCalendar)(nil),             // 15: nzovu.api.schedule.v1.BusinessCalendar
+	(*Holiday)(nil),                      // 16: nzovu.api.schedule.v1.Holiday
+	(*HolidayRule)(nil),                  // 17: nzovu.api.schedule.v1.HolidayRule
+	(*FixedDate)(nil),                    // 18: nzovu.api.schedule.v1.FixedDate
+	(*RelativeDate)(nil),                 // 19: nzovu.api.schedule.v1.RelativeDate
+	(*EasterOffset)(nil),                 // 20: nzovu.api.schedule.v1.EasterOffset
+	(*CalendarException)(nil),            // 21: nzovu.api.schedule.v1.CalendarException
+	(*Schedule_Metadata)(nil),            // 22: nzovu.api.schedule.v1.Schedule.Metadata
+	(*ScheduleHistory_Execution)(nil),    // 23: nzovu.api.schedule.v1.ScheduleHistory.Execution
+	nil,                                  // 24: nzovu.api.schedule.v1.CustomRule.ParametersEntry
+	(*v1.Message)(nil),                   // 25: nzovu.api.message.v1.Message
 	(*timestamppb.Timestamp)(nil),        // 26: google.protobuf.Timestamp
-	(*v11.Payload)(nil),                  // 27: chronoqueue.api.common.v1.Payload
+	(*v11.Payload)(nil),                  // 27: nzovu.api.common.v1.Payload
 	(*durationpb.Duration)(nil),          // 28: google.protobuf.Duration
-	(*v1.Message_Metadata_Header)(nil),   // 29: chronoqueue.api.message.v1.Message.Metadata.Header
+	(*v1.Message_Metadata_Header)(nil),   // 29: nzovu.api.message.v1.Message.Metadata.Header
 }
 var file_proto_schedule_v1_schedule_proto_depIdxs = []int32{
-	22, // 0: chronoqueue.api.schedule.v1.Schedule.metadata:type_name -> chronoqueue.api.schedule.v1.Schedule.Metadata
-	25, // 1: chronoqueue.api.schedule.v1.ScheduleHistory.messages:type_name -> chronoqueue.api.message.v1.Message
-	26, // 2: chronoqueue.api.schedule.v1.ScheduleHistory.next_run:type_name -> google.protobuf.Timestamp
-	26, // 3: chronoqueue.api.schedule.v1.ScheduleHistory.last_run:type_name -> google.protobuf.Timestamp
-	26, // 4: chronoqueue.api.schedule.v1.ScheduleHistory.created_at:type_name -> google.protobuf.Timestamp
-	26, // 5: chronoqueue.api.schedule.v1.ScheduleHistory.updated_at:type_name -> google.protobuf.Timestamp
-	23, // 6: chronoqueue.api.schedule.v1.ScheduleHistory.executions:type_name -> chronoqueue.api.schedule.v1.ScheduleHistory.Execution
-	1,  // 7: chronoqueue.api.schedule.v1.CalendarSchedule.type:type_name -> chronoqueue.api.schedule.v1.CalendarSchedule.ScheduleType
-	7,  // 8: chronoqueue.api.schedule.v1.CalendarSchedule.rules:type_name -> chronoqueue.api.schedule.v1.CalendarRule
-	15, // 9: chronoqueue.api.schedule.v1.CalendarSchedule.business_calendar:type_name -> chronoqueue.api.schedule.v1.BusinessCalendar
-	21, // 10: chronoqueue.api.schedule.v1.CalendarSchedule.exceptions:type_name -> chronoqueue.api.schedule.v1.CalendarException
-	8,  // 11: chronoqueue.api.schedule.v1.CalendarRule.monthly:type_name -> chronoqueue.api.schedule.v1.MonthlyRule
-	9,  // 12: chronoqueue.api.schedule.v1.CalendarRule.weekly:type_name -> chronoqueue.api.schedule.v1.WeeklyRule
-	10, // 13: chronoqueue.api.schedule.v1.CalendarRule.daily:type_name -> chronoqueue.api.schedule.v1.DailyRule
-	11, // 14: chronoqueue.api.schedule.v1.CalendarRule.yearly:type_name -> chronoqueue.api.schedule.v1.YearlyRule
-	12, // 15: chronoqueue.api.schedule.v1.CalendarRule.business_days:type_name -> chronoqueue.api.schedule.v1.BusinessDaysRule
-	13, // 16: chronoqueue.api.schedule.v1.CalendarRule.custom:type_name -> chronoqueue.api.schedule.v1.CustomRule
-	14, // 17: chronoqueue.api.schedule.v1.CalendarRule.execution_times:type_name -> chronoqueue.api.schedule.v1.TimeOfDay
-	26, // 18: chronoqueue.api.schedule.v1.CalendarRule.valid_from:type_name -> google.protobuf.Timestamp
-	26, // 19: chronoqueue.api.schedule.v1.CalendarRule.valid_until:type_name -> google.protobuf.Timestamp
-	2,  // 20: chronoqueue.api.schedule.v1.MonthlyRule.day_type:type_name -> chronoqueue.api.schedule.v1.MonthlyRule.DayType
-	26, // 21: chronoqueue.api.schedule.v1.WeeklyRule.start_week:type_name -> google.protobuf.Timestamp
-	26, // 22: chronoqueue.api.schedule.v1.DailyRule.start_date:type_name -> google.protobuf.Timestamp
-	24, // 23: chronoqueue.api.schedule.v1.CustomRule.parameters:type_name -> chronoqueue.api.schedule.v1.CustomRule.ParametersEntry
-	16, // 24: chronoqueue.api.schedule.v1.BusinessCalendar.holidays:type_name -> chronoqueue.api.schedule.v1.Holiday
-	26, // 25: chronoqueue.api.schedule.v1.Holiday.date:type_name -> google.protobuf.Timestamp
-	17, // 26: chronoqueue.api.schedule.v1.Holiday.rule:type_name -> chronoqueue.api.schedule.v1.HolidayRule
-	18, // 27: chronoqueue.api.schedule.v1.HolidayRule.fixed:type_name -> chronoqueue.api.schedule.v1.FixedDate
-	19, // 28: chronoqueue.api.schedule.v1.HolidayRule.relative:type_name -> chronoqueue.api.schedule.v1.RelativeDate
-	20, // 29: chronoqueue.api.schedule.v1.HolidayRule.easter_offset:type_name -> chronoqueue.api.schedule.v1.EasterOffset
-	26, // 30: chronoqueue.api.schedule.v1.CalendarException.date:type_name -> google.protobuf.Timestamp
-	3,  // 31: chronoqueue.api.schedule.v1.CalendarException.type:type_name -> chronoqueue.api.schedule.v1.CalendarException.ExceptionType
-	26, // 32: chronoqueue.api.schedule.v1.CalendarException.reschedule_to:type_name -> google.protobuf.Timestamp
-	14, // 33: chronoqueue.api.schedule.v1.CalendarException.extra_times:type_name -> chronoqueue.api.schedule.v1.TimeOfDay
-	27, // 34: chronoqueue.api.schedule.v1.Schedule.Metadata.payload:type_name -> chronoqueue.api.common.v1.Payload
-	0,  // 35: chronoqueue.api.schedule.v1.Schedule.Metadata.state:type_name -> chronoqueue.api.schedule.v1.Schedule.Metadata.State
-	6,  // 36: chronoqueue.api.schedule.v1.Schedule.Metadata.calendar_schedule:type_name -> chronoqueue.api.schedule.v1.CalendarSchedule
-	26, // 37: chronoqueue.api.schedule.v1.Schedule.Metadata.next_run:type_name -> google.protobuf.Timestamp
-	26, // 38: chronoqueue.api.schedule.v1.Schedule.Metadata.last_run:type_name -> google.protobuf.Timestamp
-	26, // 39: chronoqueue.api.schedule.v1.Schedule.Metadata.created_at:type_name -> google.protobuf.Timestamp
-	26, // 40: chronoqueue.api.schedule.v1.Schedule.Metadata.updated_at:type_name -> google.protobuf.Timestamp
-	28, // 41: chronoqueue.api.schedule.v1.Schedule.Metadata.lease_duration:type_name -> google.protobuf.Duration
-	26, // 42: chronoqueue.api.schedule.v1.Schedule.Metadata.next_runs:type_name -> google.protobuf.Timestamp
-	29, // 43: chronoqueue.api.schedule.v1.Schedule.Metadata.headers:type_name -> chronoqueue.api.message.v1.Message.Metadata.Header
-	26, // 44: chronoqueue.api.schedule.v1.ScheduleHistory.Execution.executed_at:type_name -> google.protobuf.Timestamp
-	25, // 45: chronoqueue.api.schedule.v1.ScheduleHistory.Execution.message:type_name -> chronoqueue.api.message.v1.Message
+	22, // 0: nzovu.api.schedule.v1.Schedule.metadata:type_name -> nzovu.api.schedule.v1.Schedule.Metadata
+	25, // 1: nzovu.api.schedule.v1.ScheduleHistory.messages:type_name -> nzovu.api.message.v1.Message
+	26, // 2: nzovu.api.schedule.v1.ScheduleHistory.next_run:type_name -> google.protobuf.Timestamp
+	26, // 3: nzovu.api.schedule.v1.ScheduleHistory.last_run:type_name -> google.protobuf.Timestamp
+	26, // 4: nzovu.api.schedule.v1.ScheduleHistory.created_at:type_name -> google.protobuf.Timestamp
+	26, // 5: nzovu.api.schedule.v1.ScheduleHistory.updated_at:type_name -> google.protobuf.Timestamp
+	23, // 6: nzovu.api.schedule.v1.ScheduleHistory.executions:type_name -> nzovu.api.schedule.v1.ScheduleHistory.Execution
+	1,  // 7: nzovu.api.schedule.v1.CalendarSchedule.type:type_name -> nzovu.api.schedule.v1.CalendarSchedule.ScheduleType
+	7,  // 8: nzovu.api.schedule.v1.CalendarSchedule.rules:type_name -> nzovu.api.schedule.v1.CalendarRule
+	15, // 9: nzovu.api.schedule.v1.CalendarSchedule.business_calendar:type_name -> nzovu.api.schedule.v1.BusinessCalendar
+	21, // 10: nzovu.api.schedule.v1.CalendarSchedule.exceptions:type_name -> nzovu.api.schedule.v1.CalendarException
+	8,  // 11: nzovu.api.schedule.v1.CalendarRule.monthly:type_name -> nzovu.api.schedule.v1.MonthlyRule
+	9,  // 12: nzovu.api.schedule.v1.CalendarRule.weekly:type_name -> nzovu.api.schedule.v1.WeeklyRule
+	10, // 13: nzovu.api.schedule.v1.CalendarRule.daily:type_name -> nzovu.api.schedule.v1.DailyRule
+	11, // 14: nzovu.api.schedule.v1.CalendarRule.yearly:type_name -> nzovu.api.schedule.v1.YearlyRule
+	12, // 15: nzovu.api.schedule.v1.CalendarRule.business_days:type_name -> nzovu.api.schedule.v1.BusinessDaysRule
+	13, // 16: nzovu.api.schedule.v1.CalendarRule.custom:type_name -> nzovu.api.schedule.v1.CustomRule
+	14, // 17: nzovu.api.schedule.v1.CalendarRule.execution_times:type_name -> nzovu.api.schedule.v1.TimeOfDay
+	26, // 18: nzovu.api.schedule.v1.CalendarRule.valid_from:type_name -> google.protobuf.Timestamp
+	26, // 19: nzovu.api.schedule.v1.CalendarRule.valid_until:type_name -> google.protobuf.Timestamp
+	2,  // 20: nzovu.api.schedule.v1.MonthlyRule.day_type:type_name -> nzovu.api.schedule.v1.MonthlyRule.DayType
+	26, // 21: nzovu.api.schedule.v1.WeeklyRule.start_week:type_name -> google.protobuf.Timestamp
+	26, // 22: nzovu.api.schedule.v1.DailyRule.start_date:type_name -> google.protobuf.Timestamp
+	24, // 23: nzovu.api.schedule.v1.CustomRule.parameters:type_name -> nzovu.api.schedule.v1.CustomRule.ParametersEntry
+	16, // 24: nzovu.api.schedule.v1.BusinessCalendar.holidays:type_name -> nzovu.api.schedule.v1.Holiday
+	26, // 25: nzovu.api.schedule.v1.Holiday.date:type_name -> google.protobuf.Timestamp
+	17, // 26: nzovu.api.schedule.v1.Holiday.rule:type_name -> nzovu.api.schedule.v1.HolidayRule
+	18, // 27: nzovu.api.schedule.v1.HolidayRule.fixed:type_name -> nzovu.api.schedule.v1.FixedDate
+	19, // 28: nzovu.api.schedule.v1.HolidayRule.relative:type_name -> nzovu.api.schedule.v1.RelativeDate
+	20, // 29: nzovu.api.schedule.v1.HolidayRule.easter_offset:type_name -> nzovu.api.schedule.v1.EasterOffset
+	26, // 30: nzovu.api.schedule.v1.CalendarException.date:type_name -> google.protobuf.Timestamp
+	3,  // 31: nzovu.api.schedule.v1.CalendarException.type:type_name -> nzovu.api.schedule.v1.CalendarException.ExceptionType
+	26, // 32: nzovu.api.schedule.v1.CalendarException.reschedule_to:type_name -> google.protobuf.Timestamp
+	14, // 33: nzovu.api.schedule.v1.CalendarException.extra_times:type_name -> nzovu.api.schedule.v1.TimeOfDay
+	27, // 34: nzovu.api.schedule.v1.Schedule.Metadata.payload:type_name -> nzovu.api.common.v1.Payload
+	0,  // 35: nzovu.api.schedule.v1.Schedule.Metadata.state:type_name -> nzovu.api.schedule.v1.Schedule.Metadata.State
+	6,  // 36: nzovu.api.schedule.v1.Schedule.Metadata.calendar_schedule:type_name -> nzovu.api.schedule.v1.CalendarSchedule
+	26, // 37: nzovu.api.schedule.v1.Schedule.Metadata.next_run:type_name -> google.protobuf.Timestamp
+	26, // 38: nzovu.api.schedule.v1.Schedule.Metadata.last_run:type_name -> google.protobuf.Timestamp
+	26, // 39: nzovu.api.schedule.v1.Schedule.Metadata.created_at:type_name -> google.protobuf.Timestamp
+	26, // 40: nzovu.api.schedule.v1.Schedule.Metadata.updated_at:type_name -> google.protobuf.Timestamp
+	28, // 41: nzovu.api.schedule.v1.Schedule.Metadata.lease_duration:type_name -> google.protobuf.Duration
+	26, // 42: nzovu.api.schedule.v1.Schedule.Metadata.next_runs:type_name -> google.protobuf.Timestamp
+	29, // 43: nzovu.api.schedule.v1.Schedule.Metadata.headers:type_name -> nzovu.api.message.v1.Message.Metadata.Header
+	26, // 44: nzovu.api.schedule.v1.ScheduleHistory.Execution.executed_at:type_name -> google.protobuf.Timestamp
+	25, // 45: nzovu.api.schedule.v1.ScheduleHistory.Execution.message:type_name -> nzovu.api.message.v1.Message
 	46, // [46:46] is the sub-list for method output_type
 	46, // [46:46] is the sub-list for method input_type
 	46, // [46:46] is the sub-list for extension type_name

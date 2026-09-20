@@ -223,7 +223,7 @@ For complete documentation and setup guides, visit the [TypeScript SDK repositor
 
 Documentation currently lives alongside the relevant components:
 
-- Start the HTTP gateway with `--dev` or `--enable-api-docs` and open `/docs/` for the embedded Swagger UI, or inspect the generated [OpenAPI specification](./pkg/gateway/chronoqueue.swagger.json).
+- Start the HTTP gateway with `--dev` or `--enable-api-docs` and open `/docs/` for the embedded Swagger UI, or inspect the generated [OpenAPI specification](./pkg/gateway/nzovu.swagger.json).
 - See the [2.0 release and migration guide](./RELEASE_2.0.md) for verified breaking changes and upgrade boundaries.
 - See the [API validation and error contract](./API_VALIDATION.md) for queue/message configuration rules and gRPC-to-HTTP error mappings.
 - See the [deployment guide](./deploy/README.md), [monitoring guide](./monitoring/README.md), [test guide](./tests/README.md), and [examples](./examples/README.md).

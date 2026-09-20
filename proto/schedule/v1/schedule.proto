@@ -4,7 +4,7 @@
 // Schedules enable cron-like and calendar-based task automation.
 
 syntax = "proto3";
-package chronoqueue.api.schedule.v1;
+package nzovu.api.schedule.v1;
 
 option go_package = "github.com/adrien19/nzovu/api/schedule/v1;schedule";
 
@@ -63,7 +63,7 @@ message Schedule {
         // payload: Template payload for messages created by this schedule.
         // Each scheduled execution creates a new message with this payload.
         // You can include template variables that get resolved at execution time.
-    chronoqueue.api.common.v1.Payload payload = 1;
+    nzovu.api.common.v1.Payload payload = 1;
 
         // State represents the schedule lifecycle stage.
     enum State {
@@ -159,7 +159,7 @@ message Schedule {
 
         // headers: Optional ordered headers copied to every message created by
         // this schedule. Values are opaque bytes and duplicate keys are allowed.
-    repeated chronoqueue.api.message.v1.Message.Metadata.Header headers = 19;
+    repeated nzovu.api.message.v1.Message.Metadata.Header headers = 19;
   }
 
     // metadata: Schedule configuration and execution state.
@@ -171,7 +171,7 @@ message Schedule {
 message ScheduleHistory {
     // messages: Messages created by this schedule.
     // Limited to recent history (e.g., last 100 executions).
-  repeated chronoqueue.api.message.v1.Message messages = 1;
+  repeated nzovu.api.message.v1.Message messages = 1;
 
     // schedule_id: The schedule this history belongs to.
   string schedule_id = 2;
@@ -207,7 +207,7 @@ message ScheduleHistory {
 
         // message: Immutable snapshot of the generated message. This remains
         // available after the live message is removed by its retention policy.
-    chronoqueue.api.message.v1.Message message = 5;
+    nzovu.api.message.v1.Message message = 5;
   }
 }
 

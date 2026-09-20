@@ -26,7 +26,7 @@ import (
 	"github.com/adrien19/nzovu/pkg/version"
 )
 
-//go:embed chronoqueue.swagger.json
+//go:embed nzovu.swagger.json
 var swaggerSpec []byte
 
 //go:embed swagger-ui/*
