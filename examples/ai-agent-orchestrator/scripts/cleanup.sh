@@ -9,14 +9,14 @@ echo "🧹 AI Agent Orchestrator - Cleanup"
 echo "==================================="
 echo ""
 
-# Check if chronoqueue server is running
-echo "Checking ChronoQueue server..."
+# Check if nzovu server is running
+echo "Checking Nzovu server..."
 if ! timeout 2 bash -c "echo > /dev/tcp/localhost/9000" 2>/dev/null; then
-    echo "❌ ChronoQueue server not running at localhost:9000"
+    echo "❌ Nzovu server not running at localhost:9000"
     echo "   Cannot clean up queues without server connection"
     exit 1
 fi
-echo "✓ ChronoQueue server is running"
+echo "✓ Nzovu server is running"
 echo ""
 
 echo "This will delete all AI orchestrator queues and their data."

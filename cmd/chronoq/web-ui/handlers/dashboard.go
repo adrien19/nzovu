@@ -233,7 +233,7 @@ func (h *DashboardHandler) LiveOverview(w http.ResponseWriter, r *http.Request) 
 
 func (h *DashboardHandler) writeLiveOverviewError(w http.ResponseWriter, operation string, err error) {
 	mapped := mapRPCError(err)
-	h.logger.ErrorWithFields("ChronoQueue RPC failed", "error", err, "operation", operation, "status", mapped.statusCode)
+	h.logger.ErrorWithFields("Nzovu RPC failed", "error", err, "operation", operation, "status", mapped.statusCode)
 	if _, writeErr := fmt.Fprintf(w, "event: overview\ndata: <div class=\"rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300\">%s</div>\n\n", html.EscapeString(mapped.message)); writeErr != nil {
 		h.logger.ErrorWithFields("Failed to write live overview error event", "error", writeErr, "operation", operation)
 		return

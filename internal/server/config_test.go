@@ -542,7 +542,7 @@ func TestMetricsHTTPHandler(t *testing.T) {
 			request.Header.Set("Authorization", authorization)
 			handler.ServeHTTP(unauthorized, request)
 			assert.Equal(t, http.StatusUnauthorized, unauthorized.Code)
-			assert.Equal(t, `Bearer realm="ChronoQueue metrics"`, unauthorized.Header().Get("WWW-Authenticate"))
+			assert.Equal(t, `Bearer realm="Nzovu metrics"`, unauthorized.Header().Get("WWW-Authenticate"))
 		}
 
 		authorized := httptest.NewRecorder()

@@ -25,7 +25,7 @@ import (
 //go:embed templates/* static/*
 var content embed.FS
 
-// UIServer serves the ChronoQueue web-UI.
+// UIServer serves the Nzovu web-UI.
 type UIServer struct {
 	templates         *template.Template
 	store             *clusterstore.Store

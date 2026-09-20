@@ -1,12 +1,12 @@
 package integration
 
-// Package integration provides integration tests for ChronoQueue UI.
+// Package integration provides integration tests for Nzovu UI.
 //
 // These tests validate the UI's HTTP handlers and interactions with the
-// ChronoQueue server using real containers via Testcontainers.
+// Nzovu server using real containers via Testcontainers.
 //
 // The UI server is started in-process and connects to the containerized
-// ChronoQueue server over gRPC with its configured SQL backend.
+// Nzovu server over gRPC with its configured SQL backend.
 //
 // Prerequisites:
 //   - Build the test Docker image first: make build-test-image
@@ -157,7 +157,7 @@ func TestUIIntegration_Dashboard_Success(t *testing.T) {
 
 	// Verify expected content in dashboard
 	bodyStr := string(body)
-	assert.Contains(t, bodyStr, "ChronoQueue", "Dashboard should contain ChronoQueue title")
+	assert.Contains(t, bodyStr, "Nzovu", "Dashboard should contain Nzovu title")
 	assert.Contains(t, bodyStr, "Broker state", "Dashboard should contain Broker state section")
 	assert.Contains(t, bodyStr, "Queues", "Dashboard should display queues section")
 }

@@ -1,6 +1,6 @@
-# Contributing to ChronoQueue
+# Contributing to Nzovu
 
-Thank you for your interest in contributing to ChronoQueue! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to Nzovu! This document provides guidelines and instructions for contributing.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ We are committed to providing a welcoming and inclusive environment. Please be r
 
 #### 🎯 **Recommended: Using Dev Container** (Preferred Method)
 
-The **dev container** is the recommended approach for developing ChronoQueue. It provides a consistent, portable development environment with all dependencies pre-installed.
+The **dev container** is the recommended approach for developing Nzovu. It provides a consistent, portable development environment with all dependencies pre-installed.
 
 **Benefits:**
 
@@ -48,8 +48,8 @@ The **dev container** is the recommended approach for developing ChronoQueue. It
 2. **Fork and clone the repository:**
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/chronoqueue.git
-   cd chronoqueue
+   git clone https://github.com/YOUR_USERNAME/nzovu.git
+   cd nzovu
    ```
 
 3. **Open in dev container:**
@@ -106,8 +106,8 @@ If you cannot use dev containers, you can set up manually:
 1. **Fork and clone the repository:**
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/chronoqueue.git
-   cd chronoqueue
+   git clone https://github.com/YOUR_USERNAME/nzovu.git
+   cd nzovu
    ```
 
 2. **Install dependencies:**
@@ -216,11 +216,11 @@ git push origin feature/your-feature-name
 
 ### Before Submitting
 
-1. **Rebase on latest develop**
+1. **Rebase on latest main**
 
    ```bash
    git fetch upstream
-   git rebase upstream/develop
+   git rebase upstream/main
    ```
 
 2. **Run all checks locally**
@@ -349,7 +349,7 @@ func (qm *QueueManager) CreateQueue(ctx context.Context, cfg *QueueConfig) error
    ```
 
 2. **Integration Tests**
-   - Test with real dependencies (PostgreSQL/SQLite, ChronoQueue server)
+   - Test with real dependencies (PostgreSQL/SQLite, Nzovu server)
    - Place in `tests/integration/`
    - Use build tag `//go:build integration`
    - **Note**: Integration tests use [testcontainers](https://golang.testcontainers.org/) to automatically manage Docker containers for PostgreSQL, SQLite, and other dependencies. When using the dev container, Docker-in-Docker is pre-configured, so tests work seamlessly without any additional setup.
@@ -382,7 +382,7 @@ make test-integration
 make test-e2e
 
 # Specific package
-go test ./pkg/queue/...
+go test -tags test_dep ./pkg/...
 
 # With coverage (unit tests)
 make ci-test
@@ -397,11 +397,11 @@ make ci-test-all
 make test-race
 ```
 
-**Testcontainers Note**: Integration and E2E tests automatically start required services (PostgreSQL/SQLite, ChronoQueue) in Docker containers and clean them up after tests complete. No manual service management needed!
+**Testcontainers Note**: Integration and E2E tests automatically start required services (PostgreSQL/SQLite, Nzovu) in Docker containers and clean them up after tests complete. No manual service management needed!
 
 ## CI/CD Pipeline
 
-All pull requests automatically trigger our CI pipeline. See [CI/CD Guide](.github/CI_CD_GUIDE.md) for details.
+All pull requests automatically trigger our CI pipeline. See [CI/CD Guide](.github/workflows/ci.yml) for details.
 
 ### CI Checks
 
@@ -431,7 +431,7 @@ make ci-build
 ## Project Structure
 
 ```
-chronoqueue/
+nzovu/
 ├── api/                 # Generated gRPC code
 ├── cmd/                 # Command-line tools
 ├── client/              # Go client SDK
@@ -483,7 +483,7 @@ If you're modifying `.proto` files:
 
 - **Questions**: Open a GitHub Discussion
 - **Bugs**: Open a GitHub Issue
-- **Security**: Email <security@chronoqueue.io> (or repository owner)
+- **Security**: Contact the repository owner privately.
 
 ## Recognition
 
@@ -499,4 +499,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-Thank you for contributing to ChronoQueue! 🚀
+Thank you for contributing to Nzovu! 🚀

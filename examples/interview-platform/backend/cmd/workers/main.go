@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"os"
 	"os/signal"
@@ -15,27 +16,31 @@ import (
 )
 
 func main() {
-	log.Println("Starting ChronoQueue Workers...")
+	serverAddr := flag.String("server", "localhost:50051", "Nzovu gRPC address")
+	dbPath := flag.String("db", "api_interview_platform.db", "SQLite database path shared with the API")
+	flag.Parse()
+
+	log.Println("Starting Nzovu Workers...")
 
 	// Initialize database (shared with API)
-	database, err := db.NewDatabase("/workspaces/chronoqueue/examples/interview-platform/logs/api_interview_platform.db")
+	database, err := db.NewDatabase(*dbPath)
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 	defer database.Close()
 	log.Println("Database initialized successfully")
 
-	// Connect to ChronoQueue
-	queueClient, err := client.NewChronoQueueClient("127.0.0.1:9000", client.ClientOptions{
+	// Connect to Nzovu
+	queueClient, err := client.NewChronoQueueClient(*serverAddr, client.ClientOptions{
 		MaxRetries:     10,
 		InitialBackoff: 1 * time.Second,
 		MaxBackoff:     10 * time.Second,
 	})
 	if err != nil {
-		log.Fatalf("Failed to connect to ChronoQueue: %v", err)
+		log.Fatalf("Failed to connect to Nzovu: %v", err)
 	}
 	defer queueClient.Close()
-	log.Println("Connected to ChronoQueue at 127.0.0.1:9000")
+	log.Printf("Connected to Nzovu at %s", *serverAddr)
 
 	// Create context for graceful shutdown
 	ctx, cancel := context.WithCancel(context.Background())

@@ -1,4 +1,4 @@
-// ChronoQueue Schema API v1
+// Nzovu Schema API v1
 //
 // This file defines structures for message payload validation.
 // Schemas ensure message payloads conform to expected structure before processing.
@@ -23,7 +23,7 @@ option go_package = "github.com/adrien19/nzovu/api/schema/v1;schema";
 
 // Schema defines a message validation schema.
 //
-// ChronoQueue validates message payloads against schemas before accepting them.
+// Nzovu validates message payloads against schemas before accepting them.
 // This prevents invalid messages from entering your queues.
 //
 // Schema evolution:
@@ -100,11 +100,11 @@ message Schema {
     
     // content_type: Schema format identifier.
     // Supported value: "json-schema" (default), using JSON Schema Draft 7.
-    // ChronoQueue validates content syntax when registering schema.
+    // Nzovu validates content syntax when registering schema.
     string content_type = 6;
     
     // created_at: When this schema version was registered (Unix milliseconds).
-    // Automatically set by ChronoQueue.
+    // Automatically set by Nzovu.
     int64 created_at = 7;
     
     // updated_at: When this schema was last modified (Unix milliseconds).
@@ -277,7 +277,7 @@ enum ErrorCode {
     CONTENT_TYPE_INVALID = 11;
     
     // PAYLOAD_SIZE_EXCEEDED: Payload exceeds size limit.
-    // ChronoQueue has a default 1MB payload limit.
+    // Nzovu has a default 1MB payload limit.
     PAYLOAD_SIZE_EXCEEDED = 12;
     
     // SCHEMA_VALIDATION_FAILED: Schema content itself is invalid.

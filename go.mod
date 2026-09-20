@@ -1,4 +1,4 @@
-// go.mod for refactored ChronoQueue with gRPC-Ecosystem
+// go.mod for refactored Nzovu with gRPC-Ecosystem
 
 module github.com/adrien19/nzovu
 

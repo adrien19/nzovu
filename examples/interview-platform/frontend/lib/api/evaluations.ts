@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { httpClient } from "./client";
 import { interviewsApi } from "./interviews";
 import type {
     Evaluation,
@@ -28,7 +28,7 @@ export const evaluationsApi = {
         params.append('page', page.toString());
         params.append('pageSize', pageSize.toString());
 
-        const response = await apiClient.get(`/api/evaluations?${params}`);
+        const response = await httpClient.get(`/api/evaluations?${params}`);
         return response.data;
     },
 
@@ -36,7 +36,7 @@ export const evaluationsApi = {
     getByInterview: async (
         interviewId: string
     ): Promise<ApiResponse<Evaluation[]>> => {
-        const response = await apiClient.get(
+        const response = await httpClient.get(
             `/api/interviews/${interviewId}/evaluations`
         );
         return response.data;
@@ -44,7 +44,7 @@ export const evaluationsApi = {
 
     // Get evaluation by ID
     getById: async (id: string): Promise<ApiResponse<Evaluation>> => {
-        const response = await apiClient.get(`/api/evaluations/${id}`);
+        const response = await httpClient.get(`/api/evaluations/${id}`);
         return response.data;
     },
 
@@ -52,7 +52,7 @@ export const evaluationsApi = {
     create: async (
         data: CreateEvaluationRequest
     ): Promise<ApiResponse<Evaluation>> => {
-        const response = await apiClient.post("/api/evaluations", data);
+        const response = await httpClient.post("/api/evaluations", data);
         return response.data;
     },
 
@@ -61,13 +61,13 @@ export const evaluationsApi = {
         id: string,
         data: Partial<CreateEvaluationRequest>
     ): Promise<ApiResponse<Evaluation>> => {
-        const response = await apiClient.put(`/api/evaluations/${id}`, data);
+        const response = await httpClient.put(`/api/evaluations/${id}`, data);
         return response.data;
     },
 
     // Get pending evaluations for current user
     getPending: async (): Promise<ApiResponse<Evaluation[]>> => {
-        const response = await apiClient.get("/api/evaluations/pending");
+        const response = await httpClient.get("/api/evaluations/pending");
         return response.data;
     },
 

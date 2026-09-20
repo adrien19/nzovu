@@ -80,3 +80,36 @@ revision against that same storage, and verify both records and the schema.
 Restore the previous environment and monitoring configuration together with
 the previous image. This runtime rollback rehearsal targets the pre-PR4 Nzovu
 revision; it does not restore the pre-migration ChronoQueue gRPC namespace.
+
+## Source and visible identifiers
+
+The destination repository is `github.com/adrien19/nzovu`, with `main` as its
+default branch. Contributions use feature branches and pull requests against
+`main`. Source history and explicit ChronoQueue attribution remain intact.
+
+The binary, help, UI, health responses and embedded API docs identify Nzovu.
+The HTTP response header is now `X-Nzovu-Version`, populated from build metadata;
+`X-ChronoQueue-Version` is no longer emitted. `/v1` HTTP routes remain unchanged.
+Both `x-nzovu-` and legacy `x-chronoqueue-` message-header prefixes are reserved;
+legacy restrictions are retained to prevent clients impersonating internal metadata.
+Both `nzovu:` and `chronoqueue:` message-ID prefixes remain reserved (colons are
+also rejected by the ID character rules).
+
+Remaining old-name references are intentional in these categories:
+
+| Category | Retained references and reason |
+| --- | --- |
+| Source identifiers | `cmd/chronoq`, `pkg/chronoqueue`, `client.ChronoQueueClient`, `NewChronoQueueClient`, related internal variables, imports and test names/temporary fixtures. The internal `chronoqueue-gateway-client-id` metadata key remains stable. Renaming these is a separate source-API refactor. UI `cq-*` CSS classes are internal. |
+| Persistent identities | Database/user defaults, SQLite filenames, backup names, Vault secret paths, migration advisory lock and legacy UI configuration paths. Changing these can select different data or keys. |
+| Runtime compatibility | `CHRONOQUEUE_*` fallbacks, explicit saved `apiKeyEnv` values, reserved header/ID prefixes and their tests. Installers intentionally reject legacy overrides. |
+| Protocol history | Old gRPC namespace rejection tests, old serialized fixtures and API migration instructions. These are not current endpoints. |
+| Historical records | ADRs, migration instructions and attribution to the original ChronoQueue repository. Historical links are not redirected to invented Nzovu releases. |
+| External projects | The separately maintained `chronoqueue-typescript-sdk` repository. Nzovu compatibility is unverified; no renamed external package is assumed. |
+| Audit guards | Tests that search for forbidden legacy metrics or installer identity, plus this inventory. |
+
+Examples use checkout-relative paths. The interview API and workers accept
+`-server` (default `localhost:50051`) and `-db` (default
+`api_interview_platform.db` relative to the working directory). Their Makefile
+passes a shared absolute database path under the example's `logs` directory.
+The former example-only `-chronoqueue` flag is replaced by `-server`; update
+custom launch scripts. The example API listens on port 3001 by default.

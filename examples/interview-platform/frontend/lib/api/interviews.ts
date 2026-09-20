@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { httpClient } from "./client";
 import type {
     Interview,
     CreateInterviewRequest,
@@ -13,13 +13,13 @@ export const interviewsApi = {
         page?: number;
         pageSize?: number;
     }): Promise<PaginatedResponse<Interview>> => {
-        const response = await apiClient.get("/api/interviews", { params });
+        const response = await httpClient.get("/api/interviews", { params });
         return response.data;
     },
 
     // Get interview by ID
     getById: async (id: string): Promise<ApiResponse<Interview>> => {
-        const response = await apiClient.get(`/api/interviews/${id}`);
+        const response = await httpClient.get(`/api/interviews/${id}`);
         return response.data;
     },
 
@@ -27,7 +27,7 @@ export const interviewsApi = {
     create: async (
         data: CreateInterviewRequest
     ): Promise<ApiResponse<Interview>> => {
-        const response = await apiClient.post("/api/interviews", data);
+        const response = await httpClient.post("/api/interviews", data);
         return response.data;
     },
 
@@ -36,19 +36,19 @@ export const interviewsApi = {
         id: string,
         data: Partial<CreateInterviewRequest>
     ): Promise<ApiResponse<Interview>> => {
-        const response = await apiClient.put(`/api/interviews/${id}`, data);
+        const response = await httpClient.put(`/api/interviews/${id}`, data);
         return response.data;
     },
 
     // Cancel interview
     cancel: async (id: string): Promise<ApiResponse<Interview>> => {
-        const response = await apiClient.post(`/api/interviews/${id}/cancel`);
+        const response = await httpClient.post(`/api/interviews/${id}/cancel`);
         return response.data;
     },
 
     // Complete interview
     complete: async (id: string): Promise<ApiResponse<Interview>> => {
-        const response = await apiClient.post(`/api/interviews/${id}/complete`);
+        const response = await httpClient.post(`/api/interviews/${id}/complete`);
         return response.data;
     },
 };

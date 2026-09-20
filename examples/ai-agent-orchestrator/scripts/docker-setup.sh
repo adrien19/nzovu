@@ -20,7 +20,7 @@ echo ""
 # Step 1: Build Docker images
 echo -e "${BLUE}🔨 Step 1: Building Docker images...${NC}"
 cd "$PROJECT_DIR"
-if docker-compose build; then
+if docker compose build; then
     echo -e "${GREEN}✓ Docker images built successfully${NC}"
 else
     echo -e "${RED}❌ Failed to build Docker images${NC}"
@@ -30,14 +30,14 @@ echo ""
 
 # Step 2: Start Ollama service
 echo -e "${BLUE}🚀 Step 2: Starting Ollama service...${NC}"
-docker-compose up -d ollama
+docker compose up -d ollama
 echo -e "${YELLOW}⏳ Waiting for Ollama to be ready...${NC}"
 sleep 10
 
 # Wait for Ollama health check
 max_retries=30
 retry_count=0
-while ! docker-compose ps ollama | grep -q "healthy" && [ $retry_count -lt $max_retries ]; do
+while ! docker compose ps ollama | grep -q "healthy" && [ $retry_count -lt $max_retries ]; do
     echo -e "${YELLOW}   Still waiting... (${retry_count}/${max_retries})${NC}"
     sleep 2
     retry_count=$((retry_count + 1))
@@ -45,7 +45,7 @@ done
 
 if [ $retry_count -eq $max_retries ]; then
     echo -e "${RED}❌ Ollama service did not become healthy in time${NC}"
-    echo -e "${YELLOW}💡 Check logs: docker-compose logs ollama${NC}"
+    echo -e "${YELLOW}💡 Check logs: docker compose logs ollama${NC}"
     exit 1
 fi
 
@@ -79,16 +79,18 @@ echo ""
 
 # Step 4: Start remaining services
 echo -e "${BLUE}🚀 Step 4: Starting AI Agent services...${NC}"
-echo -e "${YELLOW}   Note: Skipping ChronoQueue (use existing server)${NC}"
+echo -e "${YELLOW}   Nzovu starts with the example stack${NC}"
 
-docker-compose up -d coordinator agents-mock agents-llm
+docker compose up -d --wait nzovu
+docker compose run --rm --no-deps coordinator /app/ai-orchestrator init --server nzovu:9000 --insecure
+docker compose up -d coordinator agents-mock agents-llm
 
 echo -e "${GREEN}✓ All services started${NC}"
 echo ""
 
 # Step 5: Display status
 echo -e "${BLUE}📊 Step 5: Service Status${NC}"
-docker-compose ps
+docker compose ps
 echo ""
 
 # Summary
@@ -107,7 +109,7 @@ echo -e "   2. Submit a task: ${GREEN}./ai-orchestrator submit tasks/llm-jokes.j
 echo -e "   3. Monitor progress: ${GREEN}./ai-orchestrator monitor --follow${NC}"
 echo ""
 echo -e "${YELLOW}📝 Useful commands:${NC}"
-echo -e "   • View logs: ${GREEN}docker-compose logs -f [service-name]${NC}"
-echo -e "   • Stop services: ${GREEN}docker-compose down${NC}"
-echo -e "   • Restart service: ${GREEN}docker-compose restart [service-name]${NC}"
+echo -e "   • View logs: ${GREEN}docker compose logs -f [service-name]${NC}"
+echo -e "   • Stop services: ${GREEN}docker compose down${NC}"
+echo -e "   • Restart service: ${GREEN}docker compose restart [service-name]${NC}"
 echo ""

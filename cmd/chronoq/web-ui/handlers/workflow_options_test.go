@@ -103,6 +103,8 @@ func TestParseMessageHeaders(t *testing.T) {
 	invalid := []string{
 		`[{"key":"Trace_ID","value_base64":"YQ=="}]`,
 		`[{"key":"x-system-token","value_base64":"YQ=="}]`,
+		`[{"key":"x-nzovu-token","value_base64":"YQ=="}]`,
+		`[{"key":"x-chronoqueue-token","value_base64":"YQ=="}]`,
 		`[{"key":"trace-id","value_base64":"%%%"}]`,
 		`[{"key":"trace-id","value_base64":"` + base64.StdEncoding.EncodeToString([]byte(strings.Repeat("x", 4097))) + `"}]`,
 	}

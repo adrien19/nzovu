@@ -1,6 +1,6 @@
-// ChronoQueue Service API v1
+// Nzovu Service API v1
 //
-// This file defines the complete gRPC service interface for ChronoQueue.
+// This file defines the complete gRPC service interface for Nzovu.
 // All client operations go through this service.
 //
 // Service categories:

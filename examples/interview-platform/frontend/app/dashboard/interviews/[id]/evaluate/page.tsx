@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/card"
 import { SubmitEvaluationForm } from "@/components/forms/submit-evaluation-form"
 import { useToast } from "@/hooks/use-toast"
-import { createEvaluation, type CreateEvaluationRequest } from "@/lib/api/api"
+import { apiClient } from "@/lib/api/client"
+import type { CreateEvaluationRequest } from "@/lib/types/api"
 
 export default function NewEvaluationPage() {
     const params = useParams()
@@ -29,29 +30,29 @@ export default function NewEvaluationPage() {
         try {
             // Transform form data to API format
             const evaluationData: CreateEvaluationRequest = {
-                interview_id: interviewId,
-                evaluator_name: data.evaluatorName,
-                evaluator_email: data.evaluatorEmail,
-                technical_score: data.technicalScore,
-                communication_score: data.communicationScore,
-                problem_solving_score: data.problemSolvingScore,
-                cultural_fit_score: data.culturalFitScore,
+                interviewId: interviewId,
+                evaluatorName: data.evaluatorName,
+                evaluatorEmail: data.evaluatorEmail,
+                technicalScore: data.technicalScore,
+                communicationScore: data.communicationScore,
+                problemSolvingScore: data.problemSolvingScore,
+                culturalFitScore: data.cultureFitScore,
                 strengths: Array.isArray(data.strengths)
                     ? data.strengths
                     : (data.strengths || '').split(',').map((s: string) => s.trim()).filter(Boolean),
                 weaknesses: Array.isArray(data.weaknesses)
                     ? data.weaknesses
                     : (data.weaknesses || '').split(',').map((s: string) => s.trim()).filter(Boolean),
-                recommendation: data.recommendation,
-                comments: data.comments || undefined,
+                recommendation: ({ strong_yes: "strong_hire", yes: "hire", maybe: "maybe", no: "no_hire", strong_no: "no_hire" } as const)[data.recommendation as "strong_yes" | "yes" | "maybe" | "no" | "strong_no"],
+                comments: data.comments || "",
             }
 
             // Call the API
-            const evaluation = await createEvaluation(evaluationData)
+            const evaluation = await apiClient.createEvaluation(evaluationData)
 
             toast({
                 title: "Evaluation Submitted",
-                description: `Your evaluation has been submitted successfully with an overall score of ${evaluation.overall_score.toFixed(1)}.`,
+                description: `Your evaluation has been submitted successfully with an overall score of ${evaluation.overallScore.toFixed(1)}.`,
             })
 
             router.push(`/dashboard/interviews/${interviewId}`)

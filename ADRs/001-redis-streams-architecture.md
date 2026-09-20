@@ -1,5 +1,7 @@
 # ADR-001: Redis Streams Architecture
 
+> Historical ChronoQueue design record, retained as written. Current Nzovu configuration and compatibility: [migration guide](../deploy/NZOVU_MIGRATION.md).
+
 **Status:** Superseded by ADR-002
 **Date:** 2025-11-02
 **Authors:** ChronoQueue Team - @adrien19

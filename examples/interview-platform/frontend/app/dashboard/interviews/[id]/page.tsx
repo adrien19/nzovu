@@ -26,13 +26,8 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { useToast } from "@/hooks/use-toast"
-import {
-    getInterview,
-    cancelInterview,
-    startInterview,
-    completeInterview,
-    type Interview
-} from "@/lib/api/api"
+import { apiClient } from "@/lib/api/client"
+import type { Interview } from "@/lib/types/api"
 
 export default function InterviewDetailPage() {
     const params = useParams()
@@ -46,9 +41,9 @@ export default function InterviewDetailPage() {
     const [showCompleteDialog, setShowCompleteDialog] = useState(false)
     const [isActionLoading, setIsActionLoading] = useState(false)
 
-    const { data: interview, isLoading, error } = useQuery<Interview>({
+    const { data: interview, isLoading, error } = useQuery<Interview | null>({
         queryKey: ["interview", interviewId],
-        queryFn: () => getInterview(interviewId),
+        queryFn: () => apiClient.getInterview(interviewId),
     })
 
     const handleCancel = async () => {
@@ -56,7 +51,7 @@ export default function InterviewDetailPage() {
 
         setIsActionLoading(true)
         try {
-            await cancelInterview(interview.id)
+            await apiClient.cancelInterview(interview.id)
 
             // Invalidate queries to refresh data
             await queryClient.invalidateQueries({ queryKey: ['interview', interviewId] })
@@ -85,7 +80,7 @@ export default function InterviewDetailPage() {
 
         setIsActionLoading(true)
         try {
-            await startInterview(interview.id)
+            await apiClient.startInterview(interview.id)
 
             toast({
                 title: "Interview Started",
@@ -114,7 +109,7 @@ export default function InterviewDetailPage() {
 
         setIsActionLoading(true)
         try {
-            await completeInterview(interview.id)
+            await apiClient.completeInterview(interview.id)
 
             toast({
                 title: "Interview Completed",

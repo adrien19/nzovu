@@ -183,7 +183,7 @@ type attemptInfo struct {
 	workerID  string
 }
 
-// ChronoQueueClient is a client to call ChronoQueue RPC
+// ChronoQueueClient is a client to call Nzovu RPC
 type ChronoQueueClient struct {
 	service          queueservice_pb.QueueServiceClient
 	conn             *grpc.ClientConn
@@ -198,7 +198,7 @@ type ChronoQueueClient struct {
 	workerIDOnce     sync.Once
 }
 
-// NewChronoQueueClient returns a new ChronoQueue client
+// NewChronoQueueClient returns a new Nzovu client
 func NewChronoQueueClient(address string, opts ClientOptions) (*ChronoQueueClient, error) {
 	client := &ChronoQueueClient{
 		closeChan: make(chan struct{}),

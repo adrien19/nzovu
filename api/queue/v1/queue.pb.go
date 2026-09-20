@@ -1,4 +1,4 @@
-// ChronoQueue Queue API v1
+// Nzovu Queue API v1
 //
 // This file defines queue structures and configurations.
 // Queues are named containers for messages with specific processing behaviors.
@@ -241,7 +241,7 @@ type QueueMetadata struct {
 	// Optional when auto_create_dlq is false; the named queue must already exist.
 	// Access DLQ messages via DLQ APIs: GetDLQMessages and RequeueDLQMessage.
 	DeadLetterQueueName string `protobuf:"bytes,6,opt,name=dead_letter_queue_name,json=deadLetterQueueName,proto3" json:"dead_letter_queue_name,omitempty"`
-	// auto_create_dlq: If true, ChronoQueue creates "{source_queue}_dlq" and stores
+	// auto_create_dlq: If true, Nzovu creates "{source_queue}_dlq" and stores
 	// that computed name in dead_letter_queue_name. Any supplied name is replaced.
 	AutoCreateDlq bool `protobuf:"varint,7,opt,name=auto_create_dlq,json=autoCreateDlq,proto3" json:"auto_create_dlq,omitempty"`
 	// schema_id: Default schema for validating messages posted to this queue.
@@ -577,7 +577,7 @@ func (x *PriorityConfig) GetAgeBoostMultiplier() int32 {
 
 // Queue represents a named message container with specific processing behavior.
 //
-// Queues are the primary organizational unit in ChronoQueue.
+// Queues are the primary organizational unit in Nzovu.
 // Create separate queues for different types of work to:
 // - Isolate failures (one queue's DLQ doesn't affect others)
 // - Apply different processing rules (retries, priorities, leases)
@@ -593,7 +593,7 @@ func (x *PriorityConfig) GetAgeBoostMultiplier() int32 {
 type Queue struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// name: Unique identifier for this queue.
-	// Must be unique across your ChronoQueue instance.
+	// Must be unique across your Nzovu instance.
 	// Naming convention: lowercase, hyphens, descriptive
 	// Examples: "order-processing", "email-sender", "webhook-delivery"
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`

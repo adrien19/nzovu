@@ -108,7 +108,7 @@ export default function QueuesPage() {
             {/* Page Header */}
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Queue Monitor</h1>
-                <p className="text-gray-500">Real-time ChronoQueue status and message tracking</p>
+                <p className="text-gray-500">Real-time Nzovu status and message tracking</p>
             </div>
 
             {/* Overall Stats */}
@@ -278,12 +278,12 @@ export default function QueuesPage() {
                 </CardContent>
             </Card>
 
-            {/* ChronoQueue Features Highlight */}
+            {/* Nzovu Features Highlight */}
             <Card className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950">
                 <CardHeader>
                     <div className="flex items-center space-x-2">
                         <TrendingUp className="h-5 w-5 text-blue-600" />
-                        <CardTitle>ChronoQueue Features in Action</CardTitle>
+                        <CardTitle>Nzovu Features in Action</CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -303,7 +303,7 @@ export default function QueuesPage() {
                             </h4>
                             <p className="text-sm text-blue-800 dark:text-blue-200">
                                 Interview reminders and notifications are scheduled for specific times using
-                                ChronoQueue's time-based scheduling.
+                                Nzovu's time-based scheduling.
                             </p>
                         </div>
                         <div className="space-y-2">

@@ -14,7 +14,7 @@ func NewQueueCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "queue",
 		Short: "Queue management operations",
-		Long:  `Manage ChronoQueue queues - create, delete, list, and get queue state.`,
+		Long:  `Manage Nzovu queues - create, delete, list, and get queue state.`,
 	}
 
 	cmd.AddCommand(newQueueCreateCommand())
@@ -30,7 +30,7 @@ func newQueueCreateCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create <queue-name>",
 		Short: "Create a new queue",
-		Long:  `Create a new ChronoQueue queue with the specified configuration.`,
+		Long:  `Create a new Nzovu queue with the specified configuration.`,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			queueName := args[0]
@@ -81,7 +81,7 @@ func newQueueDeleteCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete <queue-name>",
 		Short: "Delete a queue",
-		Long:  `Delete an existing ChronoQueue queue and all its messages.`,
+		Long:  `Delete an existing Nzovu queue and all its messages.`,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			queueName := args[0]
@@ -118,7 +118,7 @@ func newQueueListCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all queues",
-		Long:  `List all ChronoQueue queues with their metadata.`,
+		Long:  `List all Nzovu queues with their metadata.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return WithClient(cmd, func(client *client.ChronoQueueClient) error {
 				queues, err := client.ListQueues(cmd.Context(), "")

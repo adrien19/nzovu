@@ -17,7 +17,7 @@ func TestNewMessageCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "message", cmd.Use)
 	assert.Equal(t, "Message operations", cmd.Short)
-	assert.Contains(t, cmd.Long, "Manage ChronoQueue messages")
+	assert.Contains(t, cmd.Long, "Manage Nzovu messages")
 
 	// Check that subcommands are properly added
 	subcommands := cmd.Commands()

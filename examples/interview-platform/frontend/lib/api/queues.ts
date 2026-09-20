@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { httpClient } from "./client";
 
 export interface QueueStats {
     name: string;
@@ -25,17 +25,17 @@ export interface QueueMessage {
 
 export const queuesApi = {
     listQueues: async (): Promise<QueueStats[]> => {
-        const response = await apiClient.get("/api/queues");
+        const response = await httpClient.get("/api/queues");
         return response.data.data || [];
     },
 
     getQueueStats: async (queueName: string): Promise<QueueStats> => {
-        const response = await apiClient.get(`/api/queues/${queueName}/stats`);
+        const response = await httpClient.get(`/api/queues/${queueName}/stats`);
         return response.data.data;
     },
 
     getRecentMessages: async (): Promise<QueueMessage[]> => {
-        const response = await apiClient.get("/api/queues/messages/recent");
+        const response = await httpClient.get("/api/queues/messages/recent");
         return response.data.data || [];
     },
 };

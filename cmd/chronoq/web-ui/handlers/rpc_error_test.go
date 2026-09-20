@@ -150,7 +150,7 @@ func TestLiveOverviewSSE(t *testing.T) {
 		dontWant   string
 	}{
 		{name: "success", listResult: &queueservicepb.ListQueuesResponse{}, wantBody: "No active queues"},
-		{name: "list queues failure", listErr: status.Error(codes.Unavailable, "private backend detail"), wantBody: "ChronoQueue is unavailable", dontWant: "private backend detail"},
+		{name: "list queues failure", listErr: status.Error(codes.Unavailable, "private backend detail"), wantBody: "Nzovu is unavailable", dontWant: "private backend detail"},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

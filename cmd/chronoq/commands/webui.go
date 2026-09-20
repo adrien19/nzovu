@@ -19,8 +19,8 @@ import (
 func NewWebUICommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "web-ui",
-		Short: "ChronoQueue next-generation web interface",
-		Long:  `Next-generation dark-themed web interface for monitoring and managing ChronoQueue`,
+		Short: "Nzovu next-generation web interface",
+		Long:  `Next-generation dark-themed web interface for monitoring and managing Nzovu`,
 	}
 
 	cmd.AddCommand(newWebUIStartCommand())
@@ -38,12 +38,12 @@ func newWebUIStartCommand() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "start",
-		Short: "Start the ChronoQueue next-generation web UI",
+		Short: "Start the Nzovu next-generation web UI",
 		Long: `Start the next-generation web interface for monitoring queues, managing
 schedules, and viewing dead letter queues. Uses the dark cq-* design system.
 
 Example:
-  chronoq web-ui start --port 8081 --grpc-address localhost:9000`,
+  nzovu web-ui start --port 8081 --grpc-address localhost:9000`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runWebUIStart(host, port, grpcAddr, skipSSL)
 		},
@@ -51,8 +51,8 @@ Example:
 
 	cmd.Flags().StringVar(&host, "host", "127.0.0.1", "Host address for the web UI")
 	cmd.Flags().StringVar(&port, "port", "8081", "Port for the web UI")
-	cmd.Flags().StringVar(&grpcAddr, "grpc-address", "localhost:9000", "Address of the ChronoQueue gRPC server")
-	cmd.Flags().BoolVar(&skipSSL, "skip-ssl", false, "Disable TLS verification for the gRPC connection (for local/dev use)")
+	cmd.Flags().StringVar(&grpcAddr, "grpc-address", "localhost:9000", "Address of the Nzovu gRPC server")
+	cmd.Flags().BoolVar(&skipSSL, "skip-ssl", false, "Disable TLS for the gRPC connection (for local/dev use)")
 
 	return cmd
 }
@@ -74,9 +74,9 @@ func runWebUIStart(host, port, grpcAddr string, skipSSL bool) error {
 	errChan := make(chan error, 1)
 	go func() {
 		addr := net.JoinHostPort(host, port)
-		logger.InfoWithFields("Starting ChronoQueue web-UI", "address", addr, "grpc", grpcAddr)
+		logger.InfoWithFields("Starting Nzovu web-UI", "address", addr, "grpc", grpcAddr)
 		fmt.Printf("\n")
-		fmt.Printf("ChronoQueue web-UI is starting...\n")
+		fmt.Printf("Nzovu web-UI is starting...\n")
 		fmt.Printf("Dashboard: %s://%s\n", server.URLScheme(), addr)
 		fmt.Printf("Connected to: %s\n", grpcAddr)
 		fmt.Printf("\n")

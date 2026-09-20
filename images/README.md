@@ -1,6 +1,6 @@
-# ChronoQueue Docker Images
+# Nzovu Docker Images
 
-This directory contains Dockerfiles for building ChronoQueue container images.
+This directory contains Dockerfiles for building Nzovu container images.
 
 ## Available Dockerfiles
 
@@ -20,7 +20,7 @@ This directory contains Dockerfiles for building ChronoQueue container images.
 **Build Command**:
 
 ```bash
-docker build -f images/Dockerfile -t chronoqueue:latest .
+docker build -f images/Dockerfile -t nzovu:latest .
 ```
 
 **Usage**:
@@ -44,7 +44,7 @@ docker build -f images/Dockerfile -t chronoqueue:latest .
 **Build Command**:
 
 ```bash
-docker build -f images/Dockerfile.sqlite -t chronoqueue:sqlite .
+docker build -f images/Dockerfile.sqlite -t nzovu:sqlite .
 ```
 
 **Usage**:
@@ -56,7 +56,7 @@ docker build -f images/Dockerfile.sqlite -t chronoqueue:sqlite .
 
 ## Docker Compose Integration
 
-The docker-compose files automatically use the appropriate Dockerfile:
+The docker compose files automatically use the appropriate Dockerfile:
 
 ```yaml
 # deploy/docker-compose.postgres.yaml - uses Dockerfile (production)
@@ -73,7 +73,7 @@ docker build \
   --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
   --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
   -f images/Dockerfile \
-  -t chronoqueue:1.2.3 .
+  -t nzovu:1.2.3 .
 ```
 
 ## Image Comparison
@@ -146,7 +146,7 @@ Error: `SQLite storage requested but not available`
 **Solution**: Ensure you're using `Dockerfile.sqlite`:
 
 ```bash
-docker-compose -f deploy/docker-compose.sqlite.yaml build
+docker compose -f deploy/docker-compose.sqlite.yaml build
 ```
 
 ### Production build includes unnecessary dependencies

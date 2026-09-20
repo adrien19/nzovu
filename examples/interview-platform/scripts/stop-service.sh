@@ -10,7 +10,7 @@ SERVICE=$1
 if [ -z "$SERVICE" ]; then
     echo "Error: Service name required"
     echo "Usage: $0 <service-name>"
-    echo "Services: frontend, api, workers, chronoqueue"
+    echo "Services: frontend, api, workers, nzovu"
     exit 1
 fi
 
@@ -54,8 +54,8 @@ case "$SERVICE" in
         echo "Worker processes stopped"
         ;;
     
-    chronoqueue)
-        echo "Stopping ChronoQueue server..."
+    nzovu)
+        echo "Stopping Nzovu server..."
         # Kill by process name
         pkill -f "/release/nzovu server" 2>/dev/null || true
         # Double-check and kill any remaining
@@ -64,12 +64,12 @@ case "$SERVICE" in
                 kill -9 $pid 2>/dev/null || true
             fi
         done
-        echo "ChronoQueue server stopped"
+        echo "Nzovu server stopped"
         ;;
     
     *)
         echo "Error: Unknown service '$SERVICE'"
-        echo "Supported services: frontend, api, workers, chronoqueue"
+        echo "Supported services: frontend, api, workers, nzovu"
         exit 1
         ;;
 esac

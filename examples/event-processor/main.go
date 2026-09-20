@@ -17,11 +17,11 @@ var (
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "event-processor",
-		Short: "Event Processing System Demo for ChronoQueue",
-		Long:  `A comprehensive demonstration of high-throughput event processing with ChronoQueue.`,
+		Short: "Event Processing System Demo for Nzovu",
+		Long:  `A comprehensive demonstration of high-throughput event processing with Nzovu.`,
 	}
 
-	rootCmd.PersistentFlags().StringVar(&serverAddr, "server", "host.docker.internal:9000", "ChronoQueue server address")
+	rootCmd.PersistentFlags().StringVar(&serverAddr, "server", "localhost:9000", "Nzovu server address")
 	rootCmd.PersistentFlags().BoolVar(&insecure, "insecure", true, "Use insecure connection (no TLS)")
 	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Enable verbose output")
 

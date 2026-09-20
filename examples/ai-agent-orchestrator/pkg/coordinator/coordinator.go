@@ -170,7 +170,7 @@ func (coord *Coordinator) processMessage(ctx context.Context, workerID int, resp
 	return nil
 }
 
-// parseTask converts a ChronoQueue message to a Task
+// parseTask converts a Nzovu message to a Task
 func (coord *Coordinator) parseTask(msg *messagev1.Message) (*models.Task, error) {
 	if msg.Metadata == nil || msg.Metadata.Payload == nil || msg.Metadata.Payload.Data == nil {
 		return nil, fmt.Errorf("message payload is empty")

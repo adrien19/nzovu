@@ -115,8 +115,8 @@ func generateCA(t *testing.T) (*rsa.PrivateKey, *x509.Certificate) {
 	template := &x509.Certificate{
 		SerialNumber: big.NewInt(1),
 		Subject: pkix.Name{
-			Organization: []string{"ChronoQueue Test CA"},
-			CommonName:   "ChronoQueue Test CA",
+			Organization: []string{"Nzovu Test CA"},
+			CommonName:   "Nzovu Test CA",
 		},
 		NotBefore:             time.Now(),
 		NotAfter:              time.Now().Add(24 * time.Hour),
@@ -149,7 +149,7 @@ func generateCert(t *testing.T, caCert *x509.Certificate, caKey *rsa.PrivateKey,
 	template := &x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			Organization: []string{"ChronoQueue Test"},
+			Organization: []string{"Nzovu Test"},
 			CommonName:   commonName,
 		},
 		NotBefore:   time.Now(),

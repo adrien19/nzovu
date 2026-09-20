@@ -1,5 +1,7 @@
 # ADR-002: Migration to Postgres as Primary Storage
 
+> Historical ChronoQueue design record, retained as written. Current Nzovu configuration and compatibility: [migration guide](../deploy/NZOVU_MIGRATION.md).
+
 **Status:** Accepted
 **Date:** 2025-01-18
 **Authors:** ChronoQueue Team - @adrien19

@@ -12,8 +12,8 @@ func TestNewStartCommand(t *testing.T) {
 
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "start", cmd.Use)
-	assert.Equal(t, "Start ChronoQueue server (legacy)", cmd.Short)
-	assert.Contains(t, cmd.Long, "Start a ChronoQueue server instance")
+	assert.Equal(t, "Start Nzovu server (legacy)", cmd.Short)
+	assert.Contains(t, cmd.Long, "Start a Nzovu server instance")
 	assert.NotNil(t, cmd.RunE)
 
 	// Check that flags are properly added
@@ -31,8 +31,8 @@ func TestNewDevServerCommand(t *testing.T) {
 
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "dev-server", cmd.Use)
-	assert.Equal(t, "Start a development ChronoQueue server", cmd.Short)
-	assert.Contains(t, cmd.Long, "Start a ChronoQueue server configured for local development")
+	assert.Equal(t, "Start a development Nzovu server", cmd.Short)
+	assert.Contains(t, cmd.Long, "Start a Nzovu server configured for local development")
 	assert.NotNil(t, cmd.RunE)
 }
 
@@ -98,21 +98,21 @@ func TestStartCommand_SubcommandStructure(t *testing.T) {
 
 	devServerCmd := subcommands[0]
 	assert.Equal(t, "dev-server", devServerCmd.Use)
-	assert.Equal(t, "Start a development ChronoQueue server", devServerCmd.Short)
+	assert.Equal(t, "Start a development Nzovu server", devServerCmd.Short)
 }
 
 func TestStartCommand_Examples(t *testing.T) {
 	cmd := NewStartCommand()
 
-	assert.Contains(t, cmd.Long, "chronoqueue start --dev-server")
-	assert.Contains(t, cmd.Long, "chronoqueue start dev-server --log-level debug")
+	assert.Contains(t, cmd.Long, "nzovu start --dev-server")
+	assert.Contains(t, cmd.Long, "nzovu start dev-server --log-level debug")
 }
 
 func TestDevServerCommand_Examples(t *testing.T) {
 	cmd := newDevServerCommand()
 
-	assert.Contains(t, cmd.Long, "chronoqueue start dev-server")
-	assert.Contains(t, cmd.Long, "chronoqueue start dev-server --storage-type postgres")
-	assert.Contains(t, cmd.Long, "chronoqueue start dev-server --grpc-addr :9001 --http-addr :8081")
-	assert.Contains(t, cmd.Long, "chronoqueue start dev-server --log-level debug")
+	assert.Contains(t, cmd.Long, "nzovu start dev-server")
+	assert.Contains(t, cmd.Long, "nzovu start dev-server --storage-type postgres")
+	assert.Contains(t, cmd.Long, "nzovu start dev-server --grpc-addr :9001 --http-addr :8081")
+	assert.Contains(t, cmd.Long, "nzovu start dev-server --log-level debug")
 }

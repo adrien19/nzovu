@@ -1,6 +1,6 @@
-# ChronoQueue Test Suite
+# Nzovu Test Suite
 
-**Comprehensive integration and end-to-end tests for the ChronoQueue message queue system.**
+**Comprehensive integration and end-to-end tests for the Nzovu message queue system.**
 
 ---
 
@@ -9,10 +9,7 @@
 ```text
 tests/
 ├── README.md                          # This file
-├── TESTING_GUIDE.md                   # Comprehensive testing guide
-├── TEST_IMPLEMENTATION_SUMMARY.md     # Implementation summary
 ├── DELIVERABLES.md                    # Project deliverables
-├── TESTING_ENHANCEMENT_SUMMARY.md     # Testing enhancements
 │
 ├── fixtures/                          # Test data
 │   ├── queues.json                   # Queue configurations
@@ -48,45 +45,46 @@ tests/
 
 1. **Docker** must be running (for Testcontainers)
 2. **Go 1.26.6+** installed
-3. **ChronoQueue dependencies** installed: `go mod download`
+3. **Nzovu dependencies** installed: `go mod download`
+4. **Test image** built: `make build-test-image` (needed for direct `go test` integration commands)
 
 ### Run All Tests
 
 ```bash
 # From project root
-go test -v ./tests/...
+make ci-test-all
 ```
 
 ### Run Specific Test Suites
 
 ```bash
 # Integration tests only
-go test -v ./tests/integration/...
+go test -tags "test_dep integration" -v ./tests/integration/...
 
 # E2E tests only
-go test -v ./tests/e2e/...
+go test -tags test_dep -v ./tests/e2e/...
 
 # Specific test file
-go test -v ./tests/integration/message_lifecycle_test.go
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestMessageLifecycle
 
 # Specific test function
-go test -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage
 ```
 
 ### Run with Options
 
 ```bash
 # Skip long-running tests
-go test -v -short ./tests/...
+go test -tags "test_dep integration" -v -short ./tests/integration/...
 
 # Run with timeout
-go test -v -timeout 30m ./tests/...
+go test -tags "test_dep integration" -v -timeout 30m ./tests/integration/...
 
 # Run in parallel
-go test -v -parallel 4 ./tests/integration/...
+go test -tags "test_dep integration" -v -parallel 4 ./tests/integration/...
 
 # Generate coverage
-go test -v -coverprofile=coverage.out ./tests/...
+go test -tags "test_dep integration" -v -coverprofile=coverage.out ./tests/integration/...
 go tool cover -html=coverage.out
 ```
 
@@ -112,7 +110,7 @@ go tool cover -html=coverage.out
 
 ### Integration Tests (`./integration/`)
 
-Test individual features with real PostgreSQL/SQLite and ChronoQueue containers:
+Test individual features with real PostgreSQL/SQLite and Nzovu containers:
 
 - ✅ **Queue Management**: Create, delete, list queues
 - ✅ **Message Operations**: Post, get, acknowledge, renew lease
@@ -149,7 +147,7 @@ Utility functions for common test operations:
 
 **Container Management:**
 
-- `SetupTestEnvironment()` - Creates PostgreSQL/SQLite + ChronoQueue containers
+- `SetupTestEnvironment()` - Creates PostgreSQL/SQLite + Nzovu containers
 - `NewGRPCClient()` - gRPC client connection
 - `Cleanup()` - Resource teardown
 
@@ -170,9 +168,6 @@ Utility functions for common test operations:
 
 ## 📖 Documentation
 
-- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Comprehensive testing guide with all test scenarios
-- **[TEST_IMPLEMENTATION_SUMMARY.md](TEST_IMPLEMENTATION_SUMMARY.md)** - Detailed implementation summary
-- **[TESTING_ENHANCEMENT_SUMMARY.md](TESTING_ENHANCEMENT_SUMMARY.md)** - Testing enhancements overview
 
 ---
 
@@ -232,10 +227,10 @@ docker system prune -a
 
 ```bash
 # Run with verbose output
-go test -v ./tests/integration/... 2>&1 | tee test-output.log
+go test -tags "test_dep integration" -v ./tests/integration/... 2>&1 | tee test-output.log
 
 # Run single test for debugging
-go test -v ./tests/integration/ -run TestSpecificTest
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestSpecificTest
 
 # Check container logs (if test fails)
 docker logs <container-id>
@@ -247,10 +242,10 @@ Some tests are timing-dependent. If they fail intermittently:
 
 ```bash
 # Skip timing-dependent tests
-go test -v -short ./tests/...
+go test -tags "test_dep integration" -v -short ./tests/integration/...
 
 # Increase timeouts
-go test -v -timeout 60m ./tests/...
+go test -tags "test_dep integration" -v -timeout 60m ./tests/integration/...
 ```
 
 ---
@@ -298,6 +293,4 @@ All tests should:
 
 For issues or questions:
 
-1. Check [TESTING_GUIDE.md](TESTING_GUIDE.md) for detailed documentation
-2. Review [TEST_IMPLEMENTATION_SUMMARY.md](TEST_IMPLEMENTATION_SUMMARY.md) for implementation details
 3. Check existing test examples in `integration/` and `e2e/` directories

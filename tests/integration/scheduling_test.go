@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides scheduling tests for ChronoQueue.
+// Package integration provides scheduling tests for Nzovu.
 //
 // These tests validate:
 // - Cron-based scheduling (standard cron expressions)

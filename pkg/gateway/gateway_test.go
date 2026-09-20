@@ -21,6 +21,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/version"
 )
 
 func TestLivenessHandler(t *testing.T) {
@@ -28,7 +29,7 @@ func TestLivenessHandler(t *testing.T) {
 	LivenessHandler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/live", nil))
 
 	assert.Equal(t, http.StatusOK, recorder.Code)
-	assert.JSONEq(t, `{"status":"alive","service":"chronoqueue"}`, recorder.Body.String())
+	assert.JSONEq(t, `{"status":"alive","service":"nzovu"}`, recorder.Body.String())
 }
 
 func TestReadinessHandler(t *testing.T) {
@@ -52,6 +53,7 @@ func TestReadinessHandler(t *testing.T) {
 			var response map[string]string
 			require.NoError(t, json.NewDecoder(recorder.Body).Decode(&response))
 			assert.Equal(t, tt.wantReady, response["status"])
+			assert.Equal(t, "nzovu", response["service"])
 			assert.NotEmpty(t, response["version"])
 			assert.NotContains(t, response["error"], "connection refused")
 		})
@@ -241,12 +243,35 @@ func TestSwaggerUISelfHostedWithSecurityHeaders(t *testing.T) {
 	assert.Equal(t, "nosniff", recorder.Header().Get("X-Content-Type-Options"))
 	assert.NotContains(t, recorder.Body.String(), "https://unpkg.com")
 	assert.Contains(t, recorder.Body.String(), "/docs/assets/swagger-ui-bundle.js")
+	assert.Contains(t, recorder.Body.String(), "Nzovu API Documentation")
+	assert.Contains(t, recorder.Body.String(), "/docs/assets/nzovu.css")
 
 	assetRecorder := httptest.NewRecorder()
 	assetRequest := httptest.NewRequest(http.MethodGet, "/docs/assets/swagger-ui-init.js", nil)
 	SwaggerAssetHandler(config, logger).ServeHTTP(assetRecorder, assetRequest)
 	assert.Equal(t, http.StatusOK, assetRecorder.Code)
 	assert.True(t, strings.HasPrefix(assetRecorder.Header().Get("Content-Type"), "text/javascript"))
+
+	cssRecorder := httptest.NewRecorder()
+	SwaggerAssetHandler(config, logger).ServeHTTP(cssRecorder, httptest.NewRequest(http.MethodGet, "/docs/assets/nzovu.css", nil))
+	assert.Equal(t, http.StatusOK, cssRecorder.Code)
+	assert.Equal(t, "text/css; charset=utf-8", cssRecorder.Header().Get("Content-Type"))
+}
+
+func TestResponseVersionHeaderUsesBuildMetadata(t *testing.T) {
+	original := version.Version
+	version.Version = "0.0.1-test"
+	t.Cleanup(func() { version.Version = original })
+	recorder := httptest.NewRecorder()
+	require.NoError(t, responseModifier(context.Background(), recorder, nil))
+	assert.Equal(t, version.Version, recorder.Header().Get("X-Nzovu-Version"))
+	assert.Empty(t, recorder.Header().Get("X-ChronoQueue-Version"))
+
+	preflight := httptest.NewRecorder()
+	handler := corsHandler(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {}), []string{"http://localhost"})
+	handler.ServeHTTP(preflight, httptest.NewRequest(http.MethodOptions, "/v1/queues", nil))
+	assert.Contains(t, preflight.Header().Get("Access-Control-Expose-Headers"), "X-Nzovu-Version")
+	assert.NotContains(t, preflight.Header().Get("Access-Control-Expose-Headers"), "X-ChronoQueue-Version")
 }
 
 func TestSwaggerAssetHandlerRejectsUnknownAsset(t *testing.T) {
@@ -306,7 +331,7 @@ func TestBearerAuthMiddleware(t *testing.T) {
 
 			assert.Equal(t, tt.wantStatus, recorder.Code)
 			if tt.wantStatus == http.StatusUnauthorized {
-				assert.Equal(t, `Bearer realm="ChronoQueue metrics"`, recorder.Header().Get("WWW-Authenticate"))
+				assert.Equal(t, `Bearer realm="Nzovu metrics"`, recorder.Header().Get("WWW-Authenticate"))
 			}
 		})
 	}

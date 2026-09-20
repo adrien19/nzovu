@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides schema registry and validation tests for ChronoQueue.
+// Package integration provides schema registry and validation tests for Nzovu.
 //
 // These tests validate:
 // - JSON Schema registration and versioning

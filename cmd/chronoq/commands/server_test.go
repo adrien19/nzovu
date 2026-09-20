@@ -46,7 +46,7 @@ func TestNewServerHealthCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "health", cmd.Use)
 	assert.Equal(t, "Check server health", cmd.Short)
-	assert.Contains(t, cmd.Long, "Check if the ChronoQueue server is healthy")
+	assert.Contains(t, cmd.Long, "Check if the Nzovu server is healthy")
 	assert.NotNil(t, cmd.RunE)
 	assert.Equal(t, "use --http-server instead", cmd.Flags().Lookup("server").Deprecated)
 }
@@ -237,7 +237,7 @@ func TestServerCommand_NoDirectExecution(t *testing.T) {
 func TestServerHealthCommand_Description(t *testing.T) {
 	cmd := newServerHealthCommand()
 
-	assert.Contains(t, cmd.Long, "Check if the ChronoQueue server is healthy and responding")
+	assert.Contains(t, cmd.Long, "Check if the Nzovu server is healthy and responding")
 }
 
 func TestServerVersionCommand_Description(t *testing.T) {

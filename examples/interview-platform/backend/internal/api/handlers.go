@@ -231,7 +231,7 @@ func (h *Handlers) CreateInterview(w http.ResponseWriter, r *http.Request) {
 		"status":        interview.Status,
 	})
 
-	// Post message to ChronoQueue for scheduling notifications
+	// Post message to Nzovu for scheduling notifications
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -249,7 +249,7 @@ func (h *Handlers) CreateInterview(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Failed to create payload struct: %v", err)
 	} else if h.queue == nil {
-		log.Printf("ERROR: ChronoQueue client is nil!")
+		log.Printf("ERROR: Nzovu client is nil!")
 	} else {
 		log.Printf("Posting message to interview-scheduler queue for interview ID %s", interview.ID)
 		messageID := fmt.Sprintf("interview-%s-%d", interview.ID, time.Now().Unix())
@@ -510,7 +510,7 @@ func (h *Handlers) CreateEvaluation(w http.ResponseWriter, r *http.Request) {
 		"status":         evaluation.Status,
 	})
 
-	// Post message to ChronoQueue for evaluation processing
+	// Post message to Nzovu for evaluation processing
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -874,7 +874,7 @@ func (h *Handlers) ListQueues(w http.ResponseWriter, r *http.Request) {
 			LastProcessed:         time.Now(),
 		}
 
-		// Fetch real stats from ChronoQueue using persistent client
+		// Fetch real stats from Nzovu using persistent client
 		ctx := r.Context()
 		if h.queue != nil {
 			stateResp, err := h.queue.GetQueueState(ctx, queueName)
@@ -926,7 +926,7 @@ func (h *Handlers) GetQueueStats(w http.ResponseWriter, r *http.Request) {
 		LastProcessed:         time.Now(),
 	}
 
-	// Fetch real stats from ChronoQueue using persistent client
+	// Fetch real stats from Nzovu using persistent client
 	ctx := r.Context()
 	if h.queue != nil {
 		stateResp, err := h.queue.GetQueueState(ctx, queueName)

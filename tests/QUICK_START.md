@@ -1,6 +1,6 @@
-# ChronoQueue Test Suite - Quick Start Guide
+# Nzovu Test Suite - Quick Start Guide
 
-🚀 **Get up and running with the ChronoQueue test suite in 5 minutes!**
+🚀 **Get up and running with the Nzovu test suite in 5 minutes!**
 
 ---
 
@@ -10,12 +10,13 @@
 # Verify Docker is running
 docker info
 
-# Verify Go version (1.25+ required)
+# Verify Go version (1.26.6 required)
 go version
 
 # Install dependencies
-cd /workspaces/chronoqueue
+cd "$(git rev-parse --show-toplevel)"
 go mod download
+make build-test-image
 ```
 
 ---
@@ -24,7 +25,7 @@ go mod download
 
 ```bash
 # Run a single integration test
-go test -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage
 
 # Expected output:
 # === RUN   TestMessageLifecycle_PostSimpleMessage
@@ -40,13 +41,13 @@ go test -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage
 
 ```bash
 # Run all integration tests (5-10 minutes)
-go test -v ./tests/integration/...
+go test -tags "test_dep integration" -v ./tests/integration/...
 
 # Run E2E tests (10-15 minutes)
-go test -v ./tests/e2e/...
+go test -tags test_dep -v ./tests/e2e/...
 
 # Run everything (15-20 minutes)
-go test -v -timeout 30m ./tests/...
+make ci-test-all
 ```
 
 ---
@@ -90,7 +91,7 @@ go test -v -timeout 30m ./tests/...
 
 ```bash
 # Generate coverage
-go test -v -coverprofile=coverage.out ./tests/...
+go test -tags "test_dep integration" -v -coverprofile=coverage.out ./tests/integration/...
 
 # View in terminal
 go tool cover -func=coverage.out
@@ -105,22 +106,22 @@ go tool cover -html=coverage.out
 
 ```bash
 # Run specific test file
-go test -v ./tests/integration/message_lifecycle_test.go
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestMessageLifecycle
 
 # Run tests matching pattern
-go test -v ./tests/integration/ -run TestMessage
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestMessage
 
 # Run in parallel (faster)
-go test -v -parallel 4 ./tests/integration/...
+go test -tags "test_dep integration" -v -parallel 4 ./tests/integration/...
 
 # Skip long-running tests
-go test -v -short ./tests/...
+go test -tags "test_dep integration" -v -short ./tests/integration/...
 
 # Run with race detector
-go test -v -race ./tests/...
+go test -tags "test_dep integration" -v -race ./tests/integration/...
 
 # Verbose + save output
-go test -v ./tests/... 2>&1 | tee test-output.log
+go test -tags "test_dep integration" -v ./tests/integration/... 2>&1 | tee test-output.log
 ```
 
 ---
@@ -213,7 +214,7 @@ scheduleFixture := helpers.LoadFixture(t, "fixtures/schedules.json", "business_d
 
 ```bash
 # Run single test with verbose output
-go test -v ./tests/integration/ -run TestSpecificTest
+go test -tags "test_dep integration" -v ./tests/integration/ -run TestSpecificTest
 
 # Check container logs
 docker ps  # Find container ID
@@ -225,7 +226,7 @@ docker logs <container-id>
 ```go
 // In testcontainer.go, add logging:
 t.Logf("Database running at: %s", dbContainer.Endpoint)
-t.Logf("ChronoQueue running at: %s", chronoQueueContainer.Endpoint)
+t.Logf("Nzovu running at: %s", chronoQueueContainer.Endpoint)
 ```
 
 ### Common Issues & Solutions
@@ -242,8 +243,6 @@ t.Logf("ChronoQueue running at: %s", chronoQueueContainer.Endpoint)
 ## Next Steps
 
 1. **Explore Tests**: Check `tests/integration/` for examples
-2. **Read Guide**: See [TESTING_GUIDE.md](TESTING_GUIDE.md) for comprehensive scenarios
-3. **Review Implementation**: See [TEST_IMPLEMENTATION_SUMMARY.md](TEST_IMPLEMENTATION_SUMMARY.md)
 4. **Add Your Tests**: Follow patterns in existing tests
 
 ---
@@ -253,7 +252,7 @@ t.Logf("ChronoQueue running at: %s", chronoQueueContainer.Endpoint)
 ```
 Start
   ↓
-Setup Testcontainers (Database + ChronoQueue)
+Setup Testcontainers (Database + Nzovu)
   ↓
 Load Fixtures (queues.json, messages.json, etc.)
   ↓
@@ -315,12 +314,10 @@ helpers.AssertLeaseActive(t, message)
 
 ## Getting Help
 
-1. **Documentation**: Check [TESTING_GUIDE.md](TESTING_GUIDE.md)
 2. **Examples**: Review tests in `integration/` and `e2e/`
-3. **Implementation Details**: See [TEST_IMPLEMENTATION_SUMMARY.md](TEST_IMPLEMENTATION_SUMMARY.md)
 
 ---
 
-**🎉 You're ready to run ChronoQueue tests!**
+**🎉 You're ready to run Nzovu tests!**
 
-Start with: `go test -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage`
+Start with: `go test -tags "test_dep integration" -v ./tests/integration/ -run TestMessageLifecycle_PostSimpleMessage`

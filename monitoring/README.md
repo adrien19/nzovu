@@ -177,7 +177,7 @@ Default dashboard shows last 1 hour with 10-second refresh. Adjust in the dashbo
 
 ## Production Deployment
 
-### docker-compose Example
+### docker compose Example
 
 ```yaml
 version: '3.8'

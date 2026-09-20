@@ -180,7 +180,7 @@ func customErrorHandler(logger *log.Logger) runtime.ErrorHandlerFunc {
 // responseModifier allows modification of the response before it's sent
 func responseModifier(ctx context.Context, w http.ResponseWriter, p proto.Message) error {
 	// Add custom headers
-	w.Header().Set("X-ChronoQueue-Version", "2.0")
+	w.Header().Set("X-Nzovu-Version", version.Version)
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("X-Frame-Options", "DENY")
 
@@ -217,7 +217,7 @@ func corsHandler(handler http.Handler, allowedOrigins []string) http.Handler {
 
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, api-key, X-CSRF-Token")
-		w.Header().Set("Access-Control-Expose-Headers", "X-Worker-ID, X-ChronoQueue-Version, X-Attempt-ID")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Worker-ID, X-Nzovu-Version, X-Attempt-ID")
 
 		// Handle preflight requests
 		if r.Method == "OPTIONS" {
@@ -235,7 +235,7 @@ func LivenessHandler() http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(map[string]string{
 			"status":  "alive",
-			"service": "chronoqueue",
+			"service": "nzovu",
 		}); err != nil {
 			return
 		}
@@ -249,7 +249,7 @@ func ReadinessHandler(check func(context.Context) error) http.Handler {
 		status := http.StatusOK
 		response := map[string]string{
 			"status":     "ready",
-			"service":    "chronoqueue",
+			"service":    "nzovu",
 			"version":    version.Version,
 			"git_commit": version.GitCommit,
 			"build_date": version.BuildDate,
@@ -294,7 +294,7 @@ func BearerAuthMiddleware(token string, next http.Handler) http.Handler {
 			len(credential) == len(token) && subtle.ConstantTimeCompare([]byte(credential), []byte(token)) == 1
 		if !authorized {
 			w.Header().Set("Cache-Control", "no-store")
-			w.Header().Set("WWW-Authenticate", `Bearer realm="ChronoQueue metrics"`)
+			w.Header().Set("WWW-Authenticate", `Bearer realm="Nzovu metrics"`)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
@@ -332,9 +332,9 @@ func SwaggerUIHandler(config GatewayConfig, logger *log.Logger) http.Handler {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ChronoQueue API Documentation</title>
+    <title>Nzovu API Documentation</title>
     <link rel="stylesheet" type="text/css" href="/docs/assets/swagger-ui.css" />
-    <link rel="stylesheet" type="text/css" href="/docs/assets/chronoqueue.css" />
+    <link rel="stylesheet" type="text/css" href="/docs/assets/nzovu.css" />
 </head>
 <body>
     <div id="swagger-ui"></div>
@@ -356,7 +356,7 @@ func SwaggerUIHandler(config GatewayConfig, logger *log.Logger) http.Handler {
 // SwaggerAssetHandler serves the embedded Swagger UI assets.
 func SwaggerAssetHandler(config GatewayConfig, logger *log.Logger) http.Handler {
 	contentTypes := map[string]string{
-		"chronoqueue.css":                 "text/css; charset=utf-8",
+		"nzovu.css":                       "text/css; charset=utf-8",
 		"swagger-ui.css":                  "text/css; charset=utf-8",
 		"swagger-ui-bundle.js":            "text/javascript; charset=utf-8",
 		"swagger-ui-init.js":              "text/javascript; charset=utf-8",

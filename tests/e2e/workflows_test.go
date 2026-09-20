@@ -1,6 +1,6 @@
 package e2e
 
-// Package e2e provides end-to-end tests for ChronoQueue covering complete workflows.
+// Package e2e provides end-to-end tests for Nzovu covering complete workflows.
 //
 // These tests validate real-world scenarios by combining multiple features:
 // - Complete message lifecycle from creation to completion

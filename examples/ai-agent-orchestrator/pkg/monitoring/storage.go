@@ -6,12 +6,12 @@ import (
 	"github.com/adrien19/nzovu/client"
 )
 
-// StorageMonitor provides ChronoQueue API-based monitoring
+// StorageMonitor provides Nzovu API-based monitoring
 type StorageMonitor struct {
 	chronoClient *client.ChronoQueueClient
 }
 
-// NewStorageMonitor creates a new monitor using ChronoQueue client
+// NewStorageMonitor creates a new monitor using Nzovu client
 func NewStorageMonitor(chronoClient *client.ChronoQueueClient) *StorageMonitor {
 	return &StorageMonitor{
 		chronoClient: chronoClient,
@@ -28,7 +28,7 @@ type QueueStateCounts struct {
 	Errored   int64
 }
 
-// GetQueueState returns comprehensive queue state using ChronoQueue API
+// GetQueueState returns comprehensive queue state using Nzovu API
 func (rm *StorageMonitor) GetQueueState(ctx context.Context, queueName string) (*QueueStateCounts, error) {
 	resp, err := rm.chronoClient.GetQueueState(ctx, queueName)
 	if err != nil {
@@ -54,7 +54,7 @@ func (rm *StorageMonitor) GetDLQSize(ctx context.Context, queueName string) (int
 	return state.Errored, nil
 }
 
-// Close closes the ChronoQueue client connection
+// Close closes the Nzovu client connection
 func (rm *StorageMonitor) Close() error {
 	if rm.chronoClient != nil {
 		rm.chronoClient.Close()

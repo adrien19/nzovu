@@ -13,7 +13,7 @@ func TestNewScheduleCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "schedule", cmd.Use)
 	assert.Equal(t, "Schedule management operations", cmd.Short)
-	assert.Contains(t, cmd.Long, "Manage ChronoQueue schedules")
+	assert.Contains(t, cmd.Long, "Manage Nzovu schedules")
 
 	// Check that subcommands are properly added
 	subcommands := cmd.Commands()
@@ -26,7 +26,7 @@ func TestNewScheduleCommand(t *testing.T) {
 	}
 
 	expectedCommands := []string{
-		"create",
+		"create <queue-name> <message-data>",
 		"delete <schedule-id>",
 		"list",
 		"get <schedule-id>",
@@ -45,7 +45,7 @@ func TestNewScheduleCreateCommand(t *testing.T) {
 	cmd := newScheduleCreateCommand()
 
 	assert.NotNil(t, cmd)
-	assert.Equal(t, "create", cmd.Use)
+	assert.Equal(t, "create <queue-name> <message-data>", cmd.Use)
 	assert.Equal(t, "Create a new schedule", cmd.Short)
 	assert.Contains(t, cmd.Long, "Create a new scheduled task")
 	assert.NotNil(t, cmd.RunE)
@@ -300,7 +300,7 @@ func TestScheduleCommand_Examples(t *testing.T) {
 	cmd := NewScheduleCommand()
 
 	// The main schedule command should have helpful description
-	assert.Contains(t, cmd.Long, "Manage ChronoQueue schedules")
+	assert.Contains(t, cmd.Long, "Manage Nzovu schedules")
 }
 
 func TestScheduleCreateCommand_Examples(t *testing.T) {

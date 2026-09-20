@@ -19,7 +19,7 @@ func NewScheduleCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "schedule",
 		Short: "Schedule management operations",
-		Long:  `Manage ChronoQueue schedules - create, delete, list, and manage scheduled tasks.`,
+		Long:  `Manage Nzovu schedules - create, delete, list, and manage scheduled tasks.`,
 	}
 
 	cmd.AddCommand(newScheduleCreateCommand())
@@ -37,7 +37,7 @@ func NewScheduleCommand() *cobra.Command {
 // newScheduleCreateCommand creates the schedule create subcommand
 func newScheduleCreateCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create",
+		Use:   "create <queue-name> <message-data>",
 		Short: "Create a new schedule",
 		Long:  `Create a new scheduled task.`,
 		Args:  cobra.ExactArgs(2),

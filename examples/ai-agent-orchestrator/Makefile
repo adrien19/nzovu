@@ -97,19 +97,19 @@ lint:
 # Docker targets
 docker-build:
 	@echo "Building Docker images..."
-	docker-compose build
+	docker compose build
 
 docker-up:
 	@echo "Starting Docker services..."
-	docker-compose up -d
+	docker compose up -d
 
 docker-down:
 	@echo "Stopping Docker services..."
-	docker-compose down
+	docker compose down
 
 docker-logs:
 	@echo "Viewing Docker logs..."
-	docker-compose logs -f
+	docker compose logs -f
 
 docker-setup:
 	@echo "Running complete Docker setup..."

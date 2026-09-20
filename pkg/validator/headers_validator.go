@@ -31,7 +31,7 @@ func NewHeadersValidator() Validator {
 	return &HeadersValidator{
 		// Header keys: lowercase letters, numbers, hyphens
 		keyPattern:       regexp.MustCompile(`^[a-z0-9-]+$`),
-		reservedPrefixes: []string{"x-chronoqueue-", "x-internal-", "x-system-"},
+		reservedPrefixes: []string{"x-nzovu-", "x-chronoqueue-", "x-internal-", "x-system-"},
 		maxValueSize:     MaxHeaderValueSize,
 		maxTotalSize:     MaxTotalHeadersSize,
 	}

@@ -11,7 +11,12 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Copy source code
-COPY . .
+COPY api ./api
+COPY client ./client
+COPY internal ./internal
+COPY pkg ./pkg
+COPY examples/ai-agent-orchestrator ./examples/ai-agent-orchestrator
+WORKDIR /build/examples/ai-agent-orchestrator
 
 # Build the application
 RUN go build -o ai-orchestrator .
@@ -25,10 +30,10 @@ WORKDIR /app
 RUN apk upgrade --no-cache && apk add --no-cache ca-certificates curl
 
 # Copy binary from builder
-COPY --from=builder /build/ai-orchestrator .
+COPY --from=builder /build/examples/ai-agent-orchestrator/ai-orchestrator .
 
 # Copy task files
-COPY tasks/ ./tasks/
+COPY examples/ai-agent-orchestrator/tasks/ ./tasks/
 
 # Create logs directory
 RUN mkdir -p /app/logs

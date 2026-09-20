@@ -317,7 +317,7 @@ func ValidationInterceptor(logger *log.Logger) grpc.UnaryServerInterceptor {
 		// Here you could implement request validation logic
 		// For example, validating required fields, data formats, etc.
 
-		// For ChronoQueue, you might want to validate:
+		// For Nzovu, you might want to validate:
 		// - Queue names are valid
 		// - Message payloads are within size limits
 		// - Lease durations are reasonable

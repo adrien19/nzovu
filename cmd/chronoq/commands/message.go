@@ -22,7 +22,7 @@ func NewMessageCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "message",
 		Short: "Message operations",
-		Long:  `Manage ChronoQueue messages - post, get, acknowledge, and peek messages.`,
+		Long:  `Manage Nzovu messages - post, get, acknowledge, and peek messages.`,
 	}
 
 	cmd.AddCommand(newMessagePostCommand())
@@ -45,9 +45,9 @@ func newMessagePostCommand() *cobra.Command {
 		Long: `Post a new message to the specified queue.
 
 Message data can be provided in three ways:
-  1. Inline JSON: chronoq message post orders '{"key":"value"}'
-  2. From file:   chronoq message post orders --file /path/to/data.json
-  3. From stdin:  cat data.json | chronoq message post orders -
+  1. Inline JSON: nzovu message post orders '{"key":"value"}' --id order-1
+  2. From file:   nzovu message post orders --id order-2 --file /path/to/data.json
+  3. From stdin:  cat data.json | nzovu message post orders - --id order-3
 
 The --file flag takes precedence if both inline and file are provided.`,
 		Args: cobra.RangeArgs(1, 2),
@@ -189,7 +189,7 @@ The --file flag takes precedence if both inline and file are provided.`,
 		},
 	}
 
-	cmd.Flags().StringP("id", "i", "", "Message ID (auto-generated if not provided)")
+	cmd.Flags().StringP("id", "i", "", "Message ID (required)")
 	cmd.Flags().StringP("file", "f", "", "Path to file containing message data (JSON)")
 	cmd.Flags().StringP("lease-duration", "l", "", "Message lease duration")
 	cmd.Flags().StringP("invisibility-duration", "v", "", "Message invisibility duration")
@@ -694,8 +694,8 @@ Only messages that have not started processing can be cancelled.
 Messages in RUNNING, COMPLETED, ERRORED, or CANCELED states cannot be cancelled.
 
 Example:
-  chronoq message cancel orders msg-123
-  chronoq message cancel orders msg-123 --reason "Order expired"`,
+  nzovu message cancel orders msg-123
+  nzovu message cancel orders msg-123 --reason "Order expired"`,
 		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			queueName := args[0]

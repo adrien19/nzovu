@@ -250,7 +250,7 @@ func parseMessageHeaders(raw string) ([]client.MessageHeader, error) {
 		if !headerKeyPattern.MatchString(header.Key) {
 			return nil, fmt.Errorf("header %d key must contain only lowercase letters, numbers, and hyphens", index+1)
 		}
-		for _, prefix := range []string{"x-chronoqueue-", "x-internal-", "x-system-"} {
+		for _, prefix := range []string{"x-nzovu-", "x-chronoqueue-", "x-internal-", "x-system-"} {
 			if strings.HasPrefix(header.Key, prefix) {
 				return nil, fmt.Errorf("header %d key uses reserved prefix %q", index+1, prefix)
 			}

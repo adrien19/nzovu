@@ -15,7 +15,7 @@
 
 ## System Overview
 
-The Interview Evaluation Platform is built using a **queue-centric microservices architecture** where ChronoQueue acts as the central message broker coordinating all asynchronous operations.
+The Interview Evaluation Platform is built using a **queue-centric microservices architecture** where Nzovu acts as the central message broker coordinating all asynchronous operations.
 
 ### Architecture Principles
 
@@ -48,7 +48,7 @@ The Interview Evaluation Platform is built using a **queue-centric microservices
 │  Responsibilities:                                              │
 │  ├── REST API endpoints                                         │
 │  ├── Authentication (Clerk JWT validation)                      │
-│  ├── ChronoQueue client operations                             │
+│  ├── Nzovu client operations                             │
 │  ├── Database CRUD operations                                   │
 │  ├── SSE connection management                                  │
 │  └── Business logic orchestration                              │
@@ -56,7 +56,7 @@ The Interview Evaluation Platform is built using a **queue-centric microservices
                          │ gRPC
                          ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│                    CHRONOQUEUE LAYER                            │
+│                    NZOVU LAYER                            │
 │  Message Queue System                                           │
 │                                                                 │
 │  Queues:                                                        │
@@ -122,7 +122,7 @@ evaluation-urgent:
   max_attempts: 3
   retry_strategy: exponential_backoff
   dlq: evaluation-urgent-dlq
-  
+
 evaluation-standard:
   type: PRIORITY
   priority_range: 40-60
@@ -130,7 +130,7 @@ evaluation-standard:
   max_attempts: 5
   retry_strategy: exponential_backoff
   dlq: evaluation-standard-dlq
-  
+
 evaluation-bulk:
   type: SIMPLE
   priority_range: 10-20
@@ -145,7 +145,7 @@ evaluation-bulk:
 func DetermineQueue(interview Interview) string {
     // Priority calculation based on multiple factors
     priority := CalculatePriority(interview)
-    
+
     switch {
     case priority >= 90:
         return "evaluation-urgent"
@@ -158,7 +158,7 @@ func DetermineQueue(interview Interview) string {
 
 func CalculatePriority(interview Interview) int {
     basePriority := 50
-    
+
     // Job level multiplier
     switch interview.JobLevel {
     case "Executive", "C-Level":
@@ -170,23 +170,23 @@ func CalculatePriority(interview Interview) int {
     case "Junior", "Intern":
         basePriority -= 20
     }
-    
+
     // Urgency flag
     if interview.IsUrgent {
         basePriority += 20
     }
-    
+
     // VIP company
     if interview.Company.IsVIP {
         basePriority += 15
     }
-    
+
     // Age penalty (older interviews get higher priority)
     hoursSinceSubmission := time.Since(interview.SubmittedAt).Hours()
     if hoursSinceSubmission > 24 {
         basePriority += int(hoursSinceSubmission / 24 * 5)
     }
-    
+
     // Clamp to valid range
     return clamp(basePriority, 0, 100)
 }
@@ -201,19 +201,19 @@ func CalculatePriority(interview Interview) int {
 ```
 1. Candidate submits interview via frontend
    POST /api/interviews
-   
+
 2. Backend API:
    ├── Validates input
    ├── Authenticates user (Clerk)
    ├── Stores interview in SQLite
    ├── Determines queue & priority
-   └── Posts message to ChronoQueue
-   
-3. ChronoQueue:
+   └── Posts message to Nzovu
+
+3. Nzovu:
    ├── Validates against schema (if configured)
    ├── Stores message with priority
    └── Makes available based on invisibility duration
-   
+
 4. Evaluation Worker:
    ├── Polls queue (GetNextMessage)
    ├── Receives message with lease
@@ -223,7 +223,7 @@ func CalculatePriority(interview Interview) int {
    │   └── Handles errors with retry
    ├── Updates database with results
    └── Acknowledges message
-   
+
 5. Real-time Update:
    ├── SSE pushes status to frontend
    └── UI updates evaluation status
@@ -235,15 +235,15 @@ func CalculatePriority(interview Interview) int {
 1. Evaluation fails (AI service down)
    └── Worker returns error
 
-2. ChronoQueue retry logic:
+2. Nzovu retry logic:
    Attempt 1: Immediate retry → Failed
    Attempt 2: 2s delay → Failed
    Attempt 3: 4s delay → Failed
    Attempt 4: 8s delay → Failed
    Attempt 5: Max attempts reached
-   
+
 3. Move to DLQ:
-   ├── ChronoQueue moves message to evaluation-standard-dlq
+   ├── Nzovu moves message to evaluation-standard-dlq
    └── Message includes failure metadata
 
 4. Admin notification:
@@ -268,11 +268,11 @@ func CalculatePriority(interview Interview) int {
 1. Calendar schedule trigger:
    Time: Monday 8:00 AM
    Schedule: "0 8 * * 1"
-   
-2. ChronoQueue:
+
+2. Nzovu:
    ├── Matches cron expression
    └── Posts message to analytics-scheduled queue
-   
+
 3. Analytics Worker:
    ├── Receives scheduled message
    ├── Queries database for weekly metrics
@@ -323,7 +323,7 @@ func CalculatePriority(interview Interview) int {
 - ✅ **No dependencies**: No API keys or external services needed
 - ✅ **Controlled failures**: Can simulate errors for DLQ demo
 - ✅ **Adjustable latency**: Can test lease renewal with long processing
-- ✅ **Focus on queues**: ChronoQueue is the star, not AI
+- ✅ **Focus on queues**: Nzovu is the star, not AI
 
 **Implementation**:
 
@@ -332,12 +332,12 @@ func MockAIEvaluate(interview Interview) (Result, error) {
     // Simulate processing time (10-30s)
     duration := rand.Intn(20) + 10
     time.Sleep(time.Duration(duration) * time.Second)
-    
+
     // Simulate occasional failures (10% chance)
     if rand.Float32() < 0.1 {
         return Result{}, errors.New("AI service temporarily unavailable")
     }
-    
+
     // Generate mock scores
     return Result{
         TechnicalScore: rand.Intn(40) + 60,  // 60-100
@@ -390,22 +390,22 @@ func MockAIEvaluate(interview Interview) (Result, error) {
 
 ```bash
 # Run multiple evaluation workers
-docker-compose up --scale evaluation-worker=5
+docker compose up --scale evaluation-worker=5
 
-# Each worker competes for messages from ChronoQueue
-# No coordination needed - ChronoQueue handles distribution
+# Each worker competes for messages from Nzovu
+# No coordination needed - Nzovu handles distribution
 ```
 
 **Backend API**: Stateless, can scale horizontally
 
 ```bash
 # Add more API instances behind load balancer
-docker-compose up --scale backend-api=3
+docker compose up --scale backend-api=3
 
 # Optionally use an external Redis service for application session storage
 ```
 
-**ChronoQueue**: Scale service instances with PostgreSQL as the shared storage backend
+**Nzovu**: Scale service instances with PostgreSQL as the shared storage backend
 
 ---
 
@@ -419,7 +419,7 @@ docker-compose up --scale backend-api=3
 
 **Caching**:
 
-- Optionally add an external Redis cache, separate from ChronoQueue storage, for:
+- Optionally add an external Redis cache, separate from Nzovu storage, for:
   - Queue metrics
   - Company configurations
   - User profiles
@@ -430,15 +430,15 @@ docker-compose up --scale backend-api=3
 // Batch message posting for bulk operations
 func BulkPostEvaluations(interviews []Interview) error {
     batch := make([]*PostMessageRequest, len(interviews))
-    
+
     for i, interview := range interviews {
         batch[i] = &PostMessageRequest{
             QueueName: DetermineQueue(interview),
             Message:   BuildMessage(interview),
         }
     }
-    
-    // Post all in one gRPC call (if ChronoQueue supports)
+
+    // Post all in one gRPC call (if Nzovu supports)
     return chronoqClient.BulkPostMessages(ctx, batch)
 }
 ```
@@ -456,14 +456,14 @@ Queue Metrics:
   - dlq_messages: Failed messages in DLQ
   - throughput: Messages/second
   - average_wait_time: Time in queue before processing
-  
+
 Worker Metrics:
   - messages_processed: Successful completions
   - errors_total: Failures before DLQ
   - processing_duration: Time to process message
   - lease_renewals: Heartbeat activity
   - worker_health: Last heartbeat timestamp
-  
+
 Application Metrics:
   - evaluation_requests: Total submissions
   - evaluation_completions: Successful evaluations
@@ -489,17 +489,17 @@ Application Metrics:
 func AuthMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         token := ExtractBearerToken(r)
-        
+
         claims, err := clerk.VerifyToken(token)
         if err != nil {
             http.Error(w, "Unauthorized", http.StatusUnauthorized)
             return
         }
-        
+
         // Inject user context
         ctx := context.WithValue(r.Context(), "user_id", claims.Subject)
         ctx = context.WithValue(ctx, "company_id", claims.CompanyID)
-        
+
         next.ServeHTTP(w, r.WithContext(ctx))
     })
 }
@@ -509,12 +509,12 @@ func RequireCompanyAccess(companyID string) Middleware {
     return func(next http.Handler) http.Handler {
         return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
             userCompanyID := r.Context().Value("company_id").(string)
-            
+
             if userCompanyID != companyID {
                 http.Error(w, "Forbidden", http.StatusForbidden)
                 return
             }
-            
+
             next.ServeHTTP(w, r)
         })
     }
@@ -531,7 +531,7 @@ func PostSensitiveEvaluation(interview Interview) error {
     if err != nil {
         return err
     }
-    
+
     message := &Message{
         MessageId: GenerateID(),
         Metadata: &Metadata{
@@ -539,7 +539,7 @@ func PostSensitiveEvaluation(interview Interview) error {
             EncryptionKey: "company-key-id", // Key reference, not actual key
         },
     }
-    
+
     return chronoqClient.PostMessage(ctx, message)
 }
 
@@ -547,12 +547,12 @@ func PostSensitiveEvaluation(interview Interview) error {
 func ProcessEncryptedEvaluation(msg *Message) error {
     keyID := msg.Metadata.EncryptionKey
     key := keyManager.GetKey(keyID)
-    
+
     decrypted, err := Decrypt(msg.Metadata.Payload, key)
     if err != nil {
         return err
     }
-    
+
     return ProcessEvaluation(decrypted)
 }
 ```
@@ -583,7 +583,7 @@ func ProcessEncryptedEvaluation(msg *Message) error {
 
 ## References
 
-- [ChronoQueue Documentation](../../../README.md)
-- [Queue Design Patterns](./QUEUE_DESIGN.md)
-- [API Documentation](./API_DOCUMENTATION.md)
-- [Deployment Guide](./DEPLOYMENT.md)
+- [Nzovu Documentation](../../../README.md)
+- [Queue Design Patterns](../backend/main.go)
+- [API Documentation](../backend/README.md)
+- [Deployment Guide](../README.md)

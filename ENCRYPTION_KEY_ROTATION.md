@@ -1,6 +1,6 @@
 # Encryption key rotation
 
-ChronoQueue encrypts message and schedule payloads with AES-GCM. Every newly encrypted payload records a SHA-256 fingerprint of the active key as `encryptionKeyId`; the key itself is never stored with the payload. Payloads written before key identifiers were introduced remain readable by trying the configured key set.
+Nzovu encrypts message and schedule payloads with AES-GCM. Every newly encrypted payload records a SHA-256 fingerprint of the active key as `encryptionKeyId`; the key itself is never stored with the payload. Payloads written before key identifiers were introduced remain readable by trying the configured key set.
 
 The active key encrypts new payloads. The active key and every historical key can decrypt existing payloads. All keys must be 16, 24, or 32 bytes.
 
@@ -40,10 +40,10 @@ Publish the former active key as `key` and keep the unsuccessful new key plus ev
 
 ## Historical-key retirement and re-encryption
 
-ChronoQueue does not currently provide a bulk re-encryption command. New records use the active key, but reading an existing record does not rewrite it. Keep a historical key while any queued, retained, dead-lettered, or scheduled record may reference it. In particular, elapsed time alone is not evidence that a key is unused when retention is unbounded or a schedule remains stored.
+Nzovu does not currently provide a bulk re-encryption command. New records use the active key, but reading an existing record does not rewrite it. Keep a historical key while any queued, retained, dead-lettered, or scheduled record may reference it. In particular, elapsed time alone is not evidence that a key is unused when retention is unbounded or a schedule remains stored.
 
 To retire a key with the current implementation, drain or delete every record encrypted by that key and recreate any long-lived schedules under the active key. Validate old and new payload reads from every storage backend before removing the historical key. Because live processes retain observed keys, restart one instance and repeat the read checks before completing the rollout.
 
 ## Missing-key recovery
 
-An unavailable key produces an error containing its key identifier; ChronoQueue does not overwrite the affected ciphertext. Restore the exact missing key into `previous_keys` and allow the manager to refresh. AES-GCM ciphertext cannot be recovered if the key has been permanently lost, so key-set backups must be retained for at least as long as encrypted data.
+An unavailable key produces an error containing its key identifier; Nzovu does not overwrite the affected ciphertext. Restore the exact missing key into `previous_keys` and allow the manager to refresh. AES-GCM ciphertext cannot be recovered if the key has been permanently lost, so key-set backups must be retained for at least as long as encrypted data.

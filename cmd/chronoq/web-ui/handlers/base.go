@@ -85,7 +85,7 @@ func (h *BaseHandler) requireActiveClient(w http.ResponseWriter) (*client.Chrono
 	if h.logger != nil {
 		h.logger.ErrorWithFields("Failed to acquire active cluster client", "error", err)
 	}
-	h.renderError(w, http.StatusServiceUnavailable, "ChronoQueue backend is unavailable")
+	h.renderError(w, http.StatusServiceUnavailable, "Nzovu backend is unavailable")
 	return nil, false
 }
 
@@ -160,7 +160,7 @@ func (h *BaseHandler) injectBaseData(data map[string]any) {
 		data["EnvSlug"] = active.Slug
 		data["BrokerAddress"] = active.BrokerAddress
 	} else {
-		data["EnvName"] = "ChronoQueue"
+		data["EnvName"] = "Nzovu"
 		data["EnvSlug"] = "local"
 		data["BrokerAddress"] = ""
 	}
@@ -253,36 +253,36 @@ func mapRPCError(err error) rpcErrorResponse {
 		return rpcErrorResponse{statusCode: http.StatusRequestTimeout, message: "The request was canceled"}
 	}
 	if errors.Is(err, context.DeadlineExceeded) {
-		return rpcErrorResponse{statusCode: http.StatusGatewayTimeout, message: "ChronoQueue did not respond before the deadline"}
+		return rpcErrorResponse{statusCode: http.StatusGatewayTimeout, message: "Nzovu did not respond before the deadline"}
 	}
 
 	switch status.Code(err) {
 	case codes.InvalidArgument, codes.OutOfRange:
-		return rpcErrorResponse{statusCode: http.StatusBadRequest, message: "ChronoQueue rejected the request"}
+		return rpcErrorResponse{statusCode: http.StatusBadRequest, message: "Nzovu rejected the request"}
 	case codes.NotFound:
-		return rpcErrorResponse{statusCode: http.StatusNotFound, message: "The requested ChronoQueue resource was not found"}
+		return rpcErrorResponse{statusCode: http.StatusNotFound, message: "The requested Nzovu resource was not found"}
 	case codes.AlreadyExists, codes.Aborted, codes.FailedPrecondition:
-		return rpcErrorResponse{statusCode: http.StatusConflict, message: "The request conflicts with the current ChronoQueue state"}
+		return rpcErrorResponse{statusCode: http.StatusConflict, message: "The request conflicts with the current Nzovu state"}
 	case codes.Unauthenticated:
-		return rpcErrorResponse{statusCode: http.StatusUnauthorized, message: "ChronoQueue authentication failed"}
+		return rpcErrorResponse{statusCode: http.StatusUnauthorized, message: "Nzovu authentication failed"}
 	case codes.PermissionDenied:
-		return rpcErrorResponse{statusCode: http.StatusForbidden, message: "ChronoQueue denied this operation"}
+		return rpcErrorResponse{statusCode: http.StatusForbidden, message: "Nzovu denied this operation"}
 	case codes.ResourceExhausted:
-		return rpcErrorResponse{statusCode: http.StatusTooManyRequests, message: "ChronoQueue is temporarily rate limited or out of capacity"}
+		return rpcErrorResponse{statusCode: http.StatusTooManyRequests, message: "Nzovu is temporarily rate limited or out of capacity"}
 	case codes.Canceled:
 		return rpcErrorResponse{statusCode: http.StatusRequestTimeout, message: "The request was canceled"}
 	case codes.DeadlineExceeded:
-		return rpcErrorResponse{statusCode: http.StatusGatewayTimeout, message: "ChronoQueue did not respond before the deadline"}
+		return rpcErrorResponse{statusCode: http.StatusGatewayTimeout, message: "Nzovu did not respond before the deadline"}
 	case codes.Unavailable:
-		return rpcErrorResponse{statusCode: http.StatusServiceUnavailable, message: "ChronoQueue is unavailable"}
+		return rpcErrorResponse{statusCode: http.StatusServiceUnavailable, message: "Nzovu is unavailable"}
 	default:
-		return rpcErrorResponse{statusCode: http.StatusInternalServerError, message: "ChronoQueue could not complete the request"}
+		return rpcErrorResponse{statusCode: http.StatusInternalServerError, message: "Nzovu could not complete the request"}
 	}
 }
 
 func (h *BaseHandler) writeRPCError(w http.ResponseWriter, r *http.Request, operation string, err error) {
 	mapped := mapRPCError(err)
-	h.logger.ErrorWithFields("ChronoQueue RPC failed", "error", err, "operation", operation, "status", mapped.statusCode)
+	h.logger.ErrorWithFields("Nzovu RPC failed", "error", err, "operation", operation, "status", mapped.statusCode)
 	if !isHTMXRequest(r) {
 		h.renderError(w, mapped.statusCode, mapped.message)
 		return

@@ -53,7 +53,7 @@ type Monitor struct {
 
 // NewMonitor creates a new monitoring instance
 func NewMonitor(c *client.ChronoQueueClient, refreshRate time.Duration) *Monitor {
-	// Initialize monitor using ChronoQueue API
+	// Initialize monitor using Nzovu API
 	storageMonitor := NewStorageMonitor(c)
 
 	return &Monitor{
@@ -134,7 +134,7 @@ func (m *Monitor) calculateAgentHealth(queue *QueueStats) AgentHealth {
 	return health
 }
 
-// getQueueStats retrieves statistics for a single queue using ChronoQueue API
+// getQueueStats retrieves statistics for a single queue using Nzovu API
 func (m *Monitor) getQueueStats(ctx context.Context, queueName string) (*QueueStats, error) {
 	stats := &QueueStats{
 		Name:              queueName,
@@ -142,7 +142,7 @@ func (m *Monitor) getQueueStats(ctx context.Context, queueName string) (*QueueSt
 		LastActivity:      time.Now(),
 	}
 
-	// Get queue state from ChronoQueue API
+	// Get queue state from Nzovu API
 	queueState, err := m.storageMonitor.GetQueueState(ctx, queueName)
 	if err != nil {
 		// Queue may not exist yet, return zero stats
