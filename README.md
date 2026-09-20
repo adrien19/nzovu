@@ -176,11 +176,8 @@ The UI binds to `127.0.0.1` by default. A non-loopback bind such as `--host 0.0.
 
 The dev container includes the tooling and configuration used for local development.
 
-Before building the dev container, create the required `chronoqueue-devnet` network:
-
-```bash
-docker network create chronoqueue-devnet
-```
+The dev container mounts the checkout at `/workspaces/<checkout-directory>` and
+uses Docker's default network; no named network setup is required.
 
 For UI development with auto-reloading CSS:
 

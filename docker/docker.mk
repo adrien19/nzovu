@@ -88,7 +88,7 @@ endif
 DEV_CONTAINER_VERSION_TAG?=latest
 
 # ChronoQueue container image name
-DEV_CONTAINER_IMAGE_NAME=chronoqueue-dev
+DEV_CONTAINER_IMAGE_NAME=nzovu-dev
 
 DEV_CONTAINER_DOCKERFILE=Dockerfile-dev
 DOCKERFILE_DIR=./docker
