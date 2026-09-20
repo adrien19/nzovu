@@ -9,8 +9,8 @@ import (
 
 	openai "github.com/sashabaranov/go-openai"
 
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/llm/prompts"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/llm/prompts"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
 )
 
 // OllamaClient implements LLMClient using Ollama via OpenAI-compatible API

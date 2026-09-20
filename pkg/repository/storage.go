@@ -3,11 +3,11 @@ package repository
 import (
 	"context"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/pkg/validator"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/pkg/validator"
 )
 
 // DLQStats represents statistics about a Dead Letter Queue

@@ -15,11 +15,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 func TestAttemptOwnership_GRPCAndHTTP(t *testing.T) {

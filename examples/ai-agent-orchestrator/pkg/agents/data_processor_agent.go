@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/adrien19/chronoqueue/client"
+	"github.com/adrien19/nzovu/client"
 )
 
 // DataProcessorAgent processes data analysis subtasks

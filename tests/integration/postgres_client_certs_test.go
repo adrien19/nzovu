@@ -16,9 +16,9 @@ import (
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"github.com/adrien19/chronoqueue/pkg/repository"
-	postgresrepository "github.com/adrien19/chronoqueue/pkg/repository/postgres"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	"github.com/adrien19/nzovu/pkg/repository"
+	postgresrepository "github.com/adrien19/nzovu/pkg/repository/postgres"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 // TestPostgreSQLClientCertificates verifies PostgreSQL client certificate support.

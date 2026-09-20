@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/cmd/chronoq/outputs"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
 )
 
 // NewMessageCommand creates the message command group

@@ -15,13 +15,13 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/client"
-	clusterstore "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/client"
+	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestQueueCreateForwardsAdvancedConfiguration(t *testing.T) {

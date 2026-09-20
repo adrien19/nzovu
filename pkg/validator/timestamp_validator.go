@@ -3,8 +3,8 @@ package validator
 import (
 	"context"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	schemapb "github.com/adrien19/chronoqueue/api/schema/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	schemapb "github.com/adrien19/nzovu/api/schema/v1"
 )
 
 type TimestampValidator struct{}

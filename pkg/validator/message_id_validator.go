@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 // MessageIDValidator validates message ID format and constraints

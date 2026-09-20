@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
 )
 
 func TestRetryValidator_AppliesDefaults(t *testing.T) {

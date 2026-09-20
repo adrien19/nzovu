@@ -12,8 +12,8 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	postgrescontainer "github.com/testcontainers/testcontainers-go/modules/postgres"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func TestExclusiveQueue_SerializesClaimsAcrossPostgresInstancesAndRecoversAfterReclaim(t *testing.T) {

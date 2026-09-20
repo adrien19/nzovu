@@ -28,11 +28,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	webui "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	webui "github.com/adrien19/nzovu/cmd/chronoq/web-ui"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 // startUIServer starts the UI server on a random available port and returns the URL.

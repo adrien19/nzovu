@@ -3,7 +3,7 @@ package common
 import (
 	"fmt"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 // StateValidator provides common validation logic for message states

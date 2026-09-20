@@ -6,7 +6,7 @@ import (
 
 // These variables are set at build time via ldflags
 var (
-	// Version is the semantic version of ChronoQueue
+	// Version is the semantic version of Nzovu
 	Version = "dev"
 	// GitCommit is the git commit hash
 	GitCommit = "unknown"
@@ -16,7 +16,7 @@ var (
 
 // Info returns a user-friendly formatted version string
 func Info() string {
-	return fmt.Sprintf(`ChronoQueue v%s
+	return fmt.Sprintf(`Nzovu v%s
   Git Commit: %s
   Built:      %s`, Version, GitCommit, BuildDate)
 }

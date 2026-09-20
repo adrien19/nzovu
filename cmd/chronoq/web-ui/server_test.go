@@ -19,7 +19,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestUISecurityHeadersAndLocalAssets(t *testing.T) {

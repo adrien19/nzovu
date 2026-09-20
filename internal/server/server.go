@@ -18,14 +18,14 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/internal/encryption/keymanager"
-	"github.com/adrien19/chronoqueue/pkg/chronoqueue"
-	"github.com/adrien19/chronoqueue/pkg/gateway"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	"github.com/adrien19/chronoqueue/pkg/repository"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/internal/encryption/keymanager"
+	"github.com/adrien19/nzovu/pkg/chronoqueue"
+	"github.com/adrien19/nzovu/pkg/gateway"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	"github.com/adrien19/nzovu/pkg/repository"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 // Server represents the ChronoQueue server instance

@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adrien19/chronoqueue/client"
-	clusterstore "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/client"
+	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // SchemaListItem is the view model for a schema in list pages.

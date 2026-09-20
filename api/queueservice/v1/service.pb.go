@@ -76,7 +76,7 @@ const file_proto_queueservice_v1_service_proto_rawDesc = "" +
 	"\tGetSchema\x121.chronoqueue.api.queueservice.v1.GetSchemaRequest\x1a2.chronoqueue.api.queueservice.v1.GetSchemaResponse\"6\x82\xd3\xe4\x93\x020\x12./v1/schemas/{schema_id=*}/versions/{version=*}\x12\x8d\x01\n" +
 	"\vListSchemas\x123.chronoqueue.api.queueservice.v1.ListSchemasRequest\x1a4.chronoqueue.api.queueservice.v1.ListSchemasResponse\"\x13\x82\xd3\xe4\x93\x02\r\x12\v/v1/schemas\x12\xb3\x01\n" +
 	"\fDeleteSchema\x124.chronoqueue.api.queueservice.v1.DeleteSchemaRequest\x1a5.chronoqueue.api.queueservice.v1.DeleteSchemaResponse\"6\x82\xd3\xe4\x93\x020*./v1/schemas/{schema_id=*}/versions/{version=*}\x12\xc8\x01\n" +
-	"\x0fValidatePayload\x127.chronoqueue.api.queueservice.v1.ValidatePayloadRequest\x1a8.chronoqueue.api.queueservice.v1.ValidatePayloadResponse\"B\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/schemas/{schema_id=*}/versions/{version=*}:validateBBZ@github.com/adrien19/chronoqueue/api/queueservice/v1;queueserviceb\x06proto3"
+	"\x0fValidatePayload\x127.chronoqueue.api.queueservice.v1.ValidatePayloadRequest\x1a8.chronoqueue.api.queueservice.v1.ValidatePayloadResponse\"B\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/schemas/{schema_id=*}/versions/{version=*}:validateB<Z:github.com/adrien19/nzovu/api/queueservice/v1;queueserviceb\x06proto3"
 
 var file_proto_queueservice_v1_service_proto_goTypes = []any{
 	(*CreateQueueRequest)(nil),               // 0: chronoqueue.api.queueservice.v1.CreateQueueRequest

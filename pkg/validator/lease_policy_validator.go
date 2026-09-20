@@ -6,11 +6,11 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	schemapb "github.com/adrien19/chronoqueue/api/schema/v1"
-	"github.com/adrien19/chronoqueue/internal/util"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	schemapb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/internal/util"
 )
 
 type LeasePolicyValidator struct {

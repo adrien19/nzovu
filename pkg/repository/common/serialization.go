@@ -5,9 +5,9 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
 // ProtoSerializer handles protobuf serialization/deserialization for ChronoQueue entities.

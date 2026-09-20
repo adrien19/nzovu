@@ -3,7 +3,7 @@ package sqlite
 import (
 	"fmt"
 
-	"github.com/adrien19/chronoqueue/pkg/repository/sql"
+	"github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // Dialect implements sql.SQLDialect for SQLite databases.

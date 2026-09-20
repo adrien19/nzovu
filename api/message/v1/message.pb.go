@@ -12,7 +12,7 @@
 package message
 
 import (
-	v1 "github.com/adrien19/chronoqueue/api/common/v1"
+	v1 "github.com/adrien19/nzovu/api/common/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -588,7 +588,7 @@ const file_proto_message_v1_message_proto_rawDesc = "" +
 	"\aRUNNING\x10\x02\x12\r\n" +
 	"\tCOMPLETED\x10\x03\x12\f\n" +
 	"\bCANCELED\x10\x04\x12\v\n" +
-	"\aERRORED\x10\x05J\x04\b\x03\x10\x04J\x04\b\b\x10\tR\x15invisibility_durationR\x13invisibility_expiryB8Z6github.com/adrien19/chronoqueue/api/message/v1;messageb\x06proto3"
+	"\aERRORED\x10\x05J\x04\b\x03\x10\x04J\x04\b\b\x10\tR\x15invisibility_durationR\x13invisibility_expiryB2Z0github.com/adrien19/nzovu/api/message/v1;messageb\x06proto3"
 
 var (
 	file_proto_message_v1_message_proto_rawDescOnce sync.Once

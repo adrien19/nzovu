@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	schedule "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/pkg/calendar/evaluators"
+	schedule "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/pkg/calendar/evaluators"
 )
 
 // TestBackwardCompatibility tests that existing cron schedules continue to work

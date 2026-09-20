@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"time"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/client"
-	clusterstore "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/client"
+	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // WorkersHandler handles the workers page (informational, no worker API available).

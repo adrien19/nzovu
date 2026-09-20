@@ -9,9 +9,9 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	schedule_pb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/cmd/chronoq/outputs"
+	schedule_pb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
 )
 
 // NewScheduleCommand creates the schedule command group

@@ -12,7 +12,7 @@ GIT_VERSION ?= $(shell git describe --always --abbrev=7 --dirty)
 # By default, disable CGO_ENABLED. See the details on https://golang.org/cmd/cgo
 # Override with CGO=1 for SQLite support: make ci-test CGO=1
 CGO         ?= 0
-BINARIES    ?= chronoqueue
+BINARIES    ?= nzovu
 
 # Add latest tag if LATEST_RELEASE is true
 LATEST_RELEASE ?=
@@ -107,7 +107,7 @@ HELM_REGISTRY?=ghcr.io/chronoqueue
 ################################################################################
 # Go build details                                                             #
 ################################################################################
-BASE_PACKAGE_NAME := github.com/adrien19/chronoqueue
+BASE_PACKAGE_NAME := github.com/adrien19/nzovu
 
 # Version information to inject at build time
 BUILD_DATE := $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
@@ -145,7 +145,7 @@ build-full:
 	@echo "Building ChronoQueue with SQLite support..."
 	@mkdir -p $(CHRONOQUEUE_OUT_DIR)
 	CGO_ENABLED=1 go build $(GCFLAGS) -ldflags="$(LDFLAGS)" -tags=sqlite \
-	  -o $(CHRONOQUEUE_OUT_DIR)/chronoqueue$(BINARY_EXT) .
+	  -o $(CHRONOQUEUE_OUT_DIR)/nzovu$(BINARY_EXT) .
 	@echo "✓ Binary built with SQLite and Schema Registry support"
 
 # Generate builds for chronoqueue binaries for the target
@@ -176,8 +176,8 @@ ci-build:
 	mkdir -p dist
 	CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) \
 		go build -v -trimpath \
-		-ldflags="-s -w" \
-		-o dist/chronoqueue-$(GOOS)-$(GOARCH)$(BINARY_EXT) \
+		-ldflags="-s -w $(LDFLAGS)" \
+		-o dist/nzovu-$(GOOS)-$(GOARCH)$(BINARY_EXT) \
 		.
 
 ################################################################################
@@ -506,7 +506,7 @@ ui-build: ui-deps
 	@cd cmd/chronoq/web-ui && npm run build:css
 	@echo "Building UI binary..."
 	@mkdir -p $(CHRONOQUEUE_OUT_DIR)
-	@go build -ldflags "$(LDFLAGS)" -o $(CHRONOQUEUE_OUT_DIR)/chronoqueue .
+	@go build -ldflags "$(LDFLAGS)" -o $(CHRONOQUEUE_OUT_DIR)/nzovu .
 
 ################################################################################
 # Target: ui-watch (watch and rebuild UI CSS)                                  #
@@ -530,7 +530,7 @@ UI_PORT?=8081
 .PHONY: ui-dev
 ui-dev: ui-build
 	@echo "Starting ChronoQueue with UI on :$(UI_PORT) (gRPC: $(UI_GRPC_ADDR))..."
-	@./$(CHRONOQUEUE_OUT_DIR)/chronoqueue web-ui start --port $(UI_PORT) --grpc-address $(UI_GRPC_ADDR) --skip-ssl
+	@./$(CHRONOQUEUE_OUT_DIR)/nzovu web-ui start --port $(UI_PORT) --grpc-address $(UI_GRPC_ADDR) --skip-ssl
 
 
 ################################################################################
@@ -556,16 +556,16 @@ ifneq ($(filter postgres,$(STORAGE) $(STORAGE_TYPE)),)
 	if [ -n "$(POSTGRES_PASSWORD)" ]; then PG_ARGS="$$PG_ARGS --postgres-password $(POSTGRES_PASSWORD)"; fi; \
 	if [ -n "$(POSTGRES_DB)" ]; then PG_ARGS="$$PG_ARGS --postgres-db $(POSTGRES_DB)"; fi; \
 	if [ -n "$(POSTGRES_SSLMODE)" ]; then PG_ARGS="$$PG_ARGS --postgres-sslmode $(POSTGRES_SSLMODE)"; fi; \
-	./$(CHRONOQUEUE_OUT_DIR)/chronoqueue server --dev --insecure $$PG_ARGS 2>&1 | tee logs/chronoqueue.log
+	./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --insecure $$PG_ARGS 2>&1 | tee logs/chronoqueue.log
 else ifdef DATABASE
 	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DATABASE))..."
-	@./$(CHRONOQUEUE_OUT_DIR)/chronoqueue server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/chronoqueue.log
+	@./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/chronoqueue.log
 else ifdef DB
 	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DB))..."
-	@./$(CHRONOQUEUE_OUT_DIR)/chronoqueue server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/chronoqueue.log
+	@./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/chronoqueue.log
 else
 	@echo "Starting ChronoQueue in development mode with SQLite storage (default)..."
-	@./$(CHRONOQUEUE_OUT_DIR)/chronoqueue server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/chronoqueue.log
+	@./$(CHRONOQUEUE_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/chronoqueue.log
 endif
 
 
@@ -627,7 +627,7 @@ init-proto:
 ################################################################################
 # Target: gen-proto                                                            #
 ################################################################################
-PROTO_PREFIX:=github.com/adrien19/chronoqueue
+PROTO_PREFIX:=github.com/adrien19/nzovu
 GRPC_PROTOS:=$(shell ls proto)
 
 # Generate archive files for each binary
@@ -688,8 +688,8 @@ check-proto-version: ## Checking the version of proto related tools
 ################################################################################
 .PHONY: check-proto-diff
 check-proto-diff:
-	git diff --exit-code ./api/chronoqueue/v1/service.pb.go # check no changes
-	git diff --exit-code ./api/chronoqueue/v1/service_grpc.pb.go # check no changes
+	git diff --exit-code -- api pkg/gateway/chronoqueue.swagger.json
+	@test -z "$$(git ls-files --others --exclude-standard -- api pkg/gateway/chronoqueue.swagger.json)"
 
 
 ################################################################################

@@ -15,10 +15,10 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
 )
 
 func TestExtendMessageLease_ReturnsPolicyCappedRemainingTime(t *testing.T) {

@@ -6,11 +6,11 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/internal/encryption"
-	"github.com/adrien19/chronoqueue/internal/encryption/keymanager"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/internal/encryption"
+	"github.com/adrien19/nzovu/internal/encryption/keymanager"
 )
 
 var (

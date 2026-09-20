@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	sqlbase "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	sqlbase "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // ReclaimableBackend defines internal operations needed for lease reclamation.

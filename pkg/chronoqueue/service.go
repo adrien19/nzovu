@@ -3,7 +3,7 @@ package chronoqueue
 import (
 	"context"
 
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
 )
 
 type Service interface {

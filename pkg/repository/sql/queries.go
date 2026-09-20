@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 // QueryBuilder helps construct SQL queries with dialect-specific syntax.

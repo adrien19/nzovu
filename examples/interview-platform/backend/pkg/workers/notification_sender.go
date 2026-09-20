@@ -5,10 +5,10 @@ import (
 	"log"
 	"time"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/client"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/client"
 
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/db"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/db"
 )
 
 // NotificationSenderWorker sends notifications to users
@@ -51,8 +51,7 @@ func (w *NotificationSenderWorker) Start(ctx context.Context) error {
 			}
 
 			msg := response.GetMessage()
-			attemptID := response.GetAttemptId()
-			if err := w.processMessage(ctx, queueName, msg, attemptID); err != nil {
+			if err := w.processMessage(ctx, queueName, msg); err != nil {
 				log.Printf("[Notification Sender] Error processing message %s: %v", msg.GetMessageId(), err)
 			}
 		}
@@ -60,19 +59,19 @@ func (w *NotificationSenderWorker) Start(ctx context.Context) error {
 }
 
 // processMessage handles a single notification message
-func (w *NotificationSenderWorker) processMessage(ctx context.Context, queueName string, msg *message_pb.Message, attemptID string) error {
+func (w *NotificationSenderWorker) processMessage(ctx context.Context, queueName string, msg *message_pb.Message) error {
 	log.Printf("[Notification Sender] Processing message: %s", msg.GetMessageId())
 
 	metadata := msg.GetMetadata()
 	if metadata == nil || metadata.GetPayload() == nil {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	payloadData := metadata.GetPayload().GetData()
 	if payloadData == nil {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	fields := payloadData.AsMap()
@@ -83,8 +82,8 @@ func (w *NotificationSenderWorker) processMessage(ctx context.Context, queueName
 	relatedID, _ := fields["related_id"].(string)
 
 	if recipient == "" || subject == "" {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	// Process based on notification type
@@ -124,7 +123,7 @@ func (w *NotificationSenderWorker) processMessage(ctx context.Context, queueName
 	time.Sleep(100 * time.Millisecond)
 
 	// Acknowledge message
-	if _, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID); err != nil {
+	if _, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED); err != nil {
 		log.Printf("[Notification Sender] Failed to acknowledge message: %v", err)
 		return err
 	}

@@ -3,7 +3,7 @@ package calendar
 import (
 	"time"
 
-	"github.com/adrien19/chronoqueue/pkg/calendar/types"
+	"github.com/adrien19/nzovu/pkg/calendar/types"
 )
 
 // Type aliases for interfaces and types defined in types package

@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - develop
     types: [opened, synchronize, reopened]
 
 concurrency:
@@ -87,7 +86,7 @@ jobs:
 
       - name: Check for direct commits to protected branches
         run: |
-          if [[ "${{ github.base_ref }}" == "main" ]] || [[ "${{ github.base_ref }}" == "develop" ]]; then
+          if [[ "${{ github.base_ref }}" == "main" ]]; then
             echo "✅ Using PR for protected branch - Good practice!"
           fi
 

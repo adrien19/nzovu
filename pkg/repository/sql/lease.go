@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
 )
 
 // LeaseRuntimeCalculator calculates lease expiry times and manages lease extensions.

@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/pkg/metrics"
 )
 
 func TestReclaimMetricsReflectPersistedExpiryCause(t *testing.T) {

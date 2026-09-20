@@ -630,7 +630,7 @@ const file_proto_schema_v1_schema_proto_rawDesc = "" +
 	"\x12\x18\n" +
 	"\x14CONTENT_TYPE_INVALID\x10\v\x12\x19\n" +
 	"\x15PAYLOAD_SIZE_EXCEEDED\x10\f\x12\x1c\n" +
-	"\x18SCHEMA_VALIDATION_FAILED\x10\rB6Z4github.com/adrien19/chronoqueue/api/schema/v1;schemab\x06proto3"
+	"\x18SCHEMA_VALIDATION_FAILED\x10\rB0Z.github.com/adrien19/nzovu/api/schema/v1;schemab\x06proto3"
 
 var (
 	file_proto_schema_v1_schema_proto_rawDescOnce sync.Once

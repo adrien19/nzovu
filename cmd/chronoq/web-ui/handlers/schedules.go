@@ -14,10 +14,10 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	schedule_pb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/client"
-	clusterstore "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	schedule_pb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/client"
+	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // SchedulesHandler handles schedule-related pages and HTMX actions.

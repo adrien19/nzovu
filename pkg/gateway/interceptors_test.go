@@ -19,8 +19,8 @@ import (
 	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/status"
 
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestErrorContractInterceptor(t *testing.T) {

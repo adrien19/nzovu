@@ -3,7 +3,7 @@ package postgres
 import (
 	"fmt"
 
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // Dialect implements sql.SQLDialect for PostgreSQL databases.

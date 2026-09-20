@@ -9,11 +9,11 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	repositorycommon "github.com/adrien19/chronoqueue/pkg/repository/common"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	repositorycommon "github.com/adrien19/nzovu/pkg/repository/common"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 func (s *Storage) CreateSchedule(ctx context.Context, schedule *schedulepb.Schedule) error {

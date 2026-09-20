@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 func TestPriorityLevelMappings(t *testing.T) {

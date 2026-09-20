@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func TestValidateQueue(t *testing.T) {

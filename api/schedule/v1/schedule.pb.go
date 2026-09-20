@@ -12,8 +12,8 @@
 package schedule
 
 import (
-	v11 "github.com/adrien19/chronoqueue/api/common/v1"
-	v1 "github.com/adrien19/chronoqueue/api/message/v1"
+	v11 "github.com/adrien19/nzovu/api/common/v1"
+	v1 "github.com/adrien19/nzovu/api/message/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -2491,7 +2491,7 @@ const file_proto_schedule_v1_schedule_proto_rawDesc = "" +
 	"\x04SKIP\x10\x00\x12\x0e\n" +
 	"\n" +
 	"RESCHEDULE\x10\x01\x12\t\n" +
-	"\x05EXTRA\x10\x02B:Z8github.com/adrien19/chronoqueue/api/schedule/v1;scheduleb\x06proto3"
+	"\x05EXTRA\x10\x02B4Z2github.com/adrien19/nzovu/api/schedule/v1;scheduleb\x06proto3"
 
 var (
 	file_proto_schedule_v1_schedule_proto_rawDescOnce sync.Once

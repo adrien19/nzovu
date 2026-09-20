@@ -3,7 +3,7 @@ package common
 import (
 	"testing"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 func TestApplyRuntimeMetadata_AllowsNilMessage(t *testing.T) {

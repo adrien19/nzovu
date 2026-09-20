@@ -12,9 +12,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	chronoqueueclient "github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	chronoqueueclient "github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 func TestAuthenticationGRPC(t *testing.T) {

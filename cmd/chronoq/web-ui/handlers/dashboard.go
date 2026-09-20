@@ -10,11 +10,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/adrien19/chronoqueue/client"
-	clusterstore "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/client"
+	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 
-	pb_queue "github.com/adrien19/chronoqueue/api/queue/v1"
+	pb_queue "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 // DashboardHandler handles the home / dashboard page.

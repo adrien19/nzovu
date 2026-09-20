@@ -13,9 +13,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
 )
 
 func TestDeleteQueue_RejectsReferencedDLQ(t *testing.T) {

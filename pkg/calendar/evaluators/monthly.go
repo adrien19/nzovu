@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	schedule "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/pkg/calendar/types"
+	schedule "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/pkg/calendar/types"
 )
 
 // MonthlyEvaluator handles monthly calendar rules

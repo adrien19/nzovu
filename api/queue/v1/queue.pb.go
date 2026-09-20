@@ -12,7 +12,7 @@
 package queue
 
 import (
-	v1 "github.com/adrien19/chronoqueue/api/common/v1"
+	v1 "github.com/adrien19/nzovu/api/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -695,7 +695,7 @@ const file_proto_queue_v1_queue_proto_rawDesc = "" +
 	"\bWEIGHTED\x10\x01\x12\t\n" +
 	"\x05AGING\x10\x02\x12\n" +
 	"\n" +
-	"\x06HYBRID\x10\x03B4Z2github.com/adrien19/chronoqueue/api/queue/v1;queueb\x06proto3"
+	"\x06HYBRID\x10\x03B.Z,github.com/adrien19/nzovu/api/queue/v1;queueb\x06proto3"
 
 var (
 	file_proto_queue_v1_queue_proto_rawDescOnce sync.Once

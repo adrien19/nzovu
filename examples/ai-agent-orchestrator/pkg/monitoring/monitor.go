@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/adrien19/chronoqueue/client"
+	"github.com/adrien19/nzovu/client"
 )
 
 // QueueStats represents statistics for a single queue

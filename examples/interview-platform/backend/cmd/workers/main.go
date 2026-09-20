@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/db"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/pkg/workers"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/db"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/pkg/workers"
 )
 
 func main() {

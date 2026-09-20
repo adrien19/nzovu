@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/adrien19/chronoqueue/cmd/chronoq/outputs"
+	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
 )
 
 var serverHTTPClient = &http.Client{Timeout: 10 * time.Second}

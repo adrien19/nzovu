@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func TestValidateQueueExclusivity(t *testing.T) {

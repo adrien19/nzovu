@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
 )
 
 // Registry manages message schemas

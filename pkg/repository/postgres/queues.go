@@ -8,8 +8,8 @@ import (
 
 	"github.com/lib/pq"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
 )
 
 const lockQueuesForRelationshipMutation = `LOCK TABLE cq_queues IN SHARE ROW EXCLUSIVE MODE`

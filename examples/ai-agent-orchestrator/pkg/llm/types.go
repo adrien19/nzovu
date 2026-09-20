@@ -1,7 +1,7 @@
 package llm
 
 import (
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
 )
 
 // DecomposeTaskRequest represents a request to decompose a task

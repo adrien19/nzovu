@@ -12,14 +12,14 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/pkg/calendar"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	repositorycommon "github.com/adrien19/chronoqueue/pkg/repository/common"
-	"github.com/adrien19/chronoqueue/pkg/repository/sqlite"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/pkg/calendar"
+	"github.com/adrien19/nzovu/pkg/log"
+	repositorycommon "github.com/adrien19/nzovu/pkg/repository/common"
+	"github.com/adrien19/nzovu/pkg/repository/sqlite"
 )
 
 type stubCalendarEngine struct {

@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	schemapb "github.com/adrien19/chronoqueue/api/schema/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	schemapb "github.com/adrien19/nzovu/api/schema/v1"
 )
 
 func TestHeadersValidatorAcceptsOptionalOrderedBinaryHeaders(t *testing.T) {

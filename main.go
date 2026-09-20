@@ -7,38 +7,38 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/adrien19/chronoqueue/cmd/chronoq/commands"
-	"github.com/adrien19/chronoqueue/internal/server"
-	"github.com/adrien19/chronoqueue/pkg/version"
+	"github.com/adrien19/nzovu/cmd/chronoq/commands"
+	"github.com/adrien19/nzovu/internal/server"
+	"github.com/adrien19/nzovu/pkg/version"
 )
 
 func main() {
 	ctx := context.Background()
 
 	rootCmd := &cobra.Command{
-		Use:   "chronoqueue",
-		Short: "ChronoQueue - A powerful message queue management tool",
-		Long: `ChronoQueue is a high-performance message queue system with scheduling capabilities.
+		Use:   "nzovu",
+		Short: "Nzovu - A powerful message queue management tool",
+		Long: `Nzovu is a high-performance message queue system with scheduling capabilities.
 
 This unified CLI provides both server operations and client management commands.
 
 Examples:
   # Start development server
-  chronoqueue server --dev
+  nzovu server --dev
 
   # Start production server
-  chronoqueue server --grpc-addr :9000 --http-addr :8080
+  nzovu server --grpc-addr :9000 --http-addr :8080
 
   # Client operations
-  chronoqueue queue create my-queue --type simple
-  chronoqueue message post my-queue "Hello World"
-  chronoqueue message get my-queue
-  chronoqueue schedule create --cron "0 */5 * * *" --queue my-queue --message "Scheduled task"`,
+  nzovu queue create my-queue --type simple
+  nzovu message post my-queue "Hello World"
+  nzovu message get my-queue
+  nzovu schedule create --cron "0 */5 * * *" --queue my-queue --message "Scheduled task"`,
 		Version: version.Info(),
 	}
 
 	// Global flags for client operations
-	rootCmd.PersistentFlags().String("server", "localhost:8080", "ChronoQueue server address")
+	rootCmd.PersistentFlags().String("server", "localhost:8080", "Nzovu server address")
 	rootCmd.PersistentFlags().Bool("insecure", false, "Use insecure connection (no TLS)")
 	rootCmd.PersistentFlags().String("cert-file", "", "Path to client certificate file")
 	rootCmd.PersistentFlags().String("key-file", "", "Path to client private key file")
@@ -69,8 +69,8 @@ Examples:
 func newServerCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "server",
-		Short: "Start ChronoQueue server",
-		Long: `Start a ChronoQueue server instance.
+		Short: "Start Nzovu server",
+		Long: `Start a Nzovu server instance.
 
 This command starts both gRPC and HTTP gateway servers. Use --dev for development
 mode with additional features like API documentation and CORS enabled.
@@ -81,21 +81,21 @@ Storage Backends:
 
 Examples:
   # Development server with defaults (PostgreSQL)
-  chronoqueue server --dev
+  nzovu server --dev
 
   # Development server with SQLite (convenience flags)
-  chronoqueue server --dev --database chronoqueue.db
-  chronoqueue server --dev --db ./data/chronoqueue.db
-  chronoqueue server --dev -d chronoqueue.db
+  nzovu server --dev --database nzovu.db
+  nzovu server --dev --db ./data/nzovu.db
+  nzovu server --dev -d nzovu.db
 
   # Development server with SQLite (explicit)
-  chronoqueue server --dev --storage-type sqlite --sqlite-db-path ./chronoqueue.db
+  nzovu server --dev --storage-type sqlite --sqlite-db-path ./nzovu.db
 
   # Production server with PostgreSQL
-  API_KEYS=secret METRICS_BEARER_TOKEN=metrics-secret CERT_FILE=server.crt KEY_FILE=server.key POSTGRES_PASSWORD=secret ENCRYPTION_KEY_SOURCE_TYPE=VAULT chronoqueue server --production --storage-type postgres --postgres-sslmode verify-full --postgres-root-cert root.crt
+  API_KEYS=secret METRICS_BEARER_TOKEN=metrics-secret CERT_FILE=server.crt KEY_FILE=server.key POSTGRES_PASSWORD=secret ENCRYPTION_KEY_SOURCE_TYPE=VAULT nzovu server --production --storage-type postgres --postgres-sslmode verify-full --postgres-root-cert root.crt
 
   # Server with TLS enabled
-  chronoqueue server --enable-tls --cert-file server.crt --key-file server.key`,
+  nzovu server --enable-tls --cert-file server.crt --key-file server.key`,
 		RunE: runServer,
 	}
 

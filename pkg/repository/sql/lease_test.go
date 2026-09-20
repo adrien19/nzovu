@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	commonpb "github.com/adrien19/chronoqueue/api/common/v1"
+	commonpb "github.com/adrien19/nzovu/api/common/v1"
 )
 
 func TestLeaseRuntimeCalculator_CalculateLeaseRuntime(t *testing.T) {

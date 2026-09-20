@@ -10,9 +10,9 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/adrien19/chronoqueue/pkg/repository"
-	sqliterepository "github.com/adrien19/chronoqueue/pkg/repository/sqlite"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	"github.com/adrien19/nzovu/pkg/repository"
+	sqliterepository "github.com/adrien19/nzovu/pkg/repository/sqlite"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 // initializeSQLiteStorage initializes SQLite storage and schema registry

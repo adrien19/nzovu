@@ -30,9 +30,9 @@ ARG BUILD_DATE=unknown
 # Build binary with SQLite support (CGO enabled)
 RUN CGO_ENABLED=1 go build \
     -tags=sqlite \
-    -ldflags="-X 'github.com/adrien19/chronoqueue/pkg/version.Version=${VERSION}' \
-    -X 'github.com/adrien19/chronoqueue/pkg/version.GitCommit=${GIT_COMMIT}' \
-    -X 'github.com/adrien19/chronoqueue/pkg/version.BuildDate=${BUILD_DATE}'" \
+    -ldflags="-X 'github.com/adrien19/nzovu/pkg/version.Version=${VERSION}' \
+    -X 'github.com/adrien19/nzovu/pkg/version.GitCommit=${GIT_COMMIT}' \
+    -X 'github.com/adrien19/nzovu/pkg/version.BuildDate=${BUILD_DATE}'" \
     -o chronoqueue \
     main.go
 

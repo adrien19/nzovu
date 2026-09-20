@@ -6,8 +6,8 @@ import (
 	"regexp"
 	"strings"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/internal/util"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/internal/util"
 )
 
 const MaxQueueNameLength = 255

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 const (

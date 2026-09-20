@@ -17,7 +17,7 @@
 syntax = "proto3";
 package chronoqueue.api.queueservice.v1;
 
-option go_package = "github.com/adrien19/chronoqueue/api/queueservice/v1;queueservice";
+option go_package = "github.com/adrien19/nzovu/api/queueservice/v1;queueservice";
 
 import "proto/google/api/annotations.proto";
 // import "proto/google/api/field_behavior.proto";

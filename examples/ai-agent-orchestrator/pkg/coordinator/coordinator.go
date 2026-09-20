@@ -8,11 +8,11 @@ import (
 
 	"google.golang.org/protobuf/types/known/structpb"
 
-	messagev1 "github.com/adrien19/chronoqueue/api/message/v1"
-	queueservicev1 "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/llm"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
+	messagev1 "github.com/adrien19/nzovu/api/message/v1"
+	queueservicev1 "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/llm"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
 )
 
 // Coordinator handles task decomposition and routing

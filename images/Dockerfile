@@ -33,9 +33,9 @@ RUN target_os="${TARGETOS:-$(go env GOOS)}" && \
     target_arch="${TARGETARCH:-$(go env GOARCH)}" && \
     if [ "$target_arch" = "arm" ]; then export GOARM="${TARGETVARIANT#v}"; fi && \
     CGO_ENABLED=0 GOOS="$target_os" GOARCH="$target_arch" go build \
-    -ldflags="-w -s -X 'github.com/adrien19/chronoqueue/pkg/version.Version=${VERSION}' \
-    -X 'github.com/adrien19/chronoqueue/pkg/version.GitCommit=${GIT_COMMIT}' \
-    -X 'github.com/adrien19/chronoqueue/pkg/version.BuildDate=${BUILD_DATE}'" \
+    -ldflags="-w -s -X 'github.com/adrien19/nzovu/pkg/version.Version=${VERSION}' \
+    -X 'github.com/adrien19/nzovu/pkg/version.GitCommit=${GIT_COMMIT}' \
+    -X 'github.com/adrien19/nzovu/pkg/version.BuildDate=${BUILD_DATE}'" \
     -o chronoqueue \
     main.go
 

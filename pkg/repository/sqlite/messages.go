@@ -8,14 +8,14 @@ import (
 	"fmt"
 	"time"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	repositorycommon "github.com/adrien19/chronoqueue/pkg/repository/common"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
-	"github.com/adrien19/chronoqueue/pkg/repository/sql/priority"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	repositorycommon "github.com/adrien19/nzovu/pkg/repository/common"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
+	"github.com/adrien19/nzovu/pkg/repository/sql/priority"
 )
 
 // generateID generates a random ID

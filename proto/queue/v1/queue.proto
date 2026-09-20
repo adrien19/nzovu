@@ -10,7 +10,7 @@ package chronoqueue.api.queue.v1;
 import "proto/common/v1/common.proto";
 import "google/protobuf/duration.proto";
 
-option go_package = "github.com/adrien19/chronoqueue/api/queue/v1;queue";
+option go_package = "github.com/adrien19/nzovu/api/queue/v1;queue";
 
 // QueueType defines the message consumption pattern.
 //

@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adrien19/chronoqueue/internal/encryption/keymanager"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	"github.com/adrien19/nzovu/internal/encryption/keymanager"
+	"github.com/adrien19/nzovu/pkg/log"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 // Storage implements the persistence.Storage interface for Postgres

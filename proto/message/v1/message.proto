@@ -6,7 +6,7 @@
 syntax = "proto3";
 package chronoqueue.api.message.v1;
 
-option go_package = "github.com/adrien19/chronoqueue/api/message/v1;message";
+option go_package = "github.com/adrien19/nzovu/api/message/v1;message";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";

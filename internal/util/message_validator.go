@@ -9,8 +9,8 @@ import (
 
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	common_pb "github.com/adrien19/chronoqueue/api/common/v1"
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
+	common_pb "github.com/adrien19/nzovu/api/common/v1"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 const MaxMessageSize = 150 * 1024 // 150 KB
