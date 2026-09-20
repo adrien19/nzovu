@@ -3,7 +3,7 @@ package llm
 import (
 	"context"
 
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
 )
 
 // LLMClient defines the interface for language model operations

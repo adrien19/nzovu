@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/adrien19/chronoqueue/pkg/repository"
-	postgresrepository "github.com/adrien19/chronoqueue/pkg/repository/postgres"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	"github.com/adrien19/nzovu/pkg/repository"
+	postgresrepository "github.com/adrien19/nzovu/pkg/repository/postgres"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 // initializePostgresStorage initializes PostgreSQL storage and schema registry.

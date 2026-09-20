@@ -85,7 +85,7 @@ function Test-ReleaseMetadata([string]$BinaryPath, [string]$MetadataFile, [strin
     if ($LASTEXITCODE -ne 0) {
         Exit-Error "Installed binary failed its version check."
     }
-    if (-not $output.Contains("ChronoQueue v$RequestedVersion")) {
+    if (-not $output.Contains("Nzovu v$RequestedVersion")) {
         Exit-Error "Installed binary does not report version 'v$RequestedVersion'."
     }
     if (-not $output.Contains("Git Commit: $releaseCommit")) {

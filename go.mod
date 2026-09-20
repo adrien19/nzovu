@@ -1,6 +1,6 @@
 // go.mod for refactored ChronoQueue with gRPC-Ecosystem
 
-module github.com/adrien19/chronoqueue
+module github.com/adrien19/nzovu
 
 go 1.26.6
 

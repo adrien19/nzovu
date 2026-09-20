@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func ValidateQueueExclusivity(metadata *queuepb.QueueMetadata) error {

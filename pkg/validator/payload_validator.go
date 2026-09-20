@@ -3,9 +3,9 @@ package validator
 import (
 	"context"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 // PayloadValidator combines multiple validators for comprehensive validation

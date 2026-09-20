@@ -2,14 +2,15 @@ package workers
 
 import (
 	"context"
+	"errors"
 	"log"
 	"time"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/client"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/client"
 
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/db"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/models"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/db"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/models"
 )
 
 // ReportGeneratorWorker processes report generation requests
@@ -52,8 +53,7 @@ func (w *ReportGeneratorWorker) Start(ctx context.Context) error {
 			}
 
 			msg := response.GetMessage()
-			attemptID := response.GetAttemptId()
-			if err := w.processMessage(ctx, queueName, msg, attemptID); err != nil {
+			if err := w.processMessage(ctx, queueName, msg); err != nil {
 				log.Printf("[Report Generator] Error processing message %s: %v", msg.GetMessageId(), err)
 			}
 		}
@@ -61,19 +61,19 @@ func (w *ReportGeneratorWorker) Start(ctx context.Context) error {
 }
 
 // processMessage handles a single report generation message
-func (w *ReportGeneratorWorker) processMessage(ctx context.Context, queueName string, msg *message_pb.Message, attemptID string) error {
+func (w *ReportGeneratorWorker) processMessage(ctx context.Context, queueName string, msg *message_pb.Message) error {
 	log.Printf("[Report Generator] Processing message: %s", msg.GetMessageId())
 
 	metadata := msg.GetMetadata()
 	if metadata == nil || metadata.GetPayload() == nil {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	payloadData := metadata.GetPayload().GetData()
 	if payloadData == nil {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	fields := payloadData.AsMap()
@@ -83,16 +83,16 @@ func (w *ReportGeneratorWorker) processMessage(ctx context.Context, queueName st
 	action, _ := fields["action"].(string)
 
 	if reportID == "" || interviewID == "" {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	// Get report from database
 	report, err := w.db.GetReport(reportID)
 	if err != nil {
 		log.Printf("[Report Generator] Report not found: %v", err)
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return err
+		_, ackErr := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return errors.Join(err, ackErr)
 	}
 
 	// Process based on action
@@ -146,7 +146,7 @@ func (w *ReportGeneratorWorker) processMessage(ctx context.Context, queueName st
 	}
 
 	// Acknowledge message
-	if _, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID); err != nil {
+	if _, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED); err != nil {
 		log.Printf("[Report Generator] Failed to acknowledge message: %v", err)
 		return err
 	}

@@ -9,9 +9,9 @@ import (
 
 	"google.golang.org/protobuf/types/known/structpb"
 
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/llm"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/llm"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
 )
 
 // AggregatorAgent collects and synthesizes results from other agents

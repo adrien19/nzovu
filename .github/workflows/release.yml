@@ -259,7 +259,7 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           BINARY_NAME="chronoqueue-${TAG}-${TARGET_OS}-${TARGET_ARCH}"; [[ "${TARGET_OS}" == windows ]] && BINARY_NAME="${BINARY_NAME}.exe"
-          LDFLAGS="-s -w -X github.com/adrien19/chronoqueue/pkg/version.Version=${VERSION} -X github.com/adrien19/chronoqueue/pkg/version.GitCommit=${COMMIT} -X github.com/adrien19/chronoqueue/pkg/version.BuildDate=${BUILD_DATE}"
+          LDFLAGS="-s -w -X github.com/adrien19/nzovu/pkg/version.Version=${VERSION} -X github.com/adrien19/nzovu/pkg/version.GitCommit=${COMMIT} -X github.com/adrien19/nzovu/pkg/version.BuildDate=${BUILD_DATE}"
           GOOS="${TARGET_OS}" GOARCH="${TARGET_ARCH}" CGO_ENABLED=0 go build -trimpath -ldflags="${LDFLAGS}" -o "dist/${BINARY_NAME}" .
           strings "dist/${BINARY_NAME}" | grep -Fx -- "${VERSION}"
           strings "dist/${BINARY_NAME}" | grep -Fx -- "${COMMIT}"
@@ -344,7 +344,7 @@ jobs:
           done
           temp_dir="$(mktemp -d)"; tar -xzf "artifacts/chronoqueue-${TAG}-linux-amd64.tar.gz" -C "${temp_dir}"
           output="$("${temp_dir}/chronoqueue-${TAG}-linux-amd64" --version)"
-          grep -Fq "ChronoQueue v${VERSION}" <<<"${output}"; grep -Fq "Git Commit: ${COMMIT}" <<<"${output}"; grep -Fq "Built:      ${BUILD_DATE}" <<<"${output}"
+          grep -Fq "Nzovu v${VERSION}" <<<"${output}"; grep -Fq "Git Commit: ${COMMIT}" <<<"${output}"; grep -Fq "Built:      ${BUILD_DATE}" <<<"${output}"
       - name: Exercise Unix installer against built release
         env:
           VERSION: ${{ needs.prepare-release.outputs.version }}
@@ -377,7 +377,7 @@ jobs:
         run: |
           set -euo pipefail
           docker pull "${IMAGE}"; output="$(docker run --rm "${IMAGE}" --version)"
-          grep -Fq "ChronoQueue v${VERSION}" <<<"${output}"; grep -Fq "Git Commit: ${COMMIT}" <<<"${output}"; grep -Fq "Built:      ${BUILD_DATE}" <<<"${output}"
+          grep -Fq "Nzovu v${VERSION}" <<<"${output}"; grep -Fq "Git Commit: ${COMMIT}" <<<"${output}"; grep -Fq "Built:      ${BUILD_DATE}" <<<"${output}"
 
   container-vulnerability-scan:
     name: Container Vulnerability Scan

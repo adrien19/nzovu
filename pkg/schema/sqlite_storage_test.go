@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func setupTestSQLiteRegistry(t *testing.T) (*SQLiteRegistry, func()) {

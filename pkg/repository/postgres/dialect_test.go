@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 func TestPostgresDialect_Placeholder(t *testing.T) {

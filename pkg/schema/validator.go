@@ -6,7 +6,7 @@ import (
 
 	"github.com/xeipuuv/gojsonschema"
 
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
 )
 
 // ValidateJSONSchema validates a JSON payload against a JSON Schema

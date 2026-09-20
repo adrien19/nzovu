@@ -8,7 +8,7 @@ package chronoqueue.api.common.v1;
 import "google/protobuf/struct.proto";
 import "google/protobuf/duration.proto";
 
-option go_package = "github.com/adrien19/chronoqueue/api/common/v1;common";
+option go_package = "github.com/adrien19/nzovu/api/common/v1;common";
 
 // Payload represents the user data and metadata for a message.
 //

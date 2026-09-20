@@ -6,8 +6,8 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
 )
 
 // JSONStructureValidator validates that JSON payloads have valid structure

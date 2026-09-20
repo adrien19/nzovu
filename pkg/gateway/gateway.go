@@ -20,10 +20,10 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	"github.com/adrien19/chronoqueue/pkg/version"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	"github.com/adrien19/nzovu/pkg/version"
 )
 
 //go:embed chronoqueue.swagger.json

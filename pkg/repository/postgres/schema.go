@@ -8,7 +8,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 const latestVersion = uint(10)

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	schedule "github.com/adrien19/chronoqueue/api/schedule/v1"
+	schedule "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
 // MemoryBusinessCalendarProvider is an in-memory implementation of BusinessCalendarProvider

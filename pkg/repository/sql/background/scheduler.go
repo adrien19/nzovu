@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	sqlbase "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	sqlbase "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // SchedulerService handles moving INVISIBLE messages to PENDING when their scheduled time arrives.

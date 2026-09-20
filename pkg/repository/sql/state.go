@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 // StateManager handles message state counter updates for queue statistics.

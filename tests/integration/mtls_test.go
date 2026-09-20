@@ -22,9 +22,9 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 // TestGRPCWithMTLS verifies that gRPC server accepts connections with valid client certificates

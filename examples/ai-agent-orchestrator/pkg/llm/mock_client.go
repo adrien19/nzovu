@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
 )
 
 // MockLLMClient implements LLMClient with predefined responses for demo purposes

@@ -4,13 +4,11 @@ on:
   push:
     branches:
       - main
-      - develop
     tags-ignore:
       - "**"
   pull_request:
     branches:
       - main
-      - develop
   workflow_dispatch:
 
 concurrency:
@@ -184,7 +182,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: chronoqueue-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: nzovu-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/*
           retention-days: 7
 
@@ -223,8 +221,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-,format=short
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=edge,enable=${{ github.ref == 'refs/heads/develop' }}
+            type=raw,value=edge,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5

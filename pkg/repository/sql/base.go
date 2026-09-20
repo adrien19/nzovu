@@ -5,10 +5,10 @@ import (
 	"database/sql"
 	"sync"
 
-	"github.com/adrien19/chronoqueue/internal/encryption/keymanager"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/pkg/repository/common"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	"github.com/adrien19/nzovu/internal/encryption/keymanager"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/repository/common"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 // BaseSQL provides common SQL storage functionality shared across SQL backends.

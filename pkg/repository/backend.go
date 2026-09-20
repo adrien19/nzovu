@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // BackendStorage defines the low-level interface that storage backends must implement.

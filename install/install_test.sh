@@ -6,7 +6,7 @@ repository_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 test_root="$(mktemp -d)"
 trap 'rm -rf "${test_root}"' EXIT
 
-version="2.0.0-rc.1"
+version="0.0.1"
 tag="v${version}"
 commit="0123456789abcdef0123456789abcdef01234567"
 build_date="2026-08-17T12:34:56Z"
@@ -30,7 +30,7 @@ mkdir -p "${release_dir}" "${staging_dir}"
 (
     cd "${repository_root}"
     CGO_ENABLED=0 go build -trimpath \
-        -ldflags="-X github.com/adrien19/chronoqueue/pkg/version.Version=${version} -X github.com/adrien19/chronoqueue/pkg/version.GitCommit=${commit} -X github.com/adrien19/chronoqueue/pkg/version.BuildDate=${build_date}" \
+        -ldflags="-X github.com/adrien19/nzovu/pkg/version.Version=${version} -X github.com/adrien19/nzovu/pkg/version.GitCommit=${commit} -X github.com/adrien19/nzovu/pkg/version.BuildDate=${build_date}" \
         -o "${staging_dir}/${binary_name}" .
 )
 printf 'version=%s\ncommit=%s\nbuild_date=%s\n' \
@@ -47,7 +47,7 @@ CHRONOQUEUE_INSTALL_DIR="${install_dir}" \
     bash "${repository_root}/install/install.sh" "${version}"
 
 output="$("${install_dir}/chronoqueue" --version)"
-grep -Fq "ChronoQueue v${version}" <<<"${output}"
+grep -Fq "Nzovu v${version}" <<<"${output}"
 grep -Fq "Git Commit: ${commit}" <<<"${output}"
 grep -Fq "Built:      ${build_date}" <<<"${output}"
 
@@ -60,7 +60,7 @@ create_archive() {
     )
 }
 
-printf 'version=v2.0.0\ncommit=%s\nbuild_date=%s\n' \
+printf 'version=v0.0.2\ncommit=%s\nbuild_date=%s\n' \
     "${commit}" "${build_date}" > "${staging_dir}/${binary_name}.release"
 create_archive
 if CHRONOQUEUE_RELEASES_URL="file://${test_root}/releases" \

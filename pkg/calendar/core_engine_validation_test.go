@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
 func TestValidateSchedule_RejectsUnsupportedCustomRules(t *testing.T) {

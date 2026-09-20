@@ -13,11 +13,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 func TestMessageQueriesPreserveOrderedBinaryHeaders(t *testing.T) {

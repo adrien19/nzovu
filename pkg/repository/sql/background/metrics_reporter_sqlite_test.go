@@ -13,8 +13,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/pkg/metrics"
 )
 
 func TestMetricsReporterEmitsDatabaseAndDLQGauges(t *testing.T) {

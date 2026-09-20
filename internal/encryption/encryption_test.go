@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/adrien19/chronoqueue/internal/encryption/keymanager"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/internal/encryption/keymanager"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestDecryptPayload_DecryptsWithValidNonce(t *testing.T) {

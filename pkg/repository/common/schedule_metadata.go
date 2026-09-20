@@ -3,7 +3,7 @@ package common
 import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
 const legacyMessageIDsField protoreflect.Name = "message_ids"

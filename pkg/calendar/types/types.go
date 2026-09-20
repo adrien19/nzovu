@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	schedule "github.com/adrien19/chronoqueue/api/schedule/v1"
+	schedule "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
 // RuleType represents the type of calendar rule

@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/cmd/chronoq/outputs"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
 )
 
 // NewDLQCommand creates the Dead Letter Queue command group

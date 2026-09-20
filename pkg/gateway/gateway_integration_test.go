@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // TestGatewayTLSIntegration tests the full TLS flow with a real gRPC server

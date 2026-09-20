@@ -20,10 +20,10 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 // TestMain sets up shared test infrastructure for all tests in this package.

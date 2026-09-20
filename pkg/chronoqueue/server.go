@@ -7,14 +7,14 @@ import (
 	"strconv"
 	"strings"
 
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	"github.com/adrien19/chronoqueue/internal/pagination"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/pkg/repository"
-	"github.com/adrien19/chronoqueue/pkg/schema"
-	"github.com/adrien19/chronoqueue/pkg/validator"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	"github.com/adrien19/nzovu/internal/pagination"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/repository"
+	"github.com/adrien19/nzovu/pkg/schema"
+	"github.com/adrien19/nzovu/pkg/validator"
 )
 
 var calendarRuleErrorPattern = regexp.MustCompile(`\brule (\d+)\b`)

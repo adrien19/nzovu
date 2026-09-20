@@ -12,7 +12,7 @@ import (
 	postgrescontainer "github.com/testcontainers/testcontainers-go/modules/postgres"
 	"google.golang.org/protobuf/proto"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func TestSchemaMigration_FromV1ToLatest(t *testing.T) {

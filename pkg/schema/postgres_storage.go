@@ -8,9 +8,9 @@ import (
 	"math"
 	"time"
 
-	schema_pb "github.com/adrien19/chronoqueue/api/schema/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	schema_pb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // PostgresRegistry implements Registry using PostgreSQL as the storage backend.

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 var (

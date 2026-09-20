@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/models"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/models"
 )
 
 // CreateInterview creates a new interview

@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func TestCleanupDeletesAndUpdatesCountersAcrossBatches(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 func TestProtoSerializerPreservesOrderedBinaryMessageHeaders(t *testing.T) {

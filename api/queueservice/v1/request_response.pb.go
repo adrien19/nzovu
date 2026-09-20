@@ -54,10 +54,10 @@
 package queueservice
 
 import (
-	v11 "github.com/adrien19/chronoqueue/api/message/v1"
-	v1 "github.com/adrien19/chronoqueue/api/queue/v1"
-	v12 "github.com/adrien19/chronoqueue/api/schedule/v1"
-	v13 "github.com/adrien19/chronoqueue/api/schema/v1"
+	v11 "github.com/adrien19/nzovu/api/message/v1"
+	v1 "github.com/adrien19/nzovu/api/queue/v1"
+	v12 "github.com/adrien19/nzovu/api/schedule/v1"
+	v13 "github.com/adrien19/nzovu/api/schema/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -4193,7 +4193,7 @@ const file_proto_queueservice_v1_request_response_proto_rawDesc = "" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12B\n" +
 	"\x06errors\x18\x02 \x03(\v2*.chronoqueue.api.schema.v1.ValidationErrorR\x06errors\x12\x1b\n" +
 	"\tschema_id\x18\x03 \x01(\tR\bschemaId\x12%\n" +
-	"\x0eschema_version\x18\x04 \x01(\x05R\rschemaVersionBBZ@github.com/adrien19/chronoqueue/api/queueservice/v1;queueserviceb\x06proto3"
+	"\x0eschema_version\x18\x04 \x01(\x05R\rschemaVersionB<Z:github.com/adrien19/nzovu/api/queueservice/v1;queueserviceb\x06proto3"
 
 var (
 	file_proto_queueservice_v1_request_response_proto_rawDescOnce sync.Once

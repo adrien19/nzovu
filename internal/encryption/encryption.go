@@ -8,7 +8,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/adrien19/chronoqueue/internal/encryption/keymanager"
+	"github.com/adrien19/nzovu/internal/encryption/keymanager"
 )
 
 // Encryption utility function

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
 )
 
 func TestSchemaMigration_FromV1ToLatest(t *testing.T) {

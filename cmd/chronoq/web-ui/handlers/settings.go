@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	cluster "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	cluster "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // SettingsHandler handles all settings sub-pages.

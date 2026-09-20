@@ -1,11 +1,11 @@
-module github.com/adrien19/chronoqueue/examples/event-processor
+module github.com/adrien19/nzovu/examples/event-processor
 
 go 1.26.6
 
-replace github.com/adrien19/chronoqueue => ../..
+replace github.com/adrien19/nzovu => ../..
 
 require (
-	github.com/adrien19/chronoqueue v0.0.0-00010101000000-000000000000
+	github.com/adrien19/nzovu v0.0.0-00010101000000-000000000000
 	github.com/spf13/cobra v1.10.1
 	google.golang.org/protobuf v1.36.11
 )

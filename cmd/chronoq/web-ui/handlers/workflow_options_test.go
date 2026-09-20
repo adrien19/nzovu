@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
 func TestParseQueueAdvancedOptions(t *testing.T) {

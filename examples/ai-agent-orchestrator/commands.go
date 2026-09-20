@@ -13,13 +13,13 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	queuev1 "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/agents"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/coordinator"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/llm"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/models"
-	"github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator/pkg/monitoring"
+	queuev1 "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/agents"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/coordinator"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/llm"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/models"
+	"github.com/adrien19/nzovu/examples/ai-agent-orchestrator/pkg/monitoring"
 )
 
 // newInitCommand creates the init command to set up all queues

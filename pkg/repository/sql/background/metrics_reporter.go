@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // MetricsReporterService periodically reports queue state metrics to Prometheus

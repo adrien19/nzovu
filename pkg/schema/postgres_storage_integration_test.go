@@ -12,8 +12,8 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	postgrescontainer "github.com/testcontainers/testcontainers-go/modules/postgres"
 
-	schemapb "github.com/adrien19/chronoqueue/api/schema/v1"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	schemapb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestPostgresRegistryRoundTripsMetadata(t *testing.T) {

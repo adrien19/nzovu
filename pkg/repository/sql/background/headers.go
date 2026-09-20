@@ -1,6 +1,6 @@
 package background
 
-import messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+import messagepb "github.com/adrien19/nzovu/api/message/v1"
 
 func cloneHeaders(headers []*messagepb.Message_Metadata_Header) []*messagepb.Message_Metadata_Header {
 	if len(headers) == 0 {

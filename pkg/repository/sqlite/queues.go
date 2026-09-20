@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
 )
 
 // CreateQueue creates a new queue

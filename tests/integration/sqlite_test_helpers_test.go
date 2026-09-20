@@ -15,7 +15,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/adrien19/chronoqueue/internal/server"
+	"github.com/adrien19/nzovu/internal/server"
 )
 
 type sqliteServerHandle struct {

@@ -3,7 +3,7 @@ package monitoring
 import (
 	"context"
 
-	"github.com/adrien19/chronoqueue/client"
+	"github.com/adrien19/nzovu/client"
 )
 
 // StorageMonitor provides ChronoQueue API-based monitoring
@@ -20,12 +20,12 @@ func NewStorageMonitor(chronoClient *client.ChronoQueueClient) *StorageMonitor {
 
 // QueueStateCounts represents message counts by state for a queue
 type QueueStateCounts struct {
-	Invisible int32
-	Pending   int32
-	Running   int32
-	Completed int32
-	Canceled  int32
-	Errored   int32
+	Invisible int64
+	Pending   int64
+	Running   int64
+	Completed int64
+	Canceled  int64
+	Errored   int64
 }
 
 // GetQueueState returns comprehensive queue state using ChronoQueue API
@@ -51,7 +51,7 @@ func (rm *StorageMonitor) GetDLQSize(ctx context.Context, queueName string) (int
 	if err != nil {
 		return 0, err
 	}
-	return int64(state.Errored), nil
+	return state.Errored, nil
 }
 
 // Close closes the ChronoQueue client connection

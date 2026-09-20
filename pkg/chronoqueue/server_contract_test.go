@@ -10,13 +10,13 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	queueservicepb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	schedulepb "github.com/adrien19/chronoqueue/api/schedule/v1"
-	schemapb "github.com/adrien19/chronoqueue/api/schema/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/pkg/repository"
-	"github.com/adrien19/chronoqueue/pkg/schema"
+	queueservicepb "github.com/adrien19/nzovu/api/queueservice/v1"
+	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
+	schemapb "github.com/adrien19/nzovu/api/schema/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/repository"
+	"github.com/adrien19/nzovu/pkg/schema"
 )
 
 type contractStorage struct {

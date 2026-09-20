@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/adrien19/chronoqueue/cmd/chronoq/outputs"
-	"github.com/adrien19/chronoqueue/internal/server"
+	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
+	"github.com/adrien19/nzovu/internal/server"
 )
 
 // NewStartCommand creates the start command group

@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"strings"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
-	"github.com/adrien19/chronoqueue/pkg/validator"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
+	"github.com/adrien19/nzovu/pkg/validator"
 )
 
 type scheduledMessageValidationError struct {

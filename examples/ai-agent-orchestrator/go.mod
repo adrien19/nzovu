@@ -1,9 +1,9 @@
-module github.com/adrien19/chronoqueue/examples/ai-agent-orchestrator
+module github.com/adrien19/nzovu/examples/ai-agent-orchestrator
 
 go 1.26.6
 
 require (
-	github.com/adrien19/chronoqueue v0.0.0
+	github.com/adrien19/nzovu v0.0.0
 	github.com/sashabaranov/go-openai v1.41.2
 	github.com/spf13/cobra v1.10.1
 	google.golang.org/protobuf v1.36.11
@@ -22,4 +22,4 @@ require (
 	google.golang.org/grpc v1.83.1 // indirect
 )
 
-replace github.com/adrien19/chronoqueue => ../..
+replace github.com/adrien19/nzovu => ../..

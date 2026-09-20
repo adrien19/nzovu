@@ -8,7 +8,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/structpb"
 
-	"github.com/adrien19/chronoqueue/client"
+	"github.com/adrien19/nzovu/client"
 )
 
 // ResultStore manages agent results for historical reference and aggregation

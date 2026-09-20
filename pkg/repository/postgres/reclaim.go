@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	repositorycommon "github.com/adrien19/chronoqueue/pkg/repository/common"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	repositorycommon "github.com/adrien19/nzovu/pkg/repository/common"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 // This file implements the ReclaimableBackend interface from pkg/repository/sql/background.

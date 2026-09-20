@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	schedule "github.com/adrien19/chronoqueue/api/schedule/v1"
-	"github.com/adrien19/chronoqueue/pkg/calendar/types"
+	schedule "github.com/adrien19/nzovu/api/schedule/v1"
+	"github.com/adrien19/nzovu/pkg/calendar/types"
 )
 
 // TestBasicRuleEvaluators tests the basic functionality of each rule evaluator

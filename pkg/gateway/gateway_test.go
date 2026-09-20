@@ -20,7 +20,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestLivenessHandler(t *testing.T) {

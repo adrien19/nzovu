@@ -279,7 +279,7 @@ const file_proto_common_v1_common_proto_rawDesc = "" +
 	"\vextend_step\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\n" +
 	"extendStep\x12&\n" +
 	"\fmax_renewals\x18\x05 \x01(\x05H\x00R\vmaxRenewals\x88\x01\x01B\x0f\n" +
-	"\r_max_renewalsB6Z4github.com/adrien19/chronoqueue/api/common/v1;commonb\x06proto3"
+	"\r_max_renewalsB0Z.github.com/adrien19/nzovu/api/common/v1;commonb\x06proto3"
 
 var (
 	file_proto_common_v1_common_proto_rawDescOnce sync.Once

@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/adrien19/chronoqueue/internal/encryption/adapters"
-	"github.com/adrien19/chronoqueue/pkg/log"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
+	"github.com/adrien19/nzovu/internal/encryption/adapters"
+	"github.com/adrien19/nzovu/pkg/log"
+	"github.com/adrien19/nzovu/pkg/metrics"
 )
 
 const defaultRefreshDuration = 1 * time.Hour

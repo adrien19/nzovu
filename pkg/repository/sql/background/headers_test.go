@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
 )
 
 func TestCloneHeadersPreservesOrderAndCopiesValues(t *testing.T) {

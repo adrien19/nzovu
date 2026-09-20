@@ -75,7 +75,7 @@ verify_release_metadata() {
         || err "Release metadata does not contain a build date."
 
     output="$("${binary}" --version)" || err "Installed binary failed its version check."
-    grep -Fq -- "ChronoQueue v${requested_version}" <<<"${output}" \
+    grep -Fq -- "Nzovu v${requested_version}" <<<"${output}" \
         || err "Installed binary does not report version 'v${requested_version}'."
     grep -Fq -- "Git Commit: ${release_commit}" <<<"${output}" \
         || err "Installed binary commit does not match the release metadata."

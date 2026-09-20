@@ -11,8 +11,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	webui "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	webui "github.com/adrien19/nzovu/cmd/chronoq/web-ui"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 // NewWebUICommand creates the web-ui command.

@@ -18,11 +18,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	common_pb "github.com/adrien19/chronoqueue/api/common/v1"
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	queue_pb "github.com/adrien19/chronoqueue/api/queue/v1"
-	queueservice_pb "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/tests/helpers"
+	common_pb "github.com/adrien19/nzovu/api/common/v1"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	queue_pb "github.com/adrien19/nzovu/api/queue/v1"
+	queueservice_pb "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/tests/helpers"
 )
 
 // TestRetentionPolicy_DeleteImmediately validates that nil retention policy (default)

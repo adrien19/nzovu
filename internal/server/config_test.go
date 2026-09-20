@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/adrien19/chronoqueue/pkg/log"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func TestAuthenticationDefaults(t *testing.T) {

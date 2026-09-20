@@ -10,10 +10,10 @@ import (
 
 	"github.com/lib/pq"
 
-	messagepb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/internal/domainerror"
-	"github.com/adrien19/chronoqueue/pkg/metrics"
-	repositorycommon "github.com/adrien19/chronoqueue/pkg/repository/common"
+	messagepb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/internal/domainerror"
+	"github.com/adrien19/nzovu/pkg/metrics"
+	repositorycommon "github.com/adrien19/nzovu/pkg/repository/common"
 )
 
 func (s *Storage) GetDLQMessages(ctx context.Context, queueName string, limit int32) ([]*messagepb.Message, error) {

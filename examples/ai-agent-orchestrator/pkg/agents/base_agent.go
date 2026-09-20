@@ -8,9 +8,9 @@ import (
 
 	"google.golang.org/protobuf/types/known/structpb"
 
-	messagev1 "github.com/adrien19/chronoqueue/api/message/v1"
-	queueservicev1 "github.com/adrien19/chronoqueue/api/queueservice/v1"
-	"github.com/adrien19/chronoqueue/client"
+	messagev1 "github.com/adrien19/nzovu/api/message/v1"
+	queueservicev1 "github.com/adrien19/nzovu/api/queueservice/v1"
+	"github.com/adrien19/nzovu/client"
 )
 
 // Subtask represents a subtask to be processed by an agent

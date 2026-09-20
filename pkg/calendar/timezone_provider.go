@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adrien19/chronoqueue/pkg/calendar/types"
+	"github.com/adrien19/nzovu/pkg/calendar/types"
 )
 
 // DefaultTimezoneProvider is the default implementation of TimezoneProvider

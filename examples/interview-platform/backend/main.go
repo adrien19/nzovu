@@ -17,10 +17,10 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/api"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/db"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/sse"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/api"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/db"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/sse"
 )
 
 var (

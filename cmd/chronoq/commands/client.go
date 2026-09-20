@@ -11,8 +11,8 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/cmd/chronoq/outputs"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/cmd/chronoq/outputs"
 )
 
 // ClientOptions holds configuration for the ChronoQueue client

@@ -16,7 +16,7 @@ import (
 
 	"google.golang.org/grpc/credentials"
 
-	"github.com/adrien19/chronoqueue/client"
+	"github.com/adrien19/nzovu/client"
 )
 
 var ErrNoActiveCluster = errors.New("no active cluster configured")

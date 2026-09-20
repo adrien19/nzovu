@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	clusterstore "github.com/adrien19/chronoqueue/cmd/chronoq/web-ui/cluster"
-	"github.com/adrien19/chronoqueue/pkg/log"
+	clusterstore "github.com/adrien19/nzovu/cmd/chronoq/web-ui/cluster"
+	"github.com/adrien19/nzovu/pkg/log"
 )
 
 func testFormErrorBaseHandler(t *testing.T) BaseHandler {

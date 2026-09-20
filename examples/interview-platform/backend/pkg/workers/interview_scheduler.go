@@ -3,16 +3,17 @@ package workers
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"time"
 
 	structpb "github.com/golang/protobuf/ptypes/struct"
 
-	message_pb "github.com/adrien19/chronoqueue/api/message/v1"
-	"github.com/adrien19/chronoqueue/client"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/db"
-	"github.com/adrien19/chronoqueue/examples/interview-platform/backend/internal/models"
+	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/db"
+	"github.com/adrien19/nzovu/examples/interview-platform/backend/internal/models"
 )
 
 // InterviewSchedulerWorker handles interview scheduling tasks
@@ -55,8 +56,7 @@ func (w *InterviewSchedulerWorker) Start(ctx context.Context) error {
 			}
 
 			msg := response.GetMessage()
-			attemptID := response.GetAttemptId()
-			if err := w.processMessage(ctx, queueName, msg, attemptID); err != nil {
+			if err := w.processMessage(ctx, queueName, msg); err != nil {
 				log.Printf("[Interview Scheduler] Error processing message %s: %v", msg.GetMessageId(), err)
 			}
 		}
@@ -64,19 +64,19 @@ func (w *InterviewSchedulerWorker) Start(ctx context.Context) error {
 }
 
 // processMessage handles a single interview scheduling message
-func (w *InterviewSchedulerWorker) processMessage(ctx context.Context, queueName string, msg *message_pb.Message, attemptID string) error {
+func (w *InterviewSchedulerWorker) processMessage(ctx context.Context, queueName string, msg *message_pb.Message) error {
 	log.Printf("[Interview Scheduler] Processing message: %s", msg.GetMessageId())
 
 	metadata := msg.GetMetadata()
 	if metadata == nil || metadata.GetPayload() == nil {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	payloadData := metadata.GetPayload().GetData()
 	if payloadData == nil {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	fields := payloadData.AsMap()
@@ -84,16 +84,16 @@ func (w *InterviewSchedulerWorker) processMessage(ctx context.Context, queueName
 	action, _ := fields["action"].(string)
 
 	if interviewID == "" {
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return nil
+		_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return err
 	}
 
 	// Get interview from database
 	interview, err := w.db.GetInterview(interviewID)
 	if err != nil {
 		log.Printf("[Interview Scheduler] Interview not found: %v", err)
-		w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-		return err
+		_, ackErr := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+		return errors.Join(err, ackErr)
 	}
 
 	// Process based on action
@@ -101,8 +101,8 @@ func (w *InterviewSchedulerWorker) processMessage(ctx context.Context, queueName
 	case "schedule_interview":
 		if interview.Status == models.StatusScheduled {
 			log.Printf("[Interview Scheduler] Interview %s already scheduled", interviewID)
-			w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID)
-			return nil
+			_, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED)
+			return err
 		}
 
 		// Update interview status
@@ -142,7 +142,7 @@ func (w *InterviewSchedulerWorker) processMessage(ctx context.Context, queueName
 	}
 
 	// Acknowledge message
-	if _, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED, attemptID); err != nil {
+	if _, err := w.queue.AcknowledgeMessage(ctx, queueName, msg.GetMessageId(), client.MESSAGE_COMPLETED); err != nil {
 		log.Printf("[Interview Scheduler] Failed to acknowledge message: %v", err)
 		return err
 	}

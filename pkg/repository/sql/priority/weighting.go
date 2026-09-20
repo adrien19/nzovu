@@ -9,8 +9,8 @@ import (
 	mrand "math/rand"
 	"time"
 
-	queuepb "github.com/adrien19/chronoqueue/api/queue/v1"
-	repositorysql "github.com/adrien19/chronoqueue/pkg/repository/sql"
+	queuepb "github.com/adrien19/nzovu/api/queue/v1"
+	repositorysql "github.com/adrien19/nzovu/pkg/repository/sql"
 )
 
 const (
