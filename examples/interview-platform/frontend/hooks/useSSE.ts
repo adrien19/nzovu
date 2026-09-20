@@ -39,7 +39,7 @@ export function useSSE(options: UseSSEOptions = {}) {
       return; // Already connected
     }
 
-    const eventSource = new EventSource('http://localhost:8080/api/events');
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/events`);
     eventSourceRef.current = eventSource;
 
     eventSource.onopen = () => {

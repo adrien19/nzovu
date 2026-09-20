@@ -1,6 +1,6 @@
 # Event Processing System Demo
 
-A comprehensive demonstration of ChronoQueue's SQL-based architecture for high-throughput event processing, webhooks, and notifications.
+A comprehensive demonstration of Nzovu's SQL-based architecture for high-throughput event processing, webhooks, and notifications.
 
 ## 🎯 What This Demo Demonstrates
 
@@ -19,19 +19,19 @@ A comprehensive demonstration of ChronoQueue's SQL-based architecture for high-t
 ## 📋 Prerequisites
 
 - Docker and Docker Compose (for PostgreSQL/SQLite)
-- Go 1.21+
-- ChronoQueue server running
+- Go 1.26.6
+- Nzovu server running
 
 ## 🚀 Quick Start
 
-### 1. Start ChronoQueue Server
+### 1. Start Nzovu Server
 
 ```bash
 # From the repository root
 make docker-up
 
 # Or start manually
-chronoqueue server --dev
+nzovu server --dev
 ```
 
 ### 2. Build the Event Processor CLI
@@ -68,7 +68,7 @@ Queues created:
 
 ### Step 1: Publish Events
 
-ChronoQueue supports two ways to publish events: traditional one-by-one posting and high-performance bulk posting.
+Nzovu supports two ways to publish events: traditional one-by-one posting and high-performance bulk posting.
 
 #### 1.1 Traditional Publishing (One-by-One)
 
@@ -84,7 +84,7 @@ Publish messages individually using the standard `publish` command:
 📤 Publishing events...
 ✓ Published event: evt-critical-001 (priority: 4, type: webhook)
   Queue: events-critical
-  
+
 📊 Summary:
   Total events: 1
   Critical: 1
@@ -187,7 +187,7 @@ You should see 5-10x performance improvement with bulk posting!
   High: 1 (priority 3)
   Medium: 1 (priority 2)
   Low: 1 (priority 1)
-  
+
 ⏱️  Published in 45ms
 ```
 
@@ -245,7 +245,7 @@ Total Events: 4 pending
    Queue: events-critical, events-normal, events-low
    Heartbeat: enabled (every 5s)
    Max Retries: 3
-   
+
 👷 Worker email-1 started (PID: 12345)
 👷 Worker email-2 started (PID: 12346)
 
@@ -253,7 +253,7 @@ Total Events: 4 pending
   Type: email
   Priority: 9
   Recipient: user@example.com
-  
+
 [Worker email-1] ❤️  Heartbeat sent (lease extended: 30s)
 [Worker email-1] ✓ Email sent successfully
 [Worker email-1] ✓ Event evt-001 acknowledged (COMPLETED)
@@ -263,7 +263,7 @@ Total Events: 4 pending
   Type: email
   Priority: 2
   Recipient: admin@example.com
-  
+
 [Worker email-2] ✓ Email sent successfully
 [Worker email-2] ✓ Event evt-003 acknowledged (COMPLETED)
   Processing Time: 1.8s
@@ -286,7 +286,7 @@ Waiting for more events...
    Queue: events-critical, events-normal, events-low
    Heartbeat: enabled (every 5s)
    Max Retries: 3
-   
+
 👷 Worker webhook-1 started (PID: 12347)
 👷 Worker webhook-2 started (PID: 12348)
 👷 Worker webhook-3 started (PID: 12349)
@@ -295,7 +295,7 @@ Waiting for more events...
   Type: webhook
   Priority: 10 (CRITICAL)
   URL: https://api.example.com/webhooks/urgent
-  
+
 [Worker webhook-1] ❤️  Heartbeat sent (lease extended: 30s)
 [Worker webhook-1] → POST https://api.example.com/webhooks/urgent
 [Worker webhook-1] ← 200 OK (543ms)
@@ -307,7 +307,7 @@ Waiting for more events...
   Type: webhook
   Priority: 2
   URL: https://api.example.com/webhooks/standard
-  
+
 [Worker webhook-2] ❤️  Heartbeat sent (lease extended: 30s)
 [Worker webhook-2] → POST https://api.example.com/webhooks/standard
 [Worker webhook-2] ← 200 OK (234ms)
@@ -320,7 +320,7 @@ Waiting for more events...
 
 ### Step 4: Scheduled/Delayed Messages
 
-ChronoQueue supports scheduling messages to be processed in the future using the sorted set `schedule:{queueName}` for delayed message storage.
+Nzovu supports scheduling messages to be processed in the future using the sorted set `schedule:{queueName}` for delayed message storage.
 
 #### 4.1 Publish Scheduled Events
 
@@ -352,11 +352,11 @@ ChronoQueue supports scheduling messages to be processed in the future using the
 
 #### 4.2 Verify Scheduled Messages
 
-You can use the ChronoQueue CLI to inspect scheduled messages:
+You can use the Nzovu CLI to inspect scheduled messages:
 
 ```bash
 # Check queue state to see scheduled message counts
-chronoqueue queue state email-notifications --server localhost:9000 --insecure
+nzovu queue state email-notifications --server localhost:9000 --insecure
 
 # Output shows:
 # - Messages in INVISIBLE state (scheduled, not yet ready)
@@ -364,12 +364,12 @@ chronoqueue queue state email-notifications --server localhost:9000 --insecure
 # - Other state counts
 
 # Peek at messages in the queue
-chronoqueue message peek email-notifications --server localhost:9000 --insecure
+nzovu message peek email-notifications --server localhost:9000 --insecure
 ```
 
 #### 4.3 Watch Messages Become Available
 
-When the scheduled time arrives, ChronoQueue's background scheduler automatically:
+When the scheduled time arrives, Nzovu's background scheduler automatically:
 
 1. Checks for messages in INVISIBLE state whose scheduled time has passed
 2. Transitions them to PENDING state (ready for consumption)
@@ -379,7 +379,7 @@ You can monitor this by repeatedly checking queue state:
 
 ```bash
 # Monitor queue state changes
-watch -n 2 'chronoqueue queue state email-notifications --server localhost:9000 --insecure'
+watch -n 2 'nzovu queue state email-notifications --server localhost:9000 --insecure'
 
 # You'll see:
 # - INVISIBLE count decrease as scheduled time passes
@@ -387,7 +387,7 @@ watch -n 2 'chronoqueue queue state email-notifications --server localhost:9000 
 # - RUNNING count increase as workers claim messages
 ```
 
-Alternative monitoring using ChronoQueue API:
+Alternative monitoring using Nzovu API:
 
 ```bash
 # Check message counts by state
@@ -771,7 +771,7 @@ This script demonstrates:
 1. ✅ System initialization
 2. ✅ Traditional publishing (one-by-one) with timing
 3. ✅ Bulk publishing with ALL_OR_NOTHING mode
-4. ✅ Bulk publishing with BEST_EFFORT mode  
+4. ✅ Bulk publishing with BEST_EFFORT mode
 5. ✅ Bulk publishing with scheduled messages
 6. ✅ Queue statistics after bulk operations
 
@@ -829,7 +829,7 @@ This script demonstrates:
 
 ### Scenario 4: Failure Recovery with DLQ
 
-### ChronoQueue Benefits Demonstrated
+### Nzovu Benefits Demonstrated
 
 1. **Concurrent Workers**: Multiple workers safely claim messages
 2. **Leases**: In-flight messages remain recoverable if a worker stops
@@ -842,7 +842,7 @@ This script demonstrates:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    ChronoQueue Server                    │
+│                    Nzovu Server                    │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
 │  │ Critical    │  │ Normal      │  │ Low         │    │
 │  │ Messages    │  │ Messages    │  │ Messages    │    │
@@ -895,8 +895,8 @@ curl -X POST https://api.example.com/webhooks/test
 ### Performance Issues
 
 ```bash
-# Monitor ChronoQueue server
-chronoqueue server --log-level debug
+# Monitor Nzovu server
+nzovu server --log-level debug
 
 # Adjust worker count
 ./event-processor worker --type webhook --workers 10
@@ -904,9 +904,9 @@ chronoqueue server --log-level debug
 
 ## 📚 Learn More
 
-- [ChronoQueue Documentation](../../README.md)
-- [Message Priority Guide](../../docs/features/priority.md)
-- [DLQ Best Practices](../../docs/features/dlq.md)
+- [Nzovu Documentation](../../README.md)
+- [Message Priority Guide](../../API_VALIDATION.md)
+- [DLQ Best Practices](../../cmd/chronoq/README.md)
 
 ## 🎯 Next Steps
 

@@ -17,8 +17,8 @@ var (
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "ai-orchestrator",
-		Short: "AI Agent Task Orchestrator - ChronoQueue Demo",
-		Long: `AI Agent Task Orchestrator demonstrates how ChronoQueue orchestrates
+		Short: "AI Agent Task Orchestrator - Nzovu Demo",
+		Long: `AI Agent Task Orchestrator demonstrates how Nzovu orchestrates
 multiple specialized AI agents working in parallel to solve complex tasks.
 
 Features:
@@ -32,8 +32,12 @@ Features:
   • Real-time monitoring dashboard`,
 	}
 
+	defaultServer := os.Getenv("NZOVU_SERVER")
+	if defaultServer == "" {
+		defaultServer = "localhost:9000"
+	}
 	// Global flags
-	rootCmd.PersistentFlags().StringVar(&serverAddr, "server", "localhost:9000", "ChronoQueue server address")
+	rootCmd.PersistentFlags().StringVar(&serverAddr, "server", defaultServer, "Nzovu server address")
 	rootCmd.PersistentFlags().BoolVar(&insecure, "insecure", true, "Use insecure connection")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 

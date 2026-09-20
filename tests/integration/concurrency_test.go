@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides concurrency tests for ChronoQueue.
+// Package integration provides concurrency tests for Nzovu.
 //
 // These tests validate:
 // - Concurrent message claiming (no duplicates)

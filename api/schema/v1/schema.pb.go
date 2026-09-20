@@ -1,4 +1,4 @@
-// ChronoQueue Schema API v1
+// Nzovu Schema API v1
 //
 // This file defines structures for message payload validation.
 // Schemas ensure message payloads conform to expected structure before processing.
@@ -100,7 +100,7 @@ const (
 	// Example: Schema expects JSON, payload is "application/protobuf".
 	ErrorCode_CONTENT_TYPE_INVALID ErrorCode = 11
 	// PAYLOAD_SIZE_EXCEEDED: Payload exceeds size limit.
-	// ChronoQueue has a default 1MB payload limit.
+	// Nzovu has a default 1MB payload limit.
 	ErrorCode_PAYLOAD_SIZE_EXCEEDED ErrorCode = 12
 	// SCHEMA_VALIDATION_FAILED: Schema content itself is invalid.
 	// Occurs when registering schema with malformed content.
@@ -172,7 +172,7 @@ func (ErrorCode) EnumDescriptor() ([]byte, []int) {
 
 // Schema defines a message validation schema.
 //
-// ChronoQueue validates message payloads against schemas before accepting them.
+// Nzovu validates message payloads against schemas before accepting them.
 // This prevents invalid messages from entering your queues.
 //
 // Schema evolution:
@@ -248,10 +248,10 @@ type Schema struct {
 	Content string `protobuf:"bytes,5,opt,name=content,proto3" json:"content,omitempty"`
 	// content_type: Schema format identifier.
 	// Supported value: "json-schema" (default), using JSON Schema Draft 7.
-	// ChronoQueue validates content syntax when registering schema.
+	// Nzovu validates content syntax when registering schema.
 	ContentType string `protobuf:"bytes,6,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
 	// created_at: When this schema version was registered (Unix milliseconds).
-	// Automatically set by ChronoQueue.
+	// Automatically set by Nzovu.
 	CreatedAt int64 `protobuf:"varint,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// updated_at: When this schema was last modified (Unix milliseconds).
 	// Schemas are immutable after creation; updates create new versions.

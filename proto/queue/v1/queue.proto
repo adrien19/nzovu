@@ -1,4 +1,4 @@
-// ChronoQueue Queue API v1
+// Nzovu Queue API v1
 //
 // This file defines queue structures and configurations.
 // Queues are named containers for messages with specific processing behaviors.
@@ -78,7 +78,7 @@ message QueueMetadata {
     // Access DLQ messages via DLQ APIs: GetDLQMessages and RequeueDLQMessage.
   string dead_letter_queue_name = 6;
 
-    // auto_create_dlq: If true, ChronoQueue creates "{source_queue}_dlq" and stores
+    // auto_create_dlq: If true, Nzovu creates "{source_queue}_dlq" and stores
     // that computed name in dead_letter_queue_name. Any supplied name is replaced.
   bool auto_create_dlq = 7;
 
@@ -232,7 +232,7 @@ message PriorityConfig {
 
 // Queue represents a named message container with specific processing behavior.
 //
-// Queues are the primary organizational unit in ChronoQueue.
+// Queues are the primary organizational unit in Nzovu.
 // Create separate queues for different types of work to:
 // - Isolate failures (one queue's DLQ doesn't affect others)
 // - Apply different processing rules (retries, priorities, leases)
@@ -247,7 +247,7 @@ message PriorityConfig {
 // - "cleanup-tasks-low"         // Background maintenance
 message Queue {
     // name: Unique identifier for this queue.
-    // Must be unique across your ChronoQueue instance.
+    // Must be unique across your Nzovu instance.
     // Naming convention: lowercase, hyphens, descriptive
     // Examples: "order-processing", "email-sender", "webhook-delivery"
   string name = 1;

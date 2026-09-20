@@ -13,15 +13,15 @@ import (
 func NewStartCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "start",
-		Short: "Start ChronoQueue server (legacy)",
-		Long: `Start a ChronoQueue server instance with various configuration options.
+		Short: "Start Nzovu server (legacy)",
+		Long: `Start a Nzovu server instance with various configuration options.
 
 Note: This command is provided for backward compatibility. The recommended 
-approach is to use 'chronoqueue server' directly.
+approach is to use 'nzovu server' directly.
 
 Examples:
-  chronoqueue start --dev-server
-  chronoqueue start dev-server --log-level debug`,
+  nzovu start --dev-server
+  nzovu start dev-server --log-level debug`,
 		RunE: runStart,
 	}
 
@@ -52,18 +52,18 @@ func runStart(cmd *cobra.Command, args []string) error {
 func newDevServerCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "dev-server",
-		Short: "Start a development ChronoQueue server",
-		Long: `Start a ChronoQueue server configured for local development.
+		Short: "Start a development Nzovu server",
+		Long: `Start a Nzovu server configured for local development.
 This starts both gRPC and HTTP gateway servers with development-friendly defaults.
 
 The server will use SQLite for storage by default. You can specify a different
 storage backend (PostgreSQL or SQLite) using the --storage-type flag.
 
 Examples:
-  chronoqueue start dev-server
-  chronoqueue start dev-server --storage-type postgres
-  chronoqueue start dev-server --grpc-addr :9001 --http-addr :8081
-  chronoqueue start dev-server --log-level debug`,
+  nzovu start dev-server
+  nzovu start dev-server --storage-type postgres
+  nzovu start dev-server --grpc-addr :9001 --http-addr :8081
+  nzovu start dev-server --log-level debug`,
 		RunE: runDevServer,
 	}
 

@@ -1,23 +1,23 @@
-# ChronoQueue
+# Nzovu
 
-[![CI](https://github.com/adrien19/chronoqueue/actions/workflows/ci.yml/badge.svg)](https://github.com/adrien19/chronoqueue/actions/workflows/ci.yml)
-[![Release](https://github.com/adrien19/chronoqueue/actions/workflows/release.yml/badge.svg)](https://github.com/adrien19/chronoqueue/actions/workflows/release.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/adrien19/chronoqueue)](https://goreportcard.com/report/github.com/adrien19/chronoqueue)
+[![CI](https://github.com/adrien19/nzovu/actions/workflows/ci.yml/badge.svg)](https://github.com/adrien19/nzovu/actions/workflows/ci.yml)
+[![Release](https://github.com/adrien19/nzovu/actions/workflows/release.yml/badge.svg)](https://github.com/adrien19/nzovu/actions/workflows/release.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/adrien19/nzovu)](https://goreportcard.com/report/github.com/adrien19/nzovu)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
-ChronoQueue is a persistent job queue and execution-supervision service. It provides priority-based message processing, leases and heartbeats, retries and dead-letter queues, and recurring or delayed scheduling through gRPC and HTTP APIs.
+Nzovu is a persistent job queue and execution-supervision service. It provides priority-based message processing, leases and heartbeats, retries and dead-letter queues, and recurring or delayed scheduling through gRPC and HTTP APIs.
 
 ---
 
 > **Project status**
 >
-> **Current candidate: `v2.0.0-rc.1`; latest stable: `v1.2.1`.** The 2.0 code and documentation are incompatible with `v1.2.1`. Retained `/v1` routes and protobuf package names do not imply backward compatibility. Pin the candidate when following these docs; review the [2.0 release and migration guide](./RELEASE_2.0.md) and [readiness assessment](./version2_readiness_analysis.md) before upgrading. The candidate is a prerelease; final 2.0.0 release validation remains outstanding.
+> **Nzovu is preparing its first release, `v0.0.1`.** These docs describe `main`; build from source until release assets are published. Nzovu continues [ChronoQueue](https://github.com/adrien19/chronoqueue) with a new module, binary and protobuf namespace. Regenerate clients from this repository. See the [migration guide](./deploy/NZOVU_MIGRATION.md) before upgrading an existing deployment.
 
 ---
 
 ## Features
 
-The table below describes the current 2.0 candidate; it is not a compatibility reference for `v1.2.1`. Items marked **Evolving** or **Partial** identify areas still under active development.
+The table below describes the current source tree. Items marked **Evolving** or **Partial** identify areas still under active development.
 
 | Capability | Status | Current scope |
 | --- | --- | --- |
@@ -25,11 +25,11 @@ The table below describes the current 2.0 candidate; it is not a compatibility r
 | Priority processing | ✅ Implemented | Numeric priorities with FIFO ordering at the same priority, plus configurable strict, weighted, and age-boosted selection. |
 | Execution supervision | ✅ Implemented | Server-owned leases, attempt IDs, heartbeats, lease renewal, timeout reclaim, and stale-worker protection. |
 | Retries and dead-letter queues | ✅ Implemented | Configurable attempt limits, lease-timeout retries, automatic DLQ creation, inspection, requeue, delete, purge, and statistics. |
-| Scheduling | 🧪 Evolving | Delayed messages and recurring cron or timezone-aware calendar schedules, including validation, previews, history, pause, and resume. Custom expression rules are reserved and rejected by the v2 server. |
+| Scheduling | 🧪 Evolving | Delayed messages and recurring cron or timezone-aware calendar schedules, including validation, previews, history, pause, and resume. Custom expression rules are reserved and rejected by the server. |
 | Payload schemas | ✅ Implemented | Versioned JSON Schema registration, queue-level enforcement, validation, listing, and deletion. |
 | Message retention | ✅ Implemented | Delete-on-ack, time-based retention, or indefinite retention with background cleanup. |
 | Storage | ✅ Implemented | PostgreSQL and SQLite backends with schema migrations. PostgreSQL is the recommended backend; SQLite is intended for local and smaller deployments. |
-| APIs and tooling | ✅ Implemented | gRPC API, REST gateway, embedded OpenAPI/Swagger UI, Go client, and `chronoq` CLI. |
+| APIs and tooling | ✅ Implemented | gRPC API, REST gateway, embedded OpenAPI/Swagger UI, Go client, and `nzovu` CLI. |
 | Monitoring | 🚧 Partial | Prometheus and Grafana provide operational metrics; the web dashboard provides queue state through live and polled views. |
 | Web administration | 🚧 Partial | Queue/message inspection and creation, schedule creation/pause/resume/delete, schema management, and DLQ actions. Additional settings areas remain under development. |
 | Operational security | 🧪 Evolving | API-key authentication, TLS/mTLS, payload encryption with local or Vault keys, per-principal rate limiting, and protected metrics. |
@@ -44,81 +44,58 @@ The table below describes the current 2.0 candidate; it is not a compatibility r
 
 ### Installation
 
-#### Quick Install (Recommended)
+#### Build and run from source
 
-Pin `2.0.0-rc.1` explicitly. Without a version, the scripts resolve GitHub's `releases/latest` endpoint; that does not select this candidate. These commands require published assets for the tag; if unavailable, build the tagged source below.
-
-**Linux / macOS:**
+From a checkout of `main`, Go and a C compiler are sufficient for the SQLite quick start:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/adrien19/chronoqueue/v2.0.0-rc.1/install/install.sh | bash -s -- 2.0.0-rc.1
-
-# Custom directory (no sudo required)
-curl -fsSL https://raw.githubusercontent.com/adrien19/chronoqueue/v2.0.0-rc.1/install/install.sh | CHRONOQUEUE_INSTALL_DIR="$HOME/.chronoqueue" bash -s -- 2.0.0-rc.1
+git clone --branch main https://github.com/adrien19/nzovu.git
+cd nzovu
+CGO_ENABLED=1 go build -tags sqlite -o ./dist/nzovu .
+./dist/nzovu server --dev --grpc-addr 127.0.0.1:9000 --http-addr 127.0.0.1:8080 --storage-type sqlite --sqlite-db-path chronoqueue.db
 ```
 
-**Windows (PowerShell):**
+In another terminal at the checkout root:
 
-```powershell
-# Optional custom directory
-$Env:CHRONOQUEUE_INSTALL_DIR="C:\tools\chronoqueue"
-$s=iwr -useb https://raw.githubusercontent.com/adrien19/chronoqueue/v2.0.0-rc.1/install/install.ps1
-$b=[ScriptBlock]::Create($s)
-invoke-command -ScriptBlock $b -ArgumentList '2.0.0-rc.1'
+```bash
+./dist/nzovu --server localhost:9000 --insecure queue create quickstart
+./dist/nzovu --server localhost:9000 --insecure message post quickstart '{"hello":"nzovu"}' --id quickstart-message
+./dist/nzovu --server localhost:9000 --insecure message peek quickstart
 ```
 
-The scripts automatically:
+`chronoqueue.db` remains the database default for existing installations; its name does not identify the running product. Development mode is intended for local evaluation.
 
-- Download the latest release (or specified version)
-- Verify archive checksums and confirm the installed binary reports the requested release tag, commit, and build date
-- Install the binary to your PATH
-- Work on Linux, macOS, and Windows
+#### Release installers
 
-#### Docker Compose Option
+The [shell installer](https://github.com/adrien19/nzovu/blob/main/install/install.sh) and [PowerShell installer](https://github.com/adrien19/nzovu/blob/main/install/install.ps1) target Nzovu releases and verify checksums and binary build metadata. They require published release assets. Once available, select a published tag explicitly; use `NZOVU_INSTALL_DIR` for a custom destination. Old ChronoQueue release tags and installer variables do not select Nzovu releases.
 
-You can also run ChronoQueue locally with [Docker Compose](https://docs.docker.com/compose/). The repository provides configurations for PostgreSQL and SQLite.
+#### Docker Compose
 
-1. Clone the repository:
+From the checkout root, start the SQLite broker (no UI credentials required):
 
-   ```bash
-   git clone --branch v2.0.0-rc.1 --depth 1 https://github.com/adrien19/chronoqueue.git
-   ```
+```bash
+export WORKSPACE_FOLDER="$PWD"
+docker compose -f deploy/docker-compose.sqlite.yaml up -d --build nzovusvc
+curl --fail http://localhost:8080/health
+```
 
-2. Change to the deployment directory and start the PostgreSQL configuration:
+See the [deployment guide](./deploy/README.md) for PostgreSQL, the TLS-protected UI and monitoring. Keep the existing Compose project name and volume names during migration.
 
-    ```bash
-    cd chronoqueue/deploy
-    docker compose -f docker-compose.postgres.yaml up
-    ```
+#### Server configuration
 
-#### Run Server Option
-
-1. Clone the repository:
-
-   ```bash
-   git clone --branch v2.0.0-rc.1 --depth 1 https://github.com/adrien19/chronoqueue.git
-   ```
-
-2. Download the server dependencies:
-
-    ```bash
-    cd chronoqueue
-    go mod download
-    ```
-
-3. Configure your environment:
+Configure your environment:
 
    - Start with [`.env.example`](./.env.example) and choose PostgreSQL (recommended) or SQLite.
    - For PostgreSQL, set `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB`. Production mode defaults to `POSTGRES_SSLMODE=verify-full`; set `POSTGRES_ROOT_CERT` when a custom CA certificate is required. Development mode defaults to `POSTGRES_SSLMODE=disable` for local use.
    - For SQLite, set `SQLITE_DB_PATH` (for example, `/data/chronoqueue.db`).
-   - Production mode enables authentication by default. Set `API_KEYS` to a comma-separated list; clients can authenticate with the `api-key` header or an `Authorization: Bearer` token. The CLI and web UI read `CHRONOQUEUE_API_KEY`; the CLI also accepts `--api-key`. Development mode can enable authentication with `AUTH_ENABLED=true`.
+   - Production mode enables authentication by default. Set `API_KEYS` to a comma-separated list; clients can authenticate with the `api-key` header or an `Authorization: Bearer` token. The CLI and web UI read `NZOVU_API_KEY`; the CLI also accepts `--api-key`. Development mode can enable authentication with `AUTH_ENABLED=true`.
    - Production mode requires TLS for the gRPC and HTTP endpoints. Set `CERT_FILE` and `KEY_FILE`. To require gRPC client certificates, also set `CA_CERT_FILE`; the internal HTTP gateway then needs `GATEWAY_CLIENT_CERT_FILE` and `GATEWAY_CLIENT_KEY_FILE`.
    - HTTP gateway timeouts default to `5s` for request headers, `15s` for reads, `30s` for writes, and `60s` for idle connections. Override them with `HTTP_READ_HEADER_TIMEOUT`, `HTTP_READ_TIMEOUT`, `HTTP_WRITE_TIMEOUT`, and `HTTP_IDLE_TIMEOUT`.
    - Production mode requires payload encryption and an explicit `ENCRYPTION_KEY_SOURCE_TYPE`. Use `VAULT` for normal production deployments. `LOCAL` keys require `ALLOW_LOCAL_ENCRYPTION_KEY_IN_PRODUCTION=true`. Follow the [encryption-key rotation procedure](./ENCRYPTION_KEY_ROTATION.md) before changing an active key.
    - Production mode enables configurable per-principal API rate limiting as an abuse-protection baseline. The default is 100 RPCs/second with a burst of 200. The limiter counts RPCs rather than individual messages, so a bulk post consumes one token. With authentication enabled, each API key has one bucket shared by all RPC methods, and each server instance applies its own limits. Tune or disable the limiter when equivalent controls are enforced upstream. Configure it with `RATE_LIMIT_ENABLED`, `RATE_LIMIT_REQUESTS_PER_SECOND`, `RATE_LIMIT_BURST`, and `RATE_LIMIT_MAX_BUCKETS`; the last setting caps the number of in-memory principal buckets.
    - Metrics are enabled and bearer-protected by default in production. Set `METRICS_BEARER_TOKEN` and configure Prometheus to send it in the `Authorization: Bearer` header, or disable metrics with `METRICS_ENABLED=false`.
 
-4. Start the ChronoQueue server:
+Start the Nzovu server:
 
     ```bash
     # Development mode with PostgreSQL (recommended)
@@ -128,13 +105,13 @@ You can also run ChronoQueue locally with [Docker Compose](https://docs.docker.c
     CGO_ENABLED=1 go run -tags sqlite . server --dev --grpc-addr :9000 --storage-type sqlite --sqlite-db-path chronoqueue.db
     ```
 
-SQLite requires CGO, a C compiler, and the `sqlite` build tag. For a SQLite-capable binary, use `CGO_ENABLED=1 go build -tags sqlite -o chronoqueue .`; an untagged build supports PostgreSQL only. See [server build selection](./internal/server/server_nosqlite.go).
+SQLite requires CGO, a C compiler, and the `sqlite` build tag. For a SQLite-capable binary, use `CGO_ENABLED=1 go build -tags sqlite -o nzovu .`; an untagged build supports PostgreSQL only. See [server build selection](./internal/server/server_nosqlite.go).
 
 To use mTLS, generate the required certificates or use the provided [`generate_certs.sh`](./generate_certs.sh) helper for local evaluation.
 
 ### Web UI
 
-ChronoQueue includes a built-in web interface for monitoring and managing your queues, schedules, and dead letter queues.
+Nzovu includes a built-in web interface for monitoring and managing your queues, schedules, and dead letter queues.
 
 #### Starting the Web UI
 
@@ -142,26 +119,26 @@ ChronoQueue includes a built-in web interface for monitoring and managing your q
 
     ```bash
     cd cmd/chronoq/web-ui
-    npm install
+    npm ci
     npm run build:css
     cd ../../..
     ```
 
-2. Build the ChronoQueue binary:
+2. Build the Nzovu binary:
 
     ```bash
-    go build -o chronoqueue .
+    go build -o ./dist/nzovu .
     ```
 
 3. Start the UI server:
 
     ```bash
-    ./chronoqueue web-ui start --port 8081 --grpc-address localhost:9000 --skip-ssl
+    NZOVU_UI_PUBLIC_ORIGIN=http://localhost:8081 ./dist/nzovu web-ui start --port 8081 --grpc-address localhost:9000 --skip-ssl
     ```
 
 4. Open your browser to `http://localhost:8081`
 
-The UI binds to `127.0.0.1` by default. A non-loopback bind such as `--host 0.0.0.0` requires `CHRONOQUEUE_UI_TLS_CERT_FILE` and `CHRONOQUEUE_UI_TLS_KEY_FILE`; the UI then serves HTTPS with TLS 1.2 or newer. Enable Basic authentication with `CHRONOQUEUE_UI_AUTH_ENABLED=true`, `CHRONOQUEUE_UI_AUTH_USERNAME`, and `CHRONOQUEUE_UI_AUTH_PASSWORD`. `--skip-ssl` affects only the UI-to-gRPC connection.
+The UI binds to `127.0.0.1` by default. A non-loopback bind such as `--host 0.0.0.0` requires Basic authentication plus `NZOVU_UI_TLS_CERT_FILE` and `NZOVU_UI_TLS_KEY_FILE`; the UI then serves HTTPS with TLS 1.2 or newer. Enable Basic authentication with `NZOVU_UI_AUTH_ENABLED=true`, `NZOVU_UI_AUTH_USERNAME`, and `NZOVU_UI_AUTH_PASSWORD`. `--skip-ssl` affects only the UI-to-gRPC connection.
 
 #### UI Features
 
@@ -189,49 +166,26 @@ make ui-watch
 go run . server --dev --grpc-addr :9000
 
 # Terminal 3: Run the UI
-go run . web-ui start --port 8081 --skip-ssl
+NZOVU_UI_PUBLIC_ORIGIN=http://localhost:8081 go run . web-ui start --port 8081 --skip-ssl
 ```
 
-## AI Integration
+## External clients
 
-### Model Context Protocol (MCP) Server
-
-An early-development **Model Context Protocol (MCP) server** is maintained in the separate [TypeScript SDK repository](https://github.com/adrien19/chronoqueue-typescript-sdk). It is intended to let MCP-compatible assistants interact with ChronoQueue queues and schedules.
-
-> Package availability and setup instructions may change while the MCP server is under development. Check the TypeScript SDK repository for its current status.
-
-**Quick Start:**
-
-```bash
-# From npm (once published)
-npm install -g @chronoqueue/mcp-server
-
-# Or run directly with npx
-npx @chronoqueue/mcp-server
-```
-
-**Features:**
-
-- 🤖 13 MCP tools for queue, message, and schedule operations
-- 🔌 Works with VS Code (GitHub Copilot), Claude Desktop, Cursor IDE, and any MCP-compatible client
-- 🔐 Secure gRPC communication with ChronoQueue server
-- 📝 Type-safe TypeScript implementation
-
-For complete documentation and setup guides, visit the [TypeScript SDK repository](https://github.com/adrien19/chronoqueue-typescript-sdk).
+The [legacy ChronoQueue TypeScript SDK and MCP repository](https://github.com/adrien19/chronoqueue-typescript-sdk) is maintained separately. Its Nzovu wire-namespace compatibility is unverified; use the in-repository Go client or regenerate clients from the Nzovu protobuf definitions. No renamed npm package is implied by this migration.
 
 ## Documentation
 
 Documentation currently lives alongside the relevant components:
 
 - Start the HTTP gateway with `--dev` or `--enable-api-docs` and open `/docs/` for the embedded Swagger UI, or inspect the generated [OpenAPI specification](./pkg/gateway/nzovu.swagger.json).
-- See the [2.0 release and migration guide](./RELEASE_2.0.md) for verified breaking changes and upgrade boundaries.
+- See the [migration guide](./deploy/NZOVU_MIGRATION.md) for namespace changes, configuration aliases and retained identifiers.
 - See the [API validation and error contract](./API_VALIDATION.md) for queue/message configuration rules and gRPC-to-HTTP error mappings.
 - See the [deployment guide](./deploy/README.md), [monitoring guide](./monitoring/README.md), [test guide](./tests/README.md), and [examples](./examples/README.md).
 - The protobuf service contract is defined in [`proto/queueservice/v1/service.proto`](./proto/queueservice/v1/service.proto).
 
 ## 🤔 Why not just use Kafka or RabbitMQ?
 
-Kafka and RabbitMQ are general-purpose **message brokers**. ChronoQueue focuses on **job execution and supervision**. The distinction matters when leases, retries, and attempt ownership are part of the server-side contract.
+Kafka and RabbitMQ are general-purpose **message brokers**. Nzovu focuses on **job execution and supervision**. The distinction matters when leases, retries, and attempt ownership are part of the server-side contract.
 
 ---
 
@@ -245,13 +199,13 @@ Kafka and RabbitMQ are designed for capabilities such as:
 - Durable message storage
 - Consumer group mechanics
 
-Both brokers provide retry, timeout, and dead-letter building blocks through broker configuration and client behavior. Applications commonly remain responsible for coordinating job-level execution state across workers. ChronoQueue instead exposes leases, heartbeats, attempt IDs, and retry exhaustion as first-class queue operations.
+Both brokers provide retry, timeout, and dead-letter building blocks through broker configuration and client behavior. Applications commonly remain responsible for coordinating job-level execution state across workers. Nzovu instead exposes leases, heartbeats, attempt IDs, and retry exhaustion as first-class queue operations.
 
 ---
 
-### ✅ What ChronoQueue Adds
+### ✅ What Nzovu Adds
 
-ChronoQueue can treat each message as a **job with an execution contract**.
+Nzovu can treat each message as a **job with an execution contract**.
 
 Each message attempt has:
 
@@ -263,7 +217,7 @@ Each message attempt has:
 
 #### Core Execution Model
 
-| Feature | ChronoQueue |
+| Feature | Nzovu |
 | -------- | -------------- |
 | Per-message lease | ✅ |
 | Heartbeat-driven lease extension | ✅ |
@@ -286,7 +240,7 @@ This model lets the server determine whether an attempt still owns the job and r
 - The application must detect the stalled job
 - Retry and dead-letter behavior depends on broker and client configuration
 
-#### ChronoQueue Features
+#### Nzovu Features
 
 - Job leased for 3s base + up to 10s extension
 - Worker sends heartbeat every 1s
@@ -307,7 +261,7 @@ Traditional broker/client setup:
 - Ownership is represented by broker-specific consumer groups, sessions, or delivery state
 - If workers race or reconnect, behavior can become ambiguous
 
-ChronoQueue:
+Nzovu:
 
 - Ownership = server-generated `attempt_id`
 - Every:
@@ -319,9 +273,9 @@ ChronoQueue:
 
 ---
 
-### 🛠 When Should You Use ChronoQueue?
+### 🛠 When Should You Use Nzovu?
 
-Consider ChronoQueue when you need:
+Consider Nzovu when you need:
 
 - ✅ Server-enforced attempt time bounds
 - ✅ Automatic retries on timeout
@@ -341,17 +295,17 @@ Kafka or RabbitMQ may be a better fit when you primarily need:
 ### 🧩 Mental Model
 
 - **Kafka/RabbitMQ** = Message Delivery Systems
-- **ChronoQueue** = Job Execution & Supervision System
+- **Nzovu** = Job Execution & Supervision System
 
-ChronoQueue's execution model is closer to supervised job or activity processing than to a delivery-only queue.
+Nzovu's execution model is closer to supervised job or activity processing than to a delivery-only queue.
 
 ## Examples & Use Cases
 
-The [`examples/`](./examples/) directory contains sample applications demonstrating ChronoQueue integration patterns:
+The [`examples/`](./examples/) directory contains sample applications demonstrating Nzovu integration patterns:
 
 ### 🎯 Featured Example: Interview Evaluation Platform
 
-A sample application showcasing several ChronoQueue capabilities through an interview evaluation workflow:
+A sample application showcasing several Nzovu capabilities through an interview evaluation workflow:
 
 - **Priority Queues**: Urgent vs standard evaluation processing
 - **Scheduled Messages**: Business hours-based message delivery
@@ -382,7 +336,7 @@ We welcome contributions! Please read our **[Contributing Guidelines](./CONTRIBU
 
 1. **Use the Dev Container** (Recommended) - Zero configuration, everything pre-installed
 2. **Fork and clone** the repository
-3. **Create a feature branch** from `develop`
+3. **Create a feature branch** from `main`
 4. **Make your changes** with tests
 5. **Run tests locally**: `make test-all`
 6. **Submit a pull request** with clear description
@@ -391,8 +345,8 @@ For questions, open an issue or start a GitHub Discussion.
 
 ## License
 
-ChronoQueue is licensed under [MIT License](./LICENSE).
+Nzovu is licensed under [MIT License](./LICENSE).
 
 ## Acknowledgments
 
-Special thanks to everyone who contributes to and evaluates ChronoQueue.
+Special thanks to everyone who contributes to and evaluates Nzovu.

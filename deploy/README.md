@@ -1,20 +1,20 @@
-# ChronoQueue Deployment
+# Nzovu Deployment
 
 For Nzovu cutover, environment aliases and preserving existing databases/volumes, see the [runtime migration guide](./NZOVU_MIGRATION.md).
 
-This directory contains Docker Compose configurations for deploying ChronoQueue with different storage backends and monitoring stack.
+This directory contains Docker Compose configurations for deploying Nzovu with different storage backends and monitoring stack.
 
 ## Files
 
-- `docker-compose.postgres.yaml` - ChronoQueue with PostgreSQL storage (default, **instrumented**)
-- `docker-compose.sqlite.yaml` - ChronoQueue with SQLite storage (**instrumented**)
+- `docker-compose.postgres.yaml` - Nzovu with PostgreSQL storage (default, **instrumented**)
+- `docker-compose.sqlite.yaml` - Nzovu with SQLite storage (**instrumented**)
 - `docker-compose.monitoring.yaml` - Monitoring stack (Prometheus + Grafana)
 - `prometheus.yml` - Prometheus scrape configuration
 - `grafana/` - Grafana provisioning configuration
 
 ## Storage Backend Selection
 
-ChronoQueue supports two storage backends:
+Nzovu supports two storage backends:
 
 | Backend | Status | Metrics | Use Case |
 |---------|--------|---------|----------|
@@ -23,20 +23,35 @@ ChronoQueue supports two storage backends:
 
 ## Quick Start
 
-### 1. Start ChronoQueue Services (PostgreSQL - Recommended)
+Run Make targets from the repository root. Before starting the complete stack, configure the UI credentials and a localhost certificate:
+
+```bash
+export WORKSPACE_FOLDER="$(git rev-parse --show-toplevel)"
+export NZOVU_UI_AUTH_USERNAME=admin
+export NZOVU_UI_AUTH_PASSWORD="$(openssl rand -hex 24)"
+mkdir -p "$WORKSPACE_FOLDER/certs"
+# For a fresh checkout only; retain existing certificates during migration.
+openssl req -x509 -newkey rsa:2048 -nodes -days 30 \
+  -keyout "$WORKSPACE_FOLDER/certs/server.key" -out "$WORKSPACE_FOLDER/certs/server.crt" \
+  -subj /CN=localhost -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
+```
+
+Trust this local certificate in your browser. For a broker-only start, use `docker compose -f deploy/docker-compose.sqlite.yaml up -d --build nzovusvc`; UI credentials and certificates are unnecessary when the UI is not started.
+
+### 1. Start Nzovu Services (PostgreSQL - Recommended)
 
 ```bash
 # Using Makefile (recommended)
 make deploy-up STORAGE=postgres
 
 # Or directly with docker-compose
-cd /workspaces/chronoqueue/deploy
-docker-compose -f docker-compose.postgres.yaml up -d
+cd "$(git rev-parse --show-toplevel)/deploy"
+docker compose -f docker-compose.postgres.yaml up -d
 ```
 
 This starts:
 
-- **ChronoQueue Server** on ports:
+- **Nzovu Server** on ports:
   - `9000` - gRPC API
   - `8080` - HTTP/REST API and metrics endpoint
 - **PostgreSQL** on port:
@@ -49,8 +64,8 @@ This starts:
 make deploy-up STORAGE=sqlite
 
 # Or directly
-cd /workspaces/chronoqueue/deploy
-docker-compose -f docker-compose.sqlite.yaml up -d
+cd "$(git rev-parse --show-toplevel)/deploy"
+docker compose -f docker-compose.sqlite.yaml up -d
 ```
 
 No external database needed - data stored in volume at `/data/chronoqueue.db`.
@@ -64,8 +79,8 @@ The Compose files are local-development configurations. The Web UI is exposed on
 make monitoring-up
 
 # Or directly
-cd /workspaces/chronoqueue/deploy
-docker-compose -f docker-compose.monitoring.yaml up -d
+cd "$(git rev-parse --show-toplevel)/deploy"
+docker compose -f docker-compose.monitoring.yaml up -d
 ```
 
 This starts:
@@ -84,15 +99,15 @@ Default Grafana credentials:
 | --------- | ----- | --------- |
 | Grafana | <http://localhost:3000> | Metrics visualization |
 | Prometheus | <http://localhost:9090> | Metrics storage & queries |
-| ChronoQueue REST API | <http://localhost:8080> | HTTP API |
-| ChronoQueue Metrics | <http://localhost:8080/metrics> | Raw metrics endpoint |
+| Nzovu REST API | <http://localhost:8080> | HTTP API |
+| Nzovu Metrics | <http://localhost:8080/metrics> | Raw metrics endpoint |
 | PostgreSQL | localhost:5432 | Database (postgres storage only) |
 
-### 4. View ChronoQueue Dashboard
+### 4. View Nzovu Dashboard
 
 1. Open Grafana at <http://localhost:3000>
 2. Login with `admin/admin`
-3. Navigate to **Dashboards** → **ChronoQueue** folder → **ChronoQueue - Main Dashboard**
+3. Navigate to **Dashboards** → **Nzovu** folder → **Nzovu - Main Dashboard**
 
 The dashboard is automatically provisioned on startup.
 
@@ -108,9 +123,9 @@ make deploy-all STORAGE=postgres
 make deploy-all STORAGE=sqlite
 
 # Or manually
-cd /workspaces/chronoqueue/deploy
-docker-compose -f docker-compose.postgres.yaml up -d && \
-docker-compose -f docker-compose.monitoring.yaml up -d
+cd "$(git rev-parse --show-toplevel)/deploy"
+docker compose -f docker-compose.postgres.yaml up -d && \
+docker compose -f docker-compose.monitoring.yaml up -d
 ```
 
 Stop all services:
@@ -121,32 +136,32 @@ make deploy-down STORAGE=postgres
 make monitoring-down
 
 # Or manually
-docker-compose -f docker-compose.postgres.yaml down
-docker-compose -f docker-compose.monitoring.yaml down
+docker compose -f docker-compose.postgres.yaml down
+docker compose -f docker-compose.monitoring.yaml down
 ```
 
 ## Verifying the Setup
 
-### Check ChronoQueue is Running
+### Check Nzovu is Running
 
 ```bash
 # Check health
 curl http://localhost:8080/health
 
 # Check metrics are exposed
-curl http://localhost:8080/metrics | grep chronoqueue
+curl http://localhost:8080/metrics | grep nzovu
 ```
 
 ### Check Prometheus is Scraping
 
 1. Open <http://localhost:9090/targets>
-2. Verify `chronoqueue` target shows as **UP**
-3. Run a test query: `chronoqueue_queues_total`
+2. Verify `nzovu` target shows as **UP**
+3. Run a test query: `nzovu_queues_total`
 
 ### Check Grafana Dashboard
 
 1. Open <http://localhost:3000>
-2. Navigate to **Dashboards** → **ChronoQueue** → **ChronoQueue - Main Dashboard**
+2. Navigate to **Dashboards** → **Nzovu** → **Nzovu - Main Dashboard**
 3. Verify panels are showing data (may take 30-60 seconds for first data points)
 
 ## Configuration
@@ -173,8 +188,8 @@ environment:
   - POSTGRES_PORT=5432
   - POSTGRES_USER=chronoqueue
   - POSTGRES_PASSWORD=chronoqueue_dev_password  # Change for production!
-  - POSTGRES_DATABASE=chronoqueue
-  - POSTGRES_SSLMODE=disable  # Use 'require' for production
+  - POSTGRES_DB=chronoqueue
+  - POSTGRES_SSLMODE=disable  # Use verify-full with a trusted CA in production
 ```
 
 ### SQLite Configuration
@@ -193,13 +208,13 @@ volumes:
 Edit [`prometheus.yml`](./prometheus.yml) to:
 
 - Adjust scrape intervals
-- Add additional ChronoQueue instances
+- Add additional Nzovu instances
 - Configure external labels
 
 After changes, reload Prometheus:
 
 ```bash
-docker-compose -f docker-compose.monitoring.yaml restart prometheus
+docker compose -f docker-compose.monitoring.yaml restart prometheus
 ```
 
 ### Grafana Configuration
@@ -207,7 +222,7 @@ docker-compose -f docker-compose.monitoring.yaml restart prometheus
 Datasources and dashboards are auto-provisioned from:
 
 - [`grafana/provisioning/datasources/prometheus.yml`](./grafana/provisioning/datasources/prometheus.yml)
-- [`grafana/provisioning/dashboards/chronoqueue.yml`](./grafana/provisioning/dashboards/chronoqueue.yml)
+- [`grafana/provisioning/dashboards/nzovu.yml`](./grafana/provisioning/dashboards/nzovu.yml)
 - [`../monitoring/grafana-dashboard.json`](../monitoring/grafana-dashboard.json)
 
 ## Makefile Targets
@@ -216,16 +231,16 @@ The root Makefile provides convenient targets:
 
 ```bash
 # Start services
-make deploy-up STORAGE=postgres     # Start ChronoQueue with PostgreSQL
-make deploy-up STORAGE=sqlite       # Start ChronoQueue with SQLite
+make deploy-up STORAGE=postgres     # Start Nzovu with PostgreSQL
+make deploy-up STORAGE=sqlite       # Start Nzovu with SQLite
 make monitoring-up                   # Start monitoring stack
 
 # Stop services
-make deploy-down STORAGE=postgres    # Stop ChronoQueue
+make deploy-down STORAGE=postgres    # Stop Nzovu
 make monitoring-down                 # Stop monitoring
 
 # View logs
-make deploy-logs STORAGE=postgres    # ChronoQueue logs
+make deploy-logs STORAGE=postgres    # Nzovu logs
 make monitoring-logs                 # Monitoring logs
 
 # All-in-one
@@ -233,14 +248,14 @@ make deploy-all STORAGE=postgres     # Start everything
 make deploy-clean STORAGE=postgres   # Stop and remove volumes
 
 # Rebuild
-make deploy-rebuild STORAGE=postgres # Rebuild ChronoQueue
+make deploy-rebuild STORAGE=postgres # Rebuild Nzovu
 
 # Validate
 make deploy-validate                 # Check monitoring stack
 make deploy-status STORAGE=postgres  # Show service status
 ```
 
-## ChronoQueue Environment Variables
+## Nzovu Environment Variables
 
 Common across all storage backends:
 
@@ -254,7 +269,7 @@ Common across all storage backends:
 | `ENCRYPTION_KEY_SOURCE_TYPE` | `LOCAL` in the example Compose files | Encryption key provider (`LOCAL` or `VAULT`) |
 | `ENCRYPTION_PREVIOUS_KEYS` | `[]` | JSON array of historical keys for the `LOCAL` provider |
 | `KEY_REFRESH_DURATION_IN_MINUTES` | `60` | Encryption key-set refresh interval |
-| `CHRONOQUEUE_TLS_ENABLED` | `false` in development; `true` in production | Enable TLS for gRPC and HTTP |
+| `NZOVU_TLS_ENABLED` | `false` in development; `true` in production | Enable TLS for gRPC and HTTP |
 | `METRICS_AUTH_ENABLED` | `false` in development; `true` in production | Require a dedicated metrics bearer token |
 | `METRICS_BEARER_TOKEN` | _(empty)_ | Metrics bearer token; required with production metrics |
 
@@ -281,7 +296,7 @@ Volumes are automatically created for data persistence:
 
 ```bash
 # List volumes
-docker volume ls | grep chronoqueue
+docker volume ls  # Existing project-prefixed volume names are retained
 
 # Volumes created (depending on storage backend):
 # PostgreSQL:
@@ -301,9 +316,9 @@ docker compose -f docker-compose.postgres.yaml exec -T postgres \
   pg_dump --format=custom --username=chronoqueue --dbname=chronoqueue > chronoqueue.dump
 
 # Backup SQLite while the only writer is stopped
-docker compose -f docker-compose.sqlite.yaml stop chronoqueuesvc
-docker compose -f docker-compose.sqlite.yaml cp chronoqueuesvc:/data/chronoqueue.db chronoqueue-backup.db
-docker compose -f docker-compose.sqlite.yaml start chronoqueuesvc
+docker compose -f docker-compose.sqlite.yaml stop nzovusvc
+docker compose -f docker-compose.sqlite.yaml cp nzovusvc:/data/chronoqueue.db chronoqueue-backup.db
+docker compose -f docker-compose.sqlite.yaml start nzovusvc
 
 # Backup Prometheus data
 docker run --rm -v prometheus-data:/data -v $(pwd):/backup ubuntu tar czf /backup/prometheus-backup.tar.gz -C /data .
@@ -315,27 +330,27 @@ docker run --rm -v grafana-data:/data -v $(pwd):/backup ubuntu tar czf /backup/g
 ### Restore Data
 
 ```bash
-# Stop ChronoQueue and all other external database writers before restoring
-docker compose -f docker-compose.postgres.yaml stop chronoqueuesvc
+# Stop Nzovu and all other external database writers before restoring
+docker compose -f docker-compose.postgres.yaml stop nzovusvc
 # Stop external producers, workers, and administrative clients that write to this database.
 
-# Restore PostgreSQL into the empty database, then restart ChronoQueue
+# Restore PostgreSQL into the empty database, then restart Nzovu
 docker compose -f docker-compose.postgres.yaml exec -T postgres \
   pg_restore --clean --if-exists --no-owner --username=chronoqueue --dbname=chronoqueue < chronoqueue.dump
-docker compose -f docker-compose.postgres.yaml start chronoqueuesvc
+docker compose -f docker-compose.postgres.yaml start nzovusvc
 # Restart the external producers, workers, and administrative clients stopped above.
 
-# Restore SQLite only while ChronoQueue is stopped
-docker compose -f docker-compose.sqlite.yaml stop chronoqueuesvc
-docker compose -f docker-compose.sqlite.yaml cp chronoqueue-backup.db chronoqueuesvc:/data/chronoqueue.db
-docker compose -f docker-compose.sqlite.yaml start chronoqueuesvc
+# Restore SQLite only while Nzovu is stopped
+docker compose -f docker-compose.sqlite.yaml stop nzovusvc
+docker compose -f docker-compose.sqlite.yaml cp chronoqueue-backup.db nzovusvc:/data/chronoqueue.db
+docker compose -f docker-compose.sqlite.yaml start nzovusvc
 ```
 
 ### v2 Upgrade and Rollback
 
-Version 2 is the first supported ChronoQueue release, so there is no supported pre-v2 database schema to migrate. Internal schema versions 1–6 are development history, not released compatibility targets.
+Nzovu is preparing `v0.0.1`. Preserve existing databases and volumes when moving from ChronoQueue; follow the [migration guide](./NZOVU_MIGRATION.md). Internal schema versions are independent of product release versions.
 
-Before upgrading between supported v2 releases, stop message producers and workers, take a logical PostgreSQL dump or SQLite offline file backup as above, and verify the backup is readable. Start the new binary against the database; startup applies forward-only migrations and rejects databases created by a newer binary. To roll back, stop ChronoQueue, deploy the previous binary, and restore the backup taken before the upgrade. Do not run an older binary against a database after a newer binary has migrated it.
+Before upgrading between supported v2 releases, stop message producers and workers, take a logical PostgreSQL dump or SQLite offline file backup as above, and verify the backup is readable. Start the new binary against the database; startup applies forward-only migrations and rejects databases created by a newer binary. To roll back, stop Nzovu, deploy the previous binary, and restore the backup taken before the upgrade. Do not run an older binary against a database after a newer binary has migrated it.
 
 ## Alerting
 
@@ -355,14 +370,14 @@ To send alert notifications (email, Slack, PagerDuty):
 ```yaml
   alertmanager:
     image: prom/alertmanager:v0.26.0
-    container_name: chronoqueue-alertmanager
+    container_name: nzovu-alertmanager
     ports:
       - "9093:9093"
     volumes:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager-data:/alertmanager
     networks:
-      - chronoqueue-network
+      - nzovu-network
     restart: unless-stopped
 ```
 
@@ -374,7 +389,7 @@ To send alert notifications (email, Slack, PagerDuty):
 
 ### No Metrics in Grafana
 
-1. **Check ChronoQueue metrics endpoint**:
+1. **Check Nzovu metrics endpoint**:
 
    ```bash
    curl http://localhost:8080/metrics
@@ -387,14 +402,14 @@ To send alert notifications (email, Slack, PagerDuty):
 
 3. **Check Prometheus targets**:
    - Visit <http://localhost:9090/targets>
-   - Ensure `chronoqueue` target is UP
+   - Ensure `nzovu` target is UP
    - Check for scrape errors
 
 4. **Check Grafana datasource**:
    - Navigate to Configuration → Data Sources
    - Test the Prometheus connection
 
-### ChronoQueue Not Starting
+### Nzovu Not Starting
 
 ```bash
 # View logs
@@ -410,26 +425,26 @@ make deploy-logs STORAGE=postgres
 
 ```bash
 # Check PostgreSQL is healthy
-docker exec chronoqueue-postgres pg_isready -U chronoqueue
+docker exec nzovu-postgres pg_isready -U chronoqueue
 
 # Connect to PostgreSQL
-docker exec -it chronoqueue-postgres psql -U chronoqueue -d chronoqueue
+docker exec -it nzovu-postgres psql -U chronoqueue -d chronoqueue
 
 # View tables
 \dt
 
-# Check connection from ChronoQueue
-docker logs chronoqueue-server | grep -i postgres
+# Check connection from Nzovu
+docker logs nzovu-server | grep -i postgres
 ```
 
 ### SQLite Issues
 
 ```bash
 # Check SQLite database exists
-docker exec chronoqueue-server ls -lh /data/chronoqueue.db
+docker exec nzovu-server ls -lh /data/chronoqueue.db
 
 # Inspect SQLite database
-docker exec -it chronoqueue-server sqlite3 /data/chronoqueue.db ".tables"
+docker exec -it nzovu-server sqlite3 /data/chronoqueue.db ".tables"
 ```
 
 ### Reset Everything
@@ -487,7 +502,7 @@ make deploy-all STORAGE=postgres
 
    ```yaml
    environment:
-     - CHRONOQUEUE_TLS_ENABLED=true
+     - NZOVU_TLS_ENABLED=true
    ```
 
 2. **Protect metrics and the Web UI**:
@@ -496,11 +511,11 @@ make deploy-all STORAGE=postgres
    environment:
      - METRICS_AUTH_ENABLED=true
      - METRICS_BEARER_TOKEN=${METRICS_BEARER_TOKEN}
-     - CHRONOQUEUE_UI_AUTH_ENABLED=true
-     - CHRONOQUEUE_UI_AUTH_USERNAME=${CHRONOQUEUE_UI_AUTH_USERNAME}
-     - CHRONOQUEUE_UI_AUTH_PASSWORD=${CHRONOQUEUE_UI_AUTH_PASSWORD}
-     - CHRONOQUEUE_UI_TLS_CERT_FILE=/secrets/ui.crt
-     - CHRONOQUEUE_UI_TLS_KEY_FILE=/secrets/ui.key
+     - NZOVU_UI_AUTH_ENABLED=true
+     - NZOVU_UI_AUTH_USERNAME=${NZOVU_UI_AUTH_USERNAME}
+     - NZOVU_UI_AUTH_PASSWORD=${NZOVU_UI_AUTH_PASSWORD}
+     - NZOVU_UI_TLS_CERT_FILE=/secrets/ui.crt
+     - NZOVU_UI_TLS_KEY_FILE=/secrets/ui.key
    ```
 
    Configure Prometheus with `authorization.credentials_file` backed by the same metrics-token secret. Mount the UI certificate and key read-only. Non-loopback UI listeners are rejected unless both TLS files are valid. The example Compose files are local-only and publish the UI port on `127.0.0.1`.
@@ -525,11 +540,11 @@ make deploy-all STORAGE=postgres
    | Sensitive setting | Secret entry |
    | --- | --- |
    | `METRICS_BEARER_TOKEN` | `metrics_bearer_token` |
-   | `CHRONOQUEUE_UI_AUTH_USERNAME`, `CHRONOQUEUE_UI_AUTH_PASSWORD` | `ui_auth_username`, `ui_auth_password` |
-   | `API_KEYS`, client `CHRONOQUEUE_API_KEY` | `server_api_keys`, per-client API-key secret |
+   | `NZOVU_UI_AUTH_USERNAME`, `NZOVU_UI_AUTH_PASSWORD` | `ui_auth_username`, `ui_auth_password` |
+   | `API_KEYS`, client `NZOVU_API_KEY` | `server_api_keys`, per-client API-key secret |
    | `ENCRYPTION_KEY`, `ENCRYPTION_PREVIOUS_KEYS`, or Vault credentials (`VAULT_TOKEN`/AppRole secret ID) | active/historical encryption keys or external Vault identity secret; see the [rotation procedure](../ENCRYPTION_KEY_ROTATION.md) |
    | `CERT_FILE`, `KEY_FILE`, `CA_CERT_FILE` | read-only server TLS certificate, key, and CA files |
-   | `CHRONOQUEUE_UI_TLS_CERT_FILE`, `CHRONOQUEUE_UI_TLS_KEY_FILE` | read-only UI TLS certificate and key files |
+   | `NZOVU_UI_TLS_CERT_FILE`, `NZOVU_UI_TLS_KEY_FILE` | read-only UI TLS certificate and key files |
    | `GATEWAY_CLIENT_CERT_FILE`, `GATEWAY_CLIENT_KEY_FILE` | read-only gateway mTLS certificate and key files |
    | `POSTGRES_PASSWORD`, `POSTGRES_CLIENT_CERT`, `POSTGRES_CLIENT_KEY`, `POSTGRES_ROOT_CERT` | PostgreSQL password and read-only TLS files |
 
@@ -559,36 +574,36 @@ make deploy-logs STORAGE=postgres
 make monitoring-logs
 
 # Specific service
-docker logs -f chronoqueue-server
-docker logs -f chronoqueue-postgres
-docker logs -f chronoqueue-prometheus
+docker logs -f nzovu-server
+docker logs -f nzovu-postgres
+docker logs -f nzovu-prometheus
 ```
 
 ### Restart After Code Changes
 
 ```bash
-# Rebuild and restart ChronoQueue
+# Rebuild and restart Nzovu
 make deploy-rebuild STORAGE=postgres
 
 # Or manually
 cd deploy
-docker-compose -f docker-compose.postgres.yaml up -d --build chronoqueuesvc
+docker compose -f docker-compose.postgres.yaml up -d --build nzovusvc
 ```
 
 ### Execute Commands Inside Container
 
 ```bash
-# Access ChronoQueue container
-docker exec -it chronoqueue-server /bin/bash
+# Access Nzovu container
+docker exec -it nzovu-server /bin/sh
 
-# Check ChronoQueue CLI
-docker exec -it chronoqueue-server chronoq --help
+# Check Nzovu CLI
+docker exec -it nzovu-server /nzovu --help
 
 # Access PostgreSQL
-docker exec -it chronoqueue-postgres psql -U chronoqueue -d chronoqueue
+docker exec -it nzovu-postgres psql -U chronoqueue -d chronoqueue
 
 # Run SQL queries
-docker exec -it chronoqueue-postgres psql -U chronoqueue -d chronoqueue -c "SELECT * FROM queues;"
+docker exec -it nzovu-postgres psql -U chronoqueue -d chronoqueue -c "SELECT * FROM queues;"
 ```
 
 ### Switch Storage Backends
@@ -607,13 +622,13 @@ make deploy-up STORAGE=sqlite
 - Add custom Grafana dashboards
 - Set up AlertManager for notifications
 - Configure Grafana authentication
-- Add additional ChronoQueue instances for load testing
+- Add additional Nzovu instances for load testing
 - Integrate with your CI/CD pipeline
 
 ## Support
 
 For more information:
 
-- [ChronoQueue Documentation](../README.md)
+- [Nzovu Documentation](../README.md)
 - [Monitoring Guide](../monitoring/README.md)
 - [Metrics Reference](../pkg/metrics/README.md)

@@ -163,7 +163,7 @@ func TestQueuesHandlerWithoutActiveClientReturnsServiceUnavailable(t *testing.T)
 	if recorder.Code != http.StatusServiceUnavailable {
 		t.Fatalf("status = %d, want %d", recorder.Code, http.StatusServiceUnavailable)
 	}
-	if recorder.Body.String() != "ChronoQueue backend is unavailable" {
+	if recorder.Body.String() != "Nzovu backend is unavailable" {
 		t.Fatalf("body = %q", recorder.Body.String())
 	}
 }

@@ -10,7 +10,7 @@ import (
 	schedulepb "github.com/adrien19/nzovu/api/schedule/v1"
 )
 
-// ProtoSerializer handles protobuf serialization/deserialization for ChronoQueue entities.
+// ProtoSerializer handles protobuf serialization/deserialization for Nzovu entities.
 // This provides a centralized way to marshal/unmarshal protobufs across all storage backends.
 type ProtoSerializer struct{}
 

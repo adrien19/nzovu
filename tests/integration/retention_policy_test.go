@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides comprehensive retention policy tests for ChronoQueue.
+// Package integration provides comprehensive retention policy tests for Nzovu.
 //
 // These tests validate the configurable message retention feature:
 // - DELETE_IMMEDIATELY (default): Messages are hard-deleted on acknowledgment

@@ -9,13 +9,13 @@ echo "🎬 AI Agent Orchestrator - Complex Demo"
 echo "========================================="
 echo ""
 
-# Check if chronoqueue server is running
-echo "Step 1: Checking ChronoQueue server..."
+# Check if nzovu server is running
+echo "Step 1: Checking Nzovu server..."
 if ! timeout 2 bash -c "echo > /dev/tcp/localhost/9000" 2>/dev/null; then
-    echo "⚠️  Unable to verify ChronoQueue server at localhost:9000"
+    echo "⚠️  Unable to verify Nzovu server at localhost:9000"
     echo "   Attempting to continue anyway..."
 else
-    echo "✓ ChronoQueue server is running"
+    echo "✓ Nzovu server is running"
 fi
 echo ""
 

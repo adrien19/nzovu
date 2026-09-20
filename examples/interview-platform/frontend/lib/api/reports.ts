@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { httpClient } from "./client";
 import type {
     Report,
     GenerateReportRequest,
@@ -12,19 +12,19 @@ export const reportsApi = {
         page?: number;
         pageSize?: number;
     }): Promise<ApiResponse<Report[]>> => {
-        const response = await apiClient.get("/api/reports", { params });
+        const response = await httpClient.get("/api/reports", { params });
         return response.data;
     },
 
     // Get report by ID
     getById: async (id: string): Promise<ApiResponse<Report>> => {
-        const response = await apiClient.get(`/api/reports/${id}`);
+        const response = await httpClient.get(`/api/reports/${id}`);
         return response.data;
     },
 
     // Get report by interview ID
     getByInterview: async (interviewId: string): Promise<ApiResponse<Report>> => {
-        const response = await apiClient.get(`/api/interviews/${interviewId}/report`);
+        const response = await httpClient.get(`/api/interviews/${interviewId}/report`);
         return response.data;
     },
 
@@ -32,19 +32,19 @@ export const reportsApi = {
     generate: async (
         data: GenerateReportRequest
     ): Promise<ApiResponse<Report>> => {
-        const response = await apiClient.post("/api/reports/generate", data);
+        const response = await httpClient.post("/api/reports/generate", data);
         return response.data;
     },
 
     // Send report via email
     send: async (reportId: string): Promise<ApiResponse<void>> => {
-        const response = await apiClient.post(`/api/reports/${reportId}/send`);
+        const response = await httpClient.post(`/api/reports/${reportId}/send`);
         return response.data;
     },
 
     // Download report as PDF
     downloadPdf: async (reportId: string): Promise<Blob> => {
-        const response = await apiClient.get(`/api/reports/${reportId}/pdf`, {
+        const response = await httpClient.get(`/api/reports/${reportId}/pdf`, {
             responseType: "blob",
         });
         return response.data;

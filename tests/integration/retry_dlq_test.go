@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides retry system and DLQ tests for ChronoQueue.
+// Package integration provides retry system and DLQ tests for Nzovu.
 //
 // These tests validate:
 // - Immediate message retry

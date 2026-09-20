@@ -131,7 +131,7 @@ export interface Notification {
 }
 
 // ============================================================================
-// ChronoQueue Message Types
+// Nzovu Message Types
 // ============================================================================
 
 export interface QueueMessage<T = unknown> {

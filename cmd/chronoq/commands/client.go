@@ -15,7 +15,7 @@ import (
 	"github.com/adrien19/nzovu/internal/runtimeenv"
 )
 
-// ClientOptions holds configuration for the ChronoQueue client
+// ClientOptions holds configuration for the Nzovu client
 type ClientOptions struct {
 	Server   string
 	APIKey   string
@@ -69,7 +69,7 @@ func GetOutputFormat(cmd *cobra.Command) outputs.OutputFormat {
 	}
 }
 
-// CreateClient creates a new ChronoQueue client with the given options
+// CreateClient creates a new Nzovu client with the given options
 func CreateClient(opts *ClientOptions) (*client.ChronoQueueClient, error) {
 	// Create client options with default values
 	clientOpts := client.ClientOptions{

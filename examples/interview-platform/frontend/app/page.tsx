@@ -40,7 +40,7 @@ export default function Home() {
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             A comprehensive platform for scheduling interviews, collecting evaluations,
-            and generating reports—powered by ChronoQueue for reliable message processing.
+            and generating reports—powered by Nzovu for reliable message processing.
           </p>
           <SignedOut>
             <SignInButton mode="modal">
@@ -70,7 +70,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                ChronoQueue handles time-based scheduling ensuring interviews are
+                Nzovu handles time-based scheduling ensuring interviews are
                 never missed.
               </p>
             </CardContent>
@@ -116,7 +116,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                ChronoQueue's priority system ensures VIP candidates are handled promptly.
+                Nzovu's priority system ensures VIP candidates are handled promptly.
               </p>
             </CardContent>
           </Card>
@@ -158,7 +158,7 @@ export default function Home() {
             Ready to Transform Your Interview Process?
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Join leading companies using ChronoQueue-powered solutions
+            Join leading companies using Nzovu-powered solutions
           </p>
           <SignedOut>
             <SignInButton mode="modal">
@@ -180,7 +180,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t mt-16 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
-          <p>© 2024 Interview Evaluation Platform. Powered by ChronoQueue.</p>
+          <p>© 2024 Interview Evaluation Platform. Powered by Nzovu.</p>
         </div>
       </footer>
     </div>

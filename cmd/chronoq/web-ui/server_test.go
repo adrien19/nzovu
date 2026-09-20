@@ -88,7 +88,7 @@ func TestObservabilityAndSettingsTemplatesExposeTruthfulBoundaries(t *testing.T)
 		{path: "templates/pages/home.gohtml", contains: []string{"Reachable"}, excludes: []string{"data-chart", "Healthy"}},
 		{path: "templates/partials/live_overview.gohtml", contains: []string{"Queue state snapshot", "running"}, excludes: []string{"No inflight messages"}},
 		{path: "templates/pages/lease_monitor.gohtml", contains: []string{"200-message peek", "not a complete worker inventory", "Last heartbeat"}},
-		{path: "templates/partials/sidebar.gohtml", contains: []string{"not part of the ChronoQueue server contract"}, excludes: []string{"/settings/members", "/settings/groups", "/settings/sso", "/settings/audit-log", "/settings/integrations", "/settings/public-api-keys", "/settings/profile"}},
+		{path: "templates/partials/sidebar.gohtml", contains: []string{"not part of the Nzovu server contract"}, excludes: []string{"/settings/members", "/settings/groups", "/settings/sso", "/settings/audit-log", "/settings/integrations", "/settings/public-api-keys", "/settings/profile"}},
 	}
 	for _, test := range tests {
 		t.Run(test.path, func(t *testing.T) {

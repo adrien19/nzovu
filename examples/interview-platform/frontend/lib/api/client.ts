@@ -19,19 +19,21 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
+export const httpClient = axios.create({
+    baseURL: API_URL,
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
 export class APIClient {
     private client: AxiosInstance;
 
     constructor() {
         console.log("[API Client] Initializing with URL:", API_URL);
         
-        this.client = axios.create({
-            baseURL: API_URL,
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        this.client = httpClient;
 
         // Response interceptor for error handling
         this.client.interceptors.response.use(

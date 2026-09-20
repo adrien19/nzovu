@@ -1,9 +1,9 @@
 package integration
 
-// Package integration provides integration tests for ChronoQueue queue operations.
+// Package integration provides integration tests for Nzovu queue operations.
 //
 // These tests validate queue creation, deletion, listing, and state management
-// using a real ChronoQueue server and SQL database via Testcontainers.
+// using a real Nzovu server and SQL database via Testcontainers.
 //
 // Run with: go test -v ./tests/integration/...
 

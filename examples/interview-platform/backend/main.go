@@ -24,9 +24,9 @@ import (
 )
 
 var (
-	port            = flag.String("port", "8080", "HTTP server port")
-	chronoqueueAddr = flag.String("chronoqueue", "localhost:50051", "ChronoQueue gRPC address")
-	dbPath          = flag.String("db", "/workspaces/chronoqueue/examples/interview-platform/logs/api_interview_platform.db", "SQLite database path")
+	port       = flag.String("port", "3001", "HTTP server port")
+	serverAddr = flag.String("server", "localhost:50051", "Nzovu gRPC address")
+	dbPath     = flag.String("db", "api_interview_platform.db", "SQLite database path")
 )
 
 func main() {
@@ -41,22 +41,22 @@ func main() {
 
 	log.Println("Database initialized successfully")
 
-	// Initialize ChronoQueue client
-	log.Println("Attempting to connect to ChronoQueue...")
-	queueClient, err := client.NewChronoQueueClient(*chronoqueueAddr, client.ClientOptions{
+	// Initialize Nzovu client
+	log.Println("Attempting to connect to Nzovu...")
+	queueClient, err := client.NewChronoQueueClient(*serverAddr, client.ClientOptions{
 		MaxRetries:     10,
 		InitialBackoff: 1 * time.Second,
 		MaxBackoff:     10 * time.Second,
 	})
 	if err != nil {
-		log.Fatalf("Failed to connect to ChronoQueue: %v", err)
+		log.Fatalf("Failed to connect to Nzovu: %v", err)
 	}
 	if queueClient == nil {
-		log.Fatalf("ChronoQueue client is nil but no error returned!")
+		log.Fatalf("Nzovu client is nil but no error returned!")
 	}
 	defer queueClient.Close()
 
-	log.Printf("Connected to ChronoQueue at %s", *chronoqueueAddr)
+	log.Printf("Connected to Nzovu at %s", *serverAddr)
 	log.Printf("Client object: %+v", queueClient)
 
 	// Initialize queues

@@ -59,6 +59,18 @@ func TestHeadersValidatorRejectsInvalidHeaders(t *testing.T) {
 			wantCode:  schemapb.ErrorCode_INVALID_FORMAT,
 		},
 		{
+			name:      "x-nzovu- reserved prefix",
+			headers:   []*messagepb.Message_Metadata_Header{{Key: "x-nzovu-token"}},
+			wantField: "metadata.headers[0].key",
+			wantCode:  schemapb.ErrorCode_INVALID_FORMAT,
+		},
+		{
+			name:      "x-chronoqueue- reserved prefix",
+			headers:   []*messagepb.Message_Metadata_Header{{Key: "x-chronoqueue-token"}},
+			wantField: "metadata.headers[0].key",
+			wantCode:  schemapb.ErrorCode_INVALID_FORMAT,
+		},
+		{
 			name:      "reserved prefix",
 			headers:   []*messagepb.Message_Metadata_Header{{Key: "x-system-token"}},
 			wantField: "metadata.headers[0].key",

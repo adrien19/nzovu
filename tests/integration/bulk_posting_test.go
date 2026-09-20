@@ -2,7 +2,7 @@
 
 package integration
 
-// Package integration provides comprehensive bulk posting tests for ChronoQueue.
+// Package integration provides comprehensive bulk posting tests for Nzovu.
 //
 // These tests validate:
 // - Bulk message posting with ALL_OR_NOTHING transaction mode

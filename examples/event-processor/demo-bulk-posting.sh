@@ -1,11 +1,11 @@
 #!/bin/bash
 # Bulk Posting Demo Script
-# This script demonstrates the bulk message posting feature of ChronoQueue
+# This script demonstrates the bulk message posting feature of Nzovu
 
 set -e
 
 echo "=============================================="
-echo "ChronoQueue Bulk Posting Demo"
+echo "Nzovu Bulk Posting Demo"
 echo "=============================================="
 echo ""
 

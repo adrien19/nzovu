@@ -7,7 +7,7 @@
   "tags": [
     {
       "name": "QueueService",
-      "description": "QueueService is the primary API for interacting with ChronoQueue.\n\nThis service provides:\n- Queue lifecycle management\n- Message posting and consumption\n- Scheduled task automation\n- Dead letter queue handling\n- Schema-based validation\n\nExample - Basic message flow:\n  1. CreateQueue: Set up a queue with retry/DLQ configuration\n  2. PostMessage: Add messages to the queue\n  3. GetNextMessage: Workers retrieve messages for processing\n  4. AcknowledgeMessage: Mark message as successfully processed\n     OR let lease expire → message returns to queue for retry\n  5. After max_attempts exhausted → message moves to DLQ\n\ngRPC vs REST:\n- gRPC: Preferred for high-throughput, low-latency scenarios\n- REST: Convenient for browser/curl access, debugging, simple integrations\n\nError handling:\n- Use gRPC status codes (InvalidArgument, NotFound, AlreadyExists, etc.)\n- Error details in status.Details() for validation errors\n\n==================== Queue Management Operations ===================="
+      "description": "QueueService is the primary API for interacting with Nzovu.\n\nThis service provides:\n- Queue lifecycle management\n- Message posting and consumption\n- Scheduled task automation\n- Dead letter queue handling\n- Schema-based validation\n\nExample - Basic message flow:\n  1. CreateQueue: Set up a queue with retry/DLQ configuration\n  2. PostMessage: Add messages to the queue\n  3. GetNextMessage: Workers retrieve messages for processing\n  4. AcknowledgeMessage: Mark message as successfully processed\n     OR let lease expire → message returns to queue for retry\n  5. After max_attempts exhausted → message moves to DLQ\n\ngRPC vs REST:\n- gRPC: Preferred for high-throughput, low-latency scenarios\n- REST: Convenient for browser/curl access, debugging, simple integrations\n\nError handling:\n- Use gRPC status codes (InvalidArgument, NotFound, AlreadyExists, etc.)\n- Error details in status.Details() for validation errors\n\n==================== Queue Management Operations ===================="
     }
   ],
   "consumes": [
@@ -296,7 +296,7 @@
     },
     "/v1/queues": {
       "get": {
-        "summary": "ListQueues returns all queues in your ChronoQueue instance.",
+        "summary": "ListQueues returns all queues in your Nzovu instance.",
         "description": "Use for:\n- Monitoring dashboards\n- Queue discovery\n- Debugging\n\nExample:\n  GET /v1/queues\n\nReturns: List of Queue objects with metadata",
         "operationId": "QueueService_ListQueues",
         "responses": {
@@ -2215,7 +2215,7 @@
           "description": "metadata: All message execution and lifecycle information."
         }
       },
-      "description": "Message represents a unit of work in ChronoQueue.\n\nA message encapsulates:\n- Your business data (payload)\n- Execution metadata (state, priority, retries)\n- Scheduling information (when to execute)\n- Processing guarantees (leases, acknowledgments)\n\nLifecycle:\n  1. INVISIBLE: Message is scheduled for future execution or waiting to become visible\n  2. PENDING: Message is ready to be consumed by a worker\n  3. RUNNING: Message is actively being processed (worker has acquired a lease)\n  4. COMPLETED: Message was successfully processed and acknowledged\n  5. ERRORED: Message failed all retry attempts and moved to DLQ\n  6. CANCELED: Message was manually canceled before processing\n\nExample usage:\n  // Post a message\n  msg := \u0026message.Message{\n      MessageId: \"task-123\",\n      Metadata: \u0026message.Message_Metadata{\n          Payload: yourPayload,\n          Priority: 4,                          // Higher = processed first (0-4 range)\n          MaxAttempts: 3,                       // Retry up to 3 times\n          LeaseDuration: durationpb.New(30*time.Second), // 30s to process\n          ScheduledTime: timestamppb.New(executeAt),     // When to execute\n      },\n  }\n\n  // Process a message\n  msg, err := client.GetNextMessage(ctx, queueName)\n  // ... do work ...\n  client.AcknowledgeMessage(ctx, queueName, msg.MessageId, streamEntryID)",
+      "description": "Message represents a unit of work in Nzovu.\n\nA message encapsulates:\n- Your business data (payload)\n- Execution metadata (state, priority, retries)\n- Scheduling information (when to execute)\n- Processing guarantees (leases, acknowledgments)\n\nLifecycle:\n  1. INVISIBLE: Message is scheduled for future execution or waiting to become visible\n  2. PENDING: Message is ready to be consumed by a worker\n  3. RUNNING: Message is actively being processed (worker has acquired a lease)\n  4. COMPLETED: Message was successfully processed and acknowledged\n  5. ERRORED: Message failed all retry attempts and moved to DLQ\n  6. CANCELED: Message was manually canceled before processing\n\nExample usage:\n  // Post a message\n  msg := \u0026message.Message{\n      MessageId: \"task-123\",\n      Metadata: \u0026message.Message_Metadata{\n          Payload: yourPayload,\n          Priority: 4,                          // Higher = processed first (0-4 range)\n          MaxAttempts: 3,                       // Retry up to 3 times\n          LeaseDuration: durationpb.New(30*time.Second), // 30s to process\n          ScheduledTime: timestamppb.New(executeAt),     // When to execute\n      },\n  }\n\n  // Process a message\n  msg, err := client.GetNextMessage(ctx, queueName)\n  // ... do work ...\n  client.AcknowledgeMessage(ctx, queueName, msg.MessageId, streamEntryID)",
       "required": [
         "messageId"
       ]
@@ -2242,7 +2242,7 @@
         "leaseExpiry": {
           "type": "string",
           "format": "int64",
-          "description": "lease_expiry: Unix timestamp (milliseconds) when the current lease expires.\nManaged automatically by ChronoQueue. Workers can monitor this to know when to renew.\nIf current time \u003e lease_expiry, message will be reclaimed and made PENDING again."
+          "description": "lease_expiry: Unix timestamp (milliseconds) when the current lease expires.\nManaged automatically by Nzovu. Workers can monitor this to know when to renew.\nIf current time \u003e lease_expiry, message will be reclaimed and made PENDING again."
         },
         "leaseRenewalCount": {
           "type": "integer",
@@ -2252,7 +2252,7 @@
         "priority": {
           "type": "string",
           "format": "int64",
-          "description": "priority: Message priority score (0-4, higher = processed first).\nChronoQueue uses priority streams (high: ≥3, medium: 2, low: ≤1).\nMessages with the same priority are processed FIFO.\nUse for: urgent tasks (4), normal (2), background (0)."
+          "description": "priority: Message priority score (0-4, higher = processed first).\nNzovu uses priority streams (high: ≥3, medium: 2, low: ≤1).\nMessages with the same priority are processed FIFO.\nUse for: urgent tasks (4), normal (2), background (0)."
         },
         "maxAttempts": {
           "type": "integer",
@@ -2275,7 +2275,7 @@
         "priorityLevel": {
           "type": "integer",
           "format": "int32",
-          "description": "priority_level: Internal priority level for stream routing (auto-calculated).\nManaged by ChronoQueue based on priority score. Read-only from client perspective.\nUsed internally for routing to high/medium/low priority streams."
+          "description": "priority_level: Internal priority level for stream routing (auto-calculated).\nManaged by Nzovu based on priority score. Read-only from client perspective.\nUsed internally for routing to high/medium/low priority streams."
         },
         "headers": {
           "type": "array",
@@ -2370,7 +2370,7 @@
         },
         "schemaId": {
           "type": "string",
-          "description": "schema_id: Reference to a registered schema for validation.\nIf provided, ChronoQueue validates the data against this schema before accepting the message.\nExample: \"order.created.v1\", \"user.profile.v2\"\nUse RegisterSchema API to define schemas."
+          "description": "schema_id: Reference to a registered schema for validation.\nIf provided, Nzovu validates the data against this schema before accepting the message.\nExample: \"order.created.v1\", \"user.profile.v2\"\nUse RegisterSchema API to define schemas."
         },
         "schemaVersion": {
           "type": "integer",
@@ -2378,7 +2378,7 @@
           "description": "schema_version: Version number of the schema to use.\nAllows schema evolution while maintaining backward compatibility.\nIf omitted, uses the latest active version of schema_id."
         }
       },
-      "description": "Payload represents the user data and metadata for a message.\n\nThe Payload is the core data container in ChronoQueue that allows you to:\n- Store JSON-compatible structured data\n- Attach custom metadata for filtering, routing, or tracking\n- Enforce schema validation for data quality\n\nExample usage in Go:\n  payload := \u0026common.Payload{\n      Metadata: map[string]*structpb.Value{\n          \"source\": structpb.NewStringValue(\"web-api\"),\n          \"user_id\": structpb.NewStringValue(\"user-123\"),\n          \"correlation_id\": structpb.NewStringValue(\"req-xyz\"),\n      },\n      Data: dataStruct, // Your business data\n      ContentType: \"application/json\",\n      SchemaId: \"order.v1\",      // Optional: enforce schema\n      SchemaVersion: 1,\n  }\n\nBest practices:\n- Use metadata for: correlation IDs, trace context, routing info, custom headers\n- Use content_type to identify the JSON representation\n- Use schema_id for validation in production to catch data quality issues early\n- Keep payloads under 256KB for optimal performance (configurable per queue)"
+      "description": "Payload represents the user data and metadata for a message.\n\nThe Payload is the core data container in Nzovu that allows you to:\n- Store JSON-compatible structured data\n- Attach custom metadata for filtering, routing, or tracking\n- Enforce schema validation for data quality\n\nExample usage in Go:\n  payload := \u0026common.Payload{\n      Metadata: map[string]*structpb.Value{\n          \"source\": structpb.NewStringValue(\"web-api\"),\n          \"user_id\": structpb.NewStringValue(\"user-123\"),\n          \"correlation_id\": structpb.NewStringValue(\"req-xyz\"),\n      },\n      Data: dataStruct, // Your business data\n      ContentType: \"application/json\",\n      SchemaId: \"order.v1\",      // Optional: enforce schema\n      SchemaVersion: 1,\n  }\n\nBest practices:\n- Use metadata for: correlation IDs, trace context, routing info, custom headers\n- Use content_type to identify the JSON representation\n- Use schema_id for validation in production to catch data quality issues early\n- Keep payloads under 256KB for optimal performance (configurable per queue)"
     },
     "v1PeekQueueMessagesResponse": {
       "type": "object",
@@ -2507,14 +2507,14 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "name: Unique identifier for this queue.\nMust be unique across your ChronoQueue instance.\nNaming convention: lowercase, hyphens, descriptive\nExamples: \"order-processing\", \"email-sender\", \"webhook-delivery\""
+          "title": "name: Unique identifier for this queue.\nMust be unique across your Nzovu instance.\nNaming convention: lowercase, hyphens, descriptive\nExamples: \"order-processing\", \"email-sender\", \"webhook-delivery\""
         },
         "metadata": {
           "$ref": "#/definitions/v1QueueMetadata",
           "description": "metadata: Queue configuration and behavior settings."
         }
       },
-      "description": "Queue represents a named message container with specific processing behavior.\n\nQueues are the primary organizational unit in ChronoQueue.\nCreate separate queues for different types of work to:\n- Isolate failures (one queue's DLQ doesn't affect others)\n- Apply different processing rules (retries, priorities, leases)\n- Scale consumers independently\n- Organize by domain (orders, notifications, analytics)\n\nExample queue names:\n- \"order-processing\"          // Core business logic\n- \"email-notifications\"       // User communications\n- \"webhook-deliveries\"        // External API calls\n- \"data-analytics-high\"       // Time-sensitive analytics\n- \"cleanup-tasks-low\"         // Background maintenance"
+      "description": "Queue represents a named message container with specific processing behavior.\n\nQueues are the primary organizational unit in Nzovu.\nCreate separate queues for different types of work to:\n- Isolate failures (one queue's DLQ doesn't affect others)\n- Apply different processing rules (retries, priorities, leases)\n- Scale consumers independently\n- Organize by domain (orders, notifications, analytics)\n\nExample queue names:\n- \"order-processing\"          // Core business logic\n- \"email-notifications\"       // User communications\n- \"webhook-deliveries\"        // External API calls\n- \"data-analytics-high\"       // Time-sensitive analytics\n- \"cleanup-tasks-low\"         // Background maintenance"
     },
     "v1QueueMetadata": {
       "type": "object",
@@ -2542,7 +2542,7 @@
         },
         "autoCreateDlq": {
           "type": "boolean",
-          "description": "auto_create_dlq: If true, ChronoQueue creates \"{source_queue}_dlq\" and stores\nthat computed name in dead_letter_queue_name. Any supplied name is replaced."
+          "description": "auto_create_dlq: If true, Nzovu creates \"{source_queue}_dlq\" and stores\nthat computed name in dead_letter_queue_name. Any supplied name is replaced."
         },
         "schemaId": {
           "type": "string",
@@ -2693,7 +2693,7 @@
       "properties": {
         "scheduleId": {
           "type": "string",
-          "title": "schedule_id: Unique identifier for this schedule.\nMust be unique across all schedules in your ChronoQueue instance.\nUsed for updating, pausing, resuming, or deleting the schedule.\nRecommended format: descriptive-name or {system}-{task}-{frequency}"
+          "title": "schedule_id: Unique identifier for this schedule.\nMust be unique across all schedules in your Nzovu instance.\nUsed for updating, pausing, resuming, or deleting the schedule.\nRecommended format: descriptive-name or {system}-{task}-{frequency}"
         },
         "metadata": {
           "$ref": "#/definitions/v1ScheduleMetadata",
@@ -2780,7 +2780,7 @@
         "nextRun": {
           "type": "string",
           "format": "date-time",
-          "description": "next_run: When this schedule will execute next.\nAuto-calculated by ChronoQueue based on schedule_config.\nRead-only from client perspective."
+          "description": "next_run: When this schedule will execute next.\nAuto-calculated by Nzovu based on schedule_config.\nRead-only from client perspective."
         },
         "lastRun": {
           "type": "string",
@@ -2879,12 +2879,12 @@
         },
         "contentType": {
           "type": "string",
-          "description": "content_type: Schema format identifier.\nSupported value: \"json-schema\" (default), using JSON Schema Draft 7.\nChronoQueue validates content syntax when registering schema."
+          "description": "content_type: Schema format identifier.\nSupported value: \"json-schema\" (default), using JSON Schema Draft 7.\nNzovu validates content syntax when registering schema."
         },
         "createdAt": {
           "type": "string",
           "format": "int64",
-          "description": "created_at: When this schema version was registered (Unix milliseconds).\nAutomatically set by ChronoQueue."
+          "description": "created_at: When this schema version was registered (Unix milliseconds).\nAutomatically set by Nzovu."
         },
         "updatedAt": {
           "type": "string",
@@ -2903,7 +2903,7 @@
           "title": "metadata: Additional schema metadata.\nUse for:\n  \"owner\": \"team-checkout\"\n  \"deprecation_date\": \"2025-01-01\"\n  \"changelog_url\": \"https://...\"\n  \"contact\": \"checkout-team@example.com\""
         }
       },
-      "description": "Schema defines a message validation schema.\n\nChronoQueue validates message payloads against schemas before accepting them.\nThis prevents invalid messages from entering your queues.\n\nSchema evolution:\n1. Create v1: Initial schema\n2. Create v2: Add optional fields (backward compatible)\n3. Update producers to v2\n4. Update consumers to v2\n5. Deprecate v1 when all clients upgraded\n\nExample - Order schema:\n  schema := \u0026schema.Schema{\n      SchemaId: \"order-schema\",\n      Version: 1,\n      Name: \"Order Validation Schema\",\n      Content: `{\n          \"type\": \"object\",\n          \"required\": [\"orderId\", \"customerId\", \"items\"],\n          \"properties\": {\n              \"orderId\": {\"type\": \"string\", \"pattern\": \"^ORD-[0-9]+$\"},\n              \"customerId\": {\"type\": \"string\"},\n              \"items\": {\n                  \"type\": \"array\",\n                  \"minItems\": 1,\n                  \"items\": {\n                      \"type\": \"object\",\n                      \"required\": [\"productId\", \"quantity\"],\n                      \"properties\": {\n                          \"productId\": {\"type\": \"string\"},\n                          \"quantity\": {\"type\": \"integer\", \"minimum\": 1}\n                      }\n                  }\n              },\n              \"totalAmount\": {\"type\": \"number\", \"minimum\": 0}\n          }\n      }`,\n      ContentType: \"json-schema\",\n      IsActive: true,\n  }\n\nThen reference in Queue:\n  queue := \u0026queue.Queue{\n      Name: \"order-processing\",\n      Metadata: \u0026queue.QueueMetadata{\n          SchemaId: \"order-schema\",\n          SchemaRequired: true,  // Reject invalid messages\n      },\n  }"
+      "description": "Schema defines a message validation schema.\n\nNzovu validates message payloads against schemas before accepting them.\nThis prevents invalid messages from entering your queues.\n\nSchema evolution:\n1. Create v1: Initial schema\n2. Create v2: Add optional fields (backward compatible)\n3. Update producers to v2\n4. Update consumers to v2\n5. Deprecate v1 when all clients upgraded\n\nExample - Order schema:\n  schema := \u0026schema.Schema{\n      SchemaId: \"order-schema\",\n      Version: 1,\n      Name: \"Order Validation Schema\",\n      Content: `{\n          \"type\": \"object\",\n          \"required\": [\"orderId\", \"customerId\", \"items\"],\n          \"properties\": {\n              \"orderId\": {\"type\": \"string\", \"pattern\": \"^ORD-[0-9]+$\"},\n              \"customerId\": {\"type\": \"string\"},\n              \"items\": {\n                  \"type\": \"array\",\n                  \"minItems\": 1,\n                  \"items\": {\n                      \"type\": \"object\",\n                      \"required\": [\"productId\", \"quantity\"],\n                      \"properties\": {\n                          \"productId\": {\"type\": \"string\"},\n                          \"quantity\": {\"type\": \"integer\", \"minimum\": 1}\n                      }\n                  }\n              },\n              \"totalAmount\": {\"type\": \"number\", \"minimum\": 0}\n          }\n      }`,\n      ContentType: \"json-schema\",\n      IsActive: true,\n  }\n\nThen reference in Queue:\n  queue := \u0026queue.Queue{\n      Name: \"order-processing\",\n      Metadata: \u0026queue.QueueMetadata{\n          SchemaId: \"order-schema\",\n          SchemaRequired: true,  // Reject invalid messages\n      },\n  }"
     },
     "v1SchemaInfo": {
       "type": "object",

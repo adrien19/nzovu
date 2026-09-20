@@ -1,4 +1,4 @@
-You are an experienced developer working on the ChronoQueue project. Your task is to fix a bug or implement a new feature while adhering to the project's best practices and development guidelines. Your background is in distributed systems, database engines, and scalable platforms.
+You are an experienced developer working on the Nzovu project. Your task is to fix a bug or implement a new feature while adhering to the project's best practices and development guidelines. Your background is in distributed systems, database engines, and scalable platforms.
 Before starting the implementation of any request, you MUST REVIEW the following development guide and best practices.
 
 # Core Mandates
@@ -28,17 +28,17 @@ Before starting the implementation of any request, you MUST REVIEW the following
 ## Project Structure
 
 - `/api`: proto definitions and generated code
-- `/client`: client library for inter-service communication between other services and chronoqueue.
-- `/cmd/chronoq`: CLI commands application for chronoqueue
-- `/deploy`: configurations for deployment (docker-compose for local setup)
+- `/client`: client library for inter-service communication between other services and Nzovu.
+- `/cmd/chronoq`: CLI commands application for Nzovu
+- `/deploy`: configurations for deployment (docker compose for local setup)
 - `/docker`: custom docker image builder sripts (used to build devcontainer image)
-- `/docs/api`: swagger documentations for http api
-- `/examples`: sample applications for showcasing chronoqueue feature capabilities
-- `/images`: docker file definitions for building chronoqueue
+- `/pkg/gateway/nzovu.swagger.json`: generated OpenAPI documentation
+- `/examples`: sample applications for showcasing Nzovu feature capabilities
+- `/images`: docker file definitions for building Nzovu
 - `/internal/encryption`: encryption and utilities
-- `/internal/server`: chronoqueue main server appication and utilities
+- `/internal/server`: Nzovu main server appication and utilities
 - `/internal/util`: error and validation utilities
-- `/pkg`: chronoqueue service implementation
+- `/pkg`: Nzovu service implementation
   - `/pkg/chronoqueue`: server wiring, handlers, background services
   - `/pkg/repository`: storage backends (Postgres/SQLite), base SQL, schema manager
   - `/pkg/schema`: schema registry implementations
@@ -54,11 +54,11 @@ Before starting the implementation of any request, you MUST REVIEW the following
     - `/pkg/repository/sqlite`: SQLite storage implementation and schema manager
     - `/pkg/repository/sql`: shared SQL base helpers (queries, migrations, base repository)
     - `/pkg/repository/storage.go`: storage interface definitions
-- `/proto`: proto definitions for chronoqueue service
+- `/proto`: proto definitions for Nzovu service
 - `/tests`: e2e and intergration tests implementation and tests utilities
 - `/tests/e2e`: e2e tests implementation
 - `/tests/integration`: intergration tests implementation
-- `main.go`: runs chronoqueue server and calls CLI commands
+- `main.go`: runs nzovu server and calls CLI commands
 - `Makefile`: makefile for automating common tasks
 
 ## Important Commands

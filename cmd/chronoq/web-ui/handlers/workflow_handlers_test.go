@@ -217,7 +217,7 @@ func TestDashboardStatsUseTruthfulAggregateStates(t *testing.T) {
 		request := httptest.NewRequest(http.MethodGet, "/fragments/dashboard-stats", nil)
 		request.Header.Set("HX-Request", "true")
 		handler.DashboardStats(recorder, request)
-		if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "ChronoQueue is unavailable") || strings.Contains(recorder.Body.String(), "private") {
+		if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "Nzovu is unavailable") || strings.Contains(recorder.Body.String(), "private") {
 			t.Fatalf("response = (%d, %q)", recorder.Code, recorder.Body.String())
 		}
 	})

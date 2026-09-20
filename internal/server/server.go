@@ -28,7 +28,7 @@ import (
 	"github.com/adrien19/nzovu/pkg/schema"
 )
 
-// Server represents the ChronoQueue server instance
+// Server represents the Nzovu server instance
 type Server struct {
 	config               *Config
 	logger               *log.Logger
@@ -59,7 +59,7 @@ func (s *Server) Start(ctx context.Context) error {
 	}
 	s.logger = logger
 
-	s.logger.Info("Starting ChronoQueue server...",
+	s.logger.Info("Starting Nzovu server...",
 		"version", s.config.Version,
 		"commit", s.config.GitCommit,
 		"build_date", s.config.BuildDate,
@@ -134,7 +134,7 @@ func (s *Server) printStartupInfo() {
 		"cors_enabled", s.config.EnableCORS,
 	)
 
-	fmt.Printf("✓ ChronoQueue server starting in %s mode\n", mode)
+	fmt.Printf("✓ Nzovu server starting in %s mode\n", mode)
 	fmt.Printf("ℹ gRPC server will listen on: %s\n", s.config.GRPCAddr)
 	fmt.Printf("ℹ HTTP gateway will listen on: %s\n", s.config.HTTPAddr)
 	fmt.Printf("ℹ Storage backend: %s\n", s.config.StorageType)

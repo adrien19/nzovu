@@ -1,4 +1,4 @@
-// ChronoQueue Schedule API v1
+// Nzovu Schedule API v1
 //
 // This file defines scheduling structures for recurring message execution.
 // Schedules enable cron-like and calendar-based task automation.
@@ -286,7 +286,7 @@ func (CalendarException_ExceptionType) EnumDescriptor() ([]byte, []int) {
 type Schedule struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// schedule_id: Unique identifier for this schedule.
-	// Must be unique across all schedules in your ChronoQueue instance.
+	// Must be unique across all schedules in your Nzovu instance.
 	// Used for updating, pausing, resuming, or deleting the schedule.
 	// Recommended format: descriptive-name or {system}-{task}-{frequency}
 	ScheduleId string `protobuf:"bytes,1,opt,name=schedule_id,json=scheduleId,proto3" json:"schedule_id,omitempty"`
@@ -1978,7 +1978,7 @@ type Schedule_Metadata struct {
 	// Deprecated: Marked as deprecated in proto/schedule/v1/schedule.proto.
 	MessageIds []string `protobuf:"bytes,5,rep,name=message_ids,json=messageIds,proto3" json:"message_ids,omitempty"`
 	// next_run: When this schedule will execute next.
-	// Auto-calculated by ChronoQueue based on schedule_config.
+	// Auto-calculated by Nzovu based on schedule_config.
 	// Read-only from client perspective.
 	NextRun *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=next_run,json=nextRun,proto3" json:"next_run,omitempty"`
 	// last_run: When this schedule last executed.

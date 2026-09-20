@@ -35,7 +35,7 @@ func newServerHealthCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "health",
 		Short: "Check server health",
-		Long:  `Check if the ChronoQueue server is healthy and responding.`,
+		Long:  `Check if the Nzovu server is healthy and responding.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			server, err := cmd.Flags().GetString("http-server")
 			if err != nil {
@@ -73,7 +73,7 @@ func newServerHealthCommand() *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().String("http-server", "http://localhost:8080", "ChronoQueue HTTP server URL")
+	cmd.Flags().String("http-server", "http://localhost:8080", "Nzovu HTTP server URL")
 	cmd.Flags().String("server", "", "Deprecated alias for --http-server")
 	if err := cmd.Flags().MarkDeprecated("server", "use --http-server instead"); err != nil {
 		panic(fmt.Sprintf("mark --server deprecated: %v", err))
@@ -87,7 +87,7 @@ func newServerVersionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Show server version",
-		Long:  `Display version information for the ChronoQueue server.`,
+		Long:  `Display version information for the Nzovu server.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			server, err := cmd.Flags().GetString("http-server")
 			if err != nil {
@@ -127,11 +127,11 @@ func newServerVersionCommand() *cobra.Command {
 			if metadata.Version == "" {
 				return fmt.Errorf("decode server version: response omitted version")
 			}
-			outputs.PrintInfo(fmt.Sprintf("ChronoQueue v%s\n  Git Commit: %s\n  Built:      %s", metadata.Version, metadata.GitCommit, metadata.BuildDate))
+			outputs.PrintInfo(fmt.Sprintf("Nzovu v%s\n  Git Commit: %s\n  Built:      %s", metadata.Version, metadata.GitCommit, metadata.BuildDate))
 			return nil
 		},
 	}
-	cmd.Flags().String("http-server", "http://localhost:8080", "ChronoQueue HTTP server URL")
+	cmd.Flags().String("http-server", "http://localhost:8080", "Nzovu HTTP server URL")
 
 	return cmd
 }

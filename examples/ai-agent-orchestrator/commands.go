@@ -392,7 +392,7 @@ func getLLMConfig(provider, model, baseURL string) *llm.LLMConfig {
 func runCoordinator(workers int, llmProvider, llmModel, llmBaseURL string) error {
 	ctx := context.Background()
 
-	// Create ChronoQueue client
+	// Create Nzovu client
 	c, err := createClient()
 	if err != nil {
 		return fmt.Errorf("failed to create client: %w", err)
@@ -452,14 +452,14 @@ func checkTaskStatus(taskID string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Create ChronoQueue client
+	// Create Nzovu client
 	c, err := createClient()
 	if err != nil {
 		return fmt.Errorf("failed to create client: %w", err)
 	}
 	defer c.Close()
 
-	// Initialize monitor using ChronoQueue API
+	// Initialize monitor using Nzovu API
 	storageMonitor := monitoring.NewStorageMonitor(c)
 	defer func() {
 		if err := storageMonitor.Close(); err != nil {
@@ -908,7 +908,7 @@ func cleanup() error {
 	return nil
 }
 
-// createClient creates a ChronoQueue client
+// createClient creates a Nzovu client
 func createClient() (*client.ChronoQueueClient, error) {
 	opts := client.ClientOptions{
 		MaxRetries:          client.DefaultMaxRetries,

@@ -89,18 +89,6 @@ export BINARY_EXT ?= $(BINARY_EXT_LOCAL)
 
 OUT_DIR := ./dist
 
-# Helm template and install setting
-HELM:=helm
-RELEASE_NAME?=chronoqueue
-CHRONOQUEUE_NAMESPACE?=chronoqueue-system
-CHRONOQUEUE_MTLS_ENABLED?=true
-HELM_CHART_ROOT:=./deploy/charts
-HELM_CHART_DIR:=$(HELM_CHART_ROOT)/chronoqueue
-HELM_OUT_DIR:=$(OUT_DIR)/install
-HELM_MANIFEST_FILE:=$(HELM_OUT_DIR)/$(RELEASE_NAME).yaml
-HELM_REGISTRY?=ghcr.io/chronoqueue
-
-
 ################################################################################
 # Go build details                                                             #
 ################################################################################
@@ -242,7 +230,7 @@ ci-test: check-gotestsum
 				-count=1 \
 				-coverprofile=coverage.out \
 				-covermode=atomic \
-				./pkg/... ./internal/... ./cmd/... ./client/...
+				. ./pkg/... ./internal/... ./cmd/... ./client/...
 
 ################################################################################
 # Target: ci-test-sqlite (run unit tests with SQLite support)                 #
@@ -259,7 +247,7 @@ ci-test-sqlite: check-gotestsum
 				-count=1 \
 				-coverprofile=coverage_sqlite.out \
 				-covermode=atomic \
-				./pkg/... ./internal/... ./cmd/... ./client/...
+				. ./pkg/... ./internal/... ./cmd/... ./client/...
 
 
 .PHONY: test-no-gotestsum
@@ -514,7 +502,7 @@ ui-watch: ui-deps
 	@cd cmd/chronoq/web-ui && npm run watch:css
 
 ################################################################################
-# Target: ui-dev (run chronoqueue with the UI in dev mode)                     #
+# Target: ui-dev (run Nzovu with the UI in dev mode)                           #
 ################################################################################
 # Usage:
 #   make ui-dev                                  # default gRPC localhost:9000, UI :8081
@@ -523,15 +511,16 @@ ui-watch: ui-deps
 ################################################################################
 UI_GRPC_ADDR?=localhost:9000
 UI_PORT?=8081
+NZOVU_UI_PUBLIC_ORIGIN?=http://localhost:$(UI_PORT)
 
 .PHONY: ui-dev
 ui-dev: ui-build
-	@echo "Starting ChronoQueue with UI on :$(UI_PORT) (gRPC: $(UI_GRPC_ADDR))..."
-	@./$(NZOVU_OUT_DIR)/nzovu web-ui start --port $(UI_PORT) --grpc-address $(UI_GRPC_ADDR) --skip-ssl
+	@echo "Starting Nzovu with UI on :$(UI_PORT) (gRPC: $(UI_GRPC_ADDR))..."
+	@NZOVU_UI_PUBLIC_ORIGIN="$(NZOVU_UI_PUBLIC_ORIGIN)" ./$(NZOVU_OUT_DIR)/nzovu web-ui start --port $(UI_PORT) --grpc-address $(UI_GRPC_ADDR) --skip-ssl
 
 
 ################################################################################
-# Target: server-dev (run ChronoQueue server in dev mode)                      #
+# Target: server-dev (run Nzovu server in dev mode)                      #
 ################################################################################
 # Usage:
 #   make server-dev                              # Use SQLite (default)
@@ -542,7 +531,7 @@ ui-dev: ui-build
 .PHONY: server-dev
 server-dev: build-full
 	@mkdir -p logs
-	@echo "Starting ChronoQueue in development mode..."
+	@echo "Starting Nzovu in development mode..."
 ifneq ($(filter postgres,$(STORAGE) $(STORAGE_TYPE)),)
 	@echo "Using Postgres storage"; \
 	PG_ARGS="--storage-type postgres"; \
@@ -555,13 +544,13 @@ ifneq ($(filter postgres,$(STORAGE) $(STORAGE_TYPE)),)
 	if [ -n "$(POSTGRES_SSLMODE)" ]; then PG_ARGS="$$PG_ARGS --postgres-sslmode $(POSTGRES_SSLMODE)"; fi; \
 	./$(NZOVU_OUT_DIR)/nzovu server --dev --insecure $$PG_ARGS 2>&1 | tee logs/nzovu.log
 else ifdef DATABASE
-	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DATABASE))..."
+	@echo "Starting Nzovu in development mode with SQLite storage ($(DATABASE))..."
 	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DATABASE) 2>&1 | tee logs/nzovu.log
 else ifdef DB
-	@echo "Starting ChronoQueue in development mode with SQLite storage ($(DB))..."
+	@echo "Starting Nzovu in development mode with SQLite storage ($(DB))..."
 	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path $(DB) 2>&1 | tee logs/nzovu.log
 else
-	@echo "Starting ChronoQueue in development mode with SQLite storage (default)..."
+	@echo "Starting Nzovu in development mode with SQLite storage (default)..."
 	@./$(NZOVU_OUT_DIR)/nzovu server --dev --storage-type sqlite --sqlite-db-path chronoqueue.db 2>&1 | tee logs/nzovu.log
 endif
 
@@ -713,17 +702,17 @@ else
 endif
 
 .PHONY: deploy-up
-deploy-up: ## Start ChronoQueue services with selected storage backend (STORAGE=postgres|sqlite)
-	@echo "Starting ChronoQueue with $(STORAGE) storage..."
+deploy-up: ## Start Nzovu services with selected storage backend (STORAGE=postgres|sqlite)
+	@echo "Starting Nzovu with $(STORAGE) storage..."
 	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) up -d
 
 .PHONY: deploy-down
-deploy-down: ## Stop ChronoQueue services
-	@echo "Stopping ChronoQueue with $(STORAGE) storage..."
+deploy-down: ## Stop Nzovu services
+	@echo "Stopping Nzovu with $(STORAGE) storage..."
 	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) down
 
 .PHONY: deploy-logs
-deploy-logs: ## View ChronoQueue service logs
+deploy-logs: ## View Nzovu service logs
 	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) logs -f
 
 .PHONY: monitoring-up
@@ -739,18 +728,18 @@ monitoring-logs: ## View monitoring stack logs
 	cd deploy && docker-compose -f docker-compose.monitoring.yaml logs -f
 
 .PHONY: deploy-all
-deploy-all: ## Start all services (ChronoQueue + Monitoring) with selected storage
-	@echo "Starting ChronoQueue with $(STORAGE) storage and monitoring stack..."
+deploy-all: ## Start all services (Nzovu + Monitoring) with selected storage
+	@echo "Starting Nzovu with $(STORAGE) storage and monitoring stack..."
 	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) up -d && docker-compose -f docker-compose.monitoring.yaml up -d
 
 .PHONY: deploy-clean
 deploy-clean: ## Stop all services and remove volumes
-	@echo "Cleaning up ChronoQueue with $(STORAGE) storage and monitoring..."
+	@echo "Cleaning up Nzovu with $(STORAGE) storage and monitoring..."
 	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) down -v && docker-compose -f docker-compose.monitoring.yaml down -v
 
 .PHONY: deploy-rebuild
-deploy-rebuild: ## Rebuild and restart ChronoQueue
-	@echo "Rebuilding ChronoQueue with $(STORAGE) storage..."
+deploy-rebuild: ## Rebuild and restart Nzovu
+	@echo "Rebuilding Nzovu with $(STORAGE) storage..."
 	@echo "Building images without cache..."
 	cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) build --no-cache nzovusvc nzovu-ui
 	@echo "Recreating and starting containers..."
@@ -763,7 +752,7 @@ deploy-validate: ## Validate monitoring stack is working
 
 .PHONY: deploy-status
 deploy-status: ## Show status of deployed services
-	@echo "=== ChronoQueue Services ($(STORAGE) storage) ==="
+	@echo "=== Nzovu Services ($(STORAGE) storage) ==="
 	@cd deploy && docker-compose -f $(STORAGE_COMPOSE_FILE) ps
 	@echo ""
 	@echo "=== Monitoring Services ==="

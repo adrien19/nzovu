@@ -10,7 +10,7 @@ import (
 )
 
 // MessageIDValidator validates message ID format and constraints
-// This validator ensures message IDs follow ChronoQueue conventions
+// This validator ensures message IDs follow Nzovu conventions
 type MessageIDValidator struct {
 	pattern          *regexp.Regexp
 	reservedPrefixes []string
@@ -22,7 +22,7 @@ type MessageIDValidator struct {
 func NewMessageIDValidator() Validator {
 	return &MessageIDValidator{
 		pattern:          regexp.MustCompile(`^[a-zA-Z0-9_-]+$`),
-		reservedPrefixes: []string{"system:", "internal:", "chronoqueue:"},
+		reservedPrefixes: []string{"system:", "internal:", "nzovu:", "chronoqueue:"},
 		minLength:        1,
 		maxLength:        256,
 	}

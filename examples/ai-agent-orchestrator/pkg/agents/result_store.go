@@ -20,7 +20,7 @@ type ResultStore struct {
 	verbose   bool
 	// Note: Results are stored in-memory cache within the running agent process.
 	// For persistent cross-process access, results would need to be stored in
-	// a database or retrieved from the ChronoQueue results queue.
+	// a database or retrieved from the Nzovu results queue.
 }
 
 // NewResultStore creates a new result store
@@ -69,7 +69,7 @@ func (rs *ResultStore) StoreResult(ctx context.Context, result *AgentResult) err
 		return fmt.Errorf("failed to create result payload: %w", err)
 	}
 
-	// Store in ChronoQueue for persistence and historical reference
+	// Store in Nzovu for persistence and historical reference
 	messageID := fmt.Sprintf("%s-%s", result.ParentID, result.SubtaskID)
 	_, err = rs.client.PostMessage(ctx, rs.queueName, messageID, client.MessageOptions{
 		Priority: 5,

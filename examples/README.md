@@ -1,6 +1,6 @@
-# ChronoQueue Examples
+# Nzovu Examples
 
-This directory contains demonstrations of how ChronoQueue can be integrated into different queue-based applications. Examples may use mocks or placeholders and are not production deployment templates.
+This directory contains demonstrations of how Nzovu can be integrated into different queue-based applications. Examples may use mocks or placeholders and are not production deployment templates.
 
 ## 📚 Available Examples
 
@@ -8,7 +8,7 @@ This directory contains demonstrations of how ChronoQueue can be integrated into
 
 **Status**: 📝 In development
 
-An interview evaluation application that exercises selected ChronoQueue workflows. Some application behavior, including activity tracking, analytics, notifications, and report storage, is mocked or represented by placeholders.
+An interview evaluation application that exercises selected Nzovu workflows. Some application behavior, including activity tracking, analytics, notifications, and report storage, is mocked or represented by placeholders.
 
 **Features Demonstrated**:
 
@@ -40,9 +40,9 @@ Examples may contain:
 
 ### Prerequisites
 
-- Docker & Docker Compose (for ChronoQueue server)
-- Go 1.21+ (for backend examples)
-- Node.js 18+ (for frontend examples, if applicable)
+- Docker & Docker Compose (for Nzovu server)
+- Go 1.26.6 (as declared in the example go.mod files) (for backend examples)
+- Node.js 22 (for frontend examples, if applicable)
 
 ### Quick Start
 
@@ -95,9 +95,9 @@ Have an interesting use case? We'd love to see it! Contributions are welcome:
 
 ## 📖 Additional Resources
 
-- [ChronoQueue Main Documentation](../README.md)
+- [Nzovu Main Documentation](../README.md)
 - [Integration Tests](../tests/integration/) - See test examples for patterns
-- [API Documentation](../docs/api/)
+- [API Documentation](../pkg/gateway/nzovu.swagger.json)
 
 ---
 

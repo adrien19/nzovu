@@ -1,6 +1,6 @@
 # AI Agent Task Orchestrator
 
-A production-ready demonstration of how **ChronoQueue** (a message queue system) orchestrates multiple specialized AI agents working in parallel to solve complex tasks through intelligent task decomposition, coordination, and result aggregation.
+A development demonstration of how **Nzovu** (a message queue system) orchestrates multiple specialized AI agents working in parallel to solve complex tasks through intelligent task decomposition, coordination, and result aggregation.
 
 This example showcases both **Mock Agents** (fast simulation) and **LLM-Powered Agents** (real AI using Ollama) to demonstrate different use cases and deployment scenarios.
 
@@ -36,8 +36,8 @@ This example showcases both **Mock Agents** (fast simulation) and **LLM-Powered 
 
 ### Required
 
-- **Go 1.23+** - For building the orchestrator
-- **ChronoQueue server** - Message queue backend (see setup below)
+- **Go 1.26.6** - For building the orchestrator
+- **Nzovu server** - Message queue backend (see setup below)
 
 ### Optional (for LLM features)
 
@@ -46,7 +46,7 @@ This example showcases both **Mock Agents** (fast simulation) and **LLM-Powered 
 
 ## 🚀 Quick Start
 
-> **New to ChronoQueue?** ChronoQueue is a message queue system that manages task distribution between services. Think of it as a smart post office for your application messages.
+> **New to Nzovu?** Nzovu is a message queue system that manages task distribution between services. Think of it as a smart post office for your application messages.
 
 You have **three options** for running this example:
 
@@ -55,8 +55,8 @@ You have **three options** for running this example:
 Best for quick demos and testing without LLM dependencies.
 
 ```bash
-# 1. Start ChronoQueue server (in terminal 1)
-cd /workspaces/chronoqueue
+# 1. Start Nzovu server (in terminal 1)
+cd "$(git rev-parse --show-toplevel)"
 make server-dev
 
 # 2. Build orchestrator (in terminal 2)
@@ -94,11 +94,11 @@ ollama pull llama3.2:3b      # ~2GB - for general tasks
 ollama pull qwen2.5-coder:7b # ~4.7GB - for coding tasks
 ```
 
-#### Step 2: Start ChronoQueue
+#### Step 2: Start Nzovu
 
 ```bash
-# Terminal 1: Start ChronoQueue
-cd /workspaces/chronoqueue
+# Terminal 1: Start Nzovu
+cd "$(git rev-parse --show-toplevel)"
 make server-dev
 ```
 
@@ -338,7 +338,7 @@ These tasks go directly to a single LLM agent for processing:
        │
        ▼
 ┌─────────────────┐
-│  ChronoQueue    │ Message queue backend (manages all queues)
+│  Nzovu    │ Message queue backend (manages all queues)
 │   (External)    │
 └────────┬────────┘
          │
@@ -374,7 +374,7 @@ These tasks go directly to a single LLM agent for processing:
 ```
 1. User submits "competitor_analysis" task
    ↓
-2. ChronoQueue stores in agent-coordinator queue
+2. Nzovu stores in agent-coordinator queue
    ↓
 3. Coordinator Agent:
    - Fetches task from queue
@@ -403,7 +403,7 @@ These tasks go directly to a single LLM agent for processing:
 ```
 1. User submits "llm_creative" task
    ↓
-2. ChronoQueue stores in agent-coordinator queue
+2. Nzovu stores in agent-coordinator queue
    ↓
 3. Coordinator Agent:
    - Recognizes as simple LLM task
@@ -431,20 +431,20 @@ These tasks go directly to a single LLM agent for processing:
 | agent-llm-coder | 5m | 3 | ✓ | Code generation |
 | agent-results | 5m | 3 | ✓ | Historical results storage |
 
-**Lease Time**: How long an agent can process before timeout  
-**Max Attempts**: Retry count before moving to DLQ  
+**Lease Time**: How long an agent can process before timeout
+**Max Attempts**: Retry count before moving to DLQ
 **DLQ**: Dead Letter Queue for failed messages
 
 ## 📖 Available Tasks
 
 ### Mock Agent Tasks (Complex Multi-Step)
 
-These demonstrate ChronoQueue's ability to orchestrate multiple agents working in parallel.
+These demonstrate Nzovu's ability to orchestrate multiple agents working in parallel.
 
 #### 1. Competitor Analysis
 
-**File**: `tasks/competitor-analysis.json`  
-**Type**: `competitor_analysis`  
+**File**: `tasks/competitor-analysis.json`
+**Type**: `competitor_analysis`
 **Agents Used**: web-search, code-analyzer, data-processor, aggregator
 
 ```json
@@ -471,8 +471,8 @@ These demonstrate ChronoQueue's ability to orchestrate multiple agents working i
 
 #### 2. Market Research
 
-**File**: `tasks/market-research.json`  
-**Type**: `market_research`  
+**File**: `tasks/market-research.json`
+**Type**: `market_research`
 **Agents Used**: web-search, data-processor, aggregator
 
 ```json
@@ -490,8 +490,8 @@ These demonstrate ChronoQueue's ability to orchestrate multiple agents working i
 
 #### 3. Code Review
 
-**File**: `tasks/code-review.json`  
-**Type**: `code_review`  
+**File**: `tasks/code-review.json`
+**Type**: `code_review`
 **Agents Used**: code-analyzer
 
 ```json
@@ -515,9 +515,9 @@ These demonstrate real LLM integration using Ollama models. Requires Ollama inst
 
 #### 1. Creative Writing (Jokes)
 
-**File**: `tasks/llm-jokes.json`  
-**Type**: `llm_creative`  
-**Agent Used**: llm-writer  
+**File**: `tasks/llm-jokes.json`
+**Type**: `llm_creative`
+**Agent Used**: llm-writer
 **Model**: llama3.2:3b
 
 ```json
@@ -538,9 +538,9 @@ These demonstrate real LLM integration using Ollama models. Requires Ollama inst
 
 #### 2. Research Task
 
-**File**: `tasks/llm-research.json`  
-**Type**: `llm_research`  
-**Agent Used**: llm-researcher  
+**File**: `tasks/llm-research.json`
+**Type**: `llm_research`
+**Agent Used**: llm-researcher
 **Model**: llama3.2:3b
 
 ```json
@@ -560,9 +560,9 @@ These demonstrate real LLM integration using Ollama models. Requires Ollama inst
 
 #### 3. Code Generation
 
-**File**: `tasks/llm-coding.json`  
-**Type**: `llm_coding`  
-**Agent Used**: llm-coder  
+**File**: `tasks/llm-coding.json`
+**Type**: `llm_coding`
+**Agent Used**: llm-coder
 **Model**: qwen2.5-coder:7b
 
 ```json
@@ -589,8 +589,8 @@ These demonstrate real LLM integration using Ollama models. Requires Ollama inst
 Demonstrates multi-agent orchestration without LLM dependencies.
 
 ```bash
-# Terminal 1: Start ChronoQueue
-cd /workspaces/chronoqueue
+# Terminal 1: Start Nzovu
+cd "$(git rev-parse --show-toplevel)"
 make server-dev
 
 # Terminal 2: Setup orchestrator
@@ -636,8 +636,8 @@ ollama serve
 ollama list
 # Should show: llama3.2:3b and qwen2.5-coder:7b
 
-# Terminal 3: Start ChronoQueue
-cd /workspaces/chronoqueue
+# Terminal 3: Start Nzovu
+cd "$(git rev-parse --show-toplevel)"
 make server-dev
 
 # Terminal 4: Setup orchestrator
@@ -686,8 +686,8 @@ make build
 Run mock and LLM agents simultaneously for maximum flexibility.
 
 ```bash
-# Start ChronoQueue (Terminal 1)
-cd /workspaces/chronoqueue
+# Start Nzovu (Terminal 1)
+cd "$(git rev-parse --show-toplevel)"
 make server-dev
 
 # Setup (Terminal 2)
@@ -730,7 +730,7 @@ make build
 ./ai-orchestrator init [flags]
 
 Flags:
-  --server string    ChronoQueue server address (default "localhost:9000")
+  --server string    Nzovu server address (default "localhost:9000")
   --insecure        Use insecure connection (default true)
 ```
 
@@ -745,7 +745,7 @@ Flags:
   --llm-provider string   LLM provider: "mock" or "ollama" (default "mock")
   --llm-model string      LLM model name (default "llama3.2:3b")
   --llm-base-url string   Ollama base URL (default "http://localhost:11434")
-  --server string         ChronoQueue server address (default "localhost:9000")
+  --server string         Nzovu server address (default "localhost:9000")
   --insecure             Use insecure connection
   -v, --verbose          Verbose output
 ```
@@ -774,7 +774,7 @@ LLM Agent Flags:
 
 Common Flags:
   --workers int        Number of workers per agent (default 2)
-  --server string      ChronoQueue server address (default "localhost:9000")
+  --server string      Nzovu server address (default "localhost:9000")
   --insecure          Use insecure connection
   -v, --verbose       Verbose output
 ```
@@ -802,7 +802,7 @@ Common Flags:
 
 # Cleanup
 ./ai-orchestrator cleanup [flags]
-  --server string      ChronoQueue server address (default "localhost:9000")
+  --server string      Nzovu server address (default "localhost:9000")
   --insecure          Use insecure connection
 ```
 
@@ -874,7 +874,7 @@ Common Flags:
 
 For containerized deployment with Ollama included, see:
 
-- **[QUICKSTART_DOCKER.md](QUICKSTART_DOCKER.md)** - 5-minute quick start
+- **[docs/DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)** - 5-minute quick start
 - **[docs/DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)** - Comprehensive guide
 
 ### Quick Docker Setup
@@ -884,11 +884,11 @@ For containerized deployment with Ollama included, see:
 make docker-setup
 
 # Or manually
-docker-compose build
-docker-compose up -d ollama
+docker compose build
+docker compose up -d ollama
 docker exec -it ai-orchestrator-ollama ollama pull llama3.2:3b
 docker exec -it ai-orchestrator-ollama ollama pull qwen2.5-coder:7b
-docker-compose up -d coordinator agents-mock agents-llm
+docker compose up -d coordinator agents-mock agents-llm
 ```
 
 **Docker deployment includes:**
@@ -909,8 +909,8 @@ docker-compose up -d coordinator agents-mock agents-llm
 Use **Mock Agents Only** (Option 1 from Quick Start):
 
 ```bash
-# Start ChronoQueue
-cd /workspaces/chronoqueue
+# Start Nzovu
+cd "$(git rev-parse --show-toplevel)"
 make server-dev
 
 # Setup and run
@@ -967,18 +967,18 @@ make docker-setup  # Installs everything including Ollama
 
 ---
 
-### Scenario 4: ChronoQueue won't start
+### Scenario 4: Nzovu won't start
 
-**Problem**: ChronoQueue needs storage backend configured.
+**Problem**: Nzovu needs storage backend configured.
 
 **Solution**:
 
 ```bash
-# Check if ChronoQueue is running
-docker ps | grep chronoqueue
+# Check if Nzovu is running
+docker ps | grep nzovu
 
-# If not, start the ChronoQueue server:
-cd /workspaces/chronoqueue
+# If not, start the Nzovu server:
+cd "$(git rev-parse --show-toplevel)"
 make server-dev  # Uses default PostgreSQL or configured storage
 ```
 
@@ -1025,15 +1025,15 @@ ps aux | grep ai-orchestrator
 # 3. Look for errors in logs
 ./ai-orchestrator logs --filter ERROR
 
-# 4. Verify ChronoQueue connection
-# Logs should show: "Connected to ChronoQueue at localhost:9000"
+# 4. Verify Nzovu connection
+# Logs should show: "Connected to Nzovu at localhost:9000"
 ```
 
 **Common causes**:
 
 - Agents not started
 - Wrong server address (check `--server` flag)
-- ChronoQueue not running
+- Nzovu not running
 - Network connectivity issues
 
 ## 💡 Tips & Best Practices
@@ -1105,7 +1105,7 @@ ps aux | grep ai-orchestrator
 - Set up log rotation for production
 - Add Prometheus metrics export
 - Implement alerting on DLQ depth
-- Use TLS for ChronoQueue connections (remove `--insecure`)
+- Use TLS for Nzovu connections (remove `--insecure`)
 - Set up backup for Ollama model volume
 
 ### Scaling Guidelines
@@ -1114,7 +1114,7 @@ ps aux | grep ai-orchestrator
 
 ```bash
 # Scale LLM agents for more throughput
-docker-compose up -d --scale agents-llm=3
+docker compose up -d --scale agents-llm=3
 ```
 
 **Vertical Scaling** (more workers per instance):
@@ -1143,7 +1143,7 @@ docker-compose up -d --scale agents-llm=3
 pkill -f ai-orchestrator
 
 # Or for Docker
-docker-compose down
+docker compose down
 ```
 
 ### Remove Queues
@@ -1160,7 +1160,7 @@ make clean
 
 ```bash
 # Warning: This deletes downloaded Ollama models (~7GB)
-docker-compose down -v
+docker compose down -v
 ```
 
 ---
@@ -1170,8 +1170,8 @@ docker-compose down -v
 ### Environment Variables
 
 ```bash
-# ChronoQueue connection
-export CHRONOQUEUE_SERVER="localhost:9000"
+# Nzovu connection
+export NZOVU_SERVER="localhost:9000"
 
 # Ollama configuration
 export OLLAMA_BASE_URL="http://localhost:11434"
@@ -1210,8 +1210,8 @@ Flags override environment variables:
 ### Documentation
 
 - **[docs/DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)** - Comprehensive Docker guide
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
-- **[ChronoQueue Documentation](../../README.md)** - Main project docs
+- **[../../README.md](../../README.md)** - Version history and changes
+- **[Nzovu Documentation](../../README.md)** - Main project docs
 
 ### Example Task Files
 
@@ -1234,7 +1234,7 @@ Located in `tasks/` directory:
 ```
 Local Setup:
 ┌──────────────┐
-│ ChronoQueue  │ ← Start with: make server-dev
+│ Nzovu  │ ← Start with: make server-dev
 └──────┬───────┘
        │
 ┌──────┴───────┐
@@ -1261,7 +1261,7 @@ Docker Setup:
 
 ### Key Concepts
 
-**ChronoQueue**: A message queue system that manages asynchronous task distribution. Acts as the backbone for agent communication.
+**Nzovu**: A message queue system that manages asynchronous task distribution. Acts as the backbone for agent communication.
 
 **Agent**: An independent worker that processes specific types of tasks (e.g., web search, code analysis, content generation).
 
@@ -1277,7 +1277,7 @@ Docker Setup:
 
 ### Understanding Message Flow
 
-1. **Task Submission**: User submits JSON task via CLI → ChronoQueue stores in coordinator queue
+1. **Task Submission**: User submits JSON task via CLI → Nzovu stores in coordinator queue
 2. **Task Decomposition**: Coordinator fetches task → Uses LLM to break into subtasks → Sends to agent queues
 3. **Parallel Processing**: Multiple agents fetch from their queues → Process independently → Send results
 4. **Result Aggregation**: Aggregator waits for all subtasks → Collects results → Synthesizes final report
@@ -1291,65 +1291,65 @@ Docker Setup:
 
 ### General Questions
 
-**Q: Do I need to know Go to run this?**  
+**Q: Do I need to know Go to run this?**
 A: No, just run the pre-built binary. Go is only needed if you want to modify code.
 
-**Q: What is ChronoQueue?**  
+**Q: What is Nzovu?**
 A: A message queue system (like RabbitMQ or Kafka) for managing asynchronous task distribution between services.
 
-**Q: Can I use this in production?**  
+**Q: Can I use this in production?**
 A: This is a demonstration example. For production, review security settings, add monitoring, and remove `--insecure` flags.
 
 ### Agent Questions
 
-**Q: What's the difference between Mock and LLM agents?**  
+**Q: What's the difference between Mock and LLM agents?**
 A: Mock agents return fast simulated responses. LLM agents use real AI (Ollama) for content generation.
 
-**Q: Can I run both types together?**  
+**Q: Can I run both types together?**
 A: Yes! See Example 3 in the walkthrough section.
 
-**Q: How do I know which agent to use?**  
+**Q: How do I know which agent to use?**
 A: Task type determines routing. `llm_creative` → LLM Writer, `competitor_analysis` → Mock agents.
 
 ### Ollama Questions
 
-**Q: Do I need Ollama for mock agents?**  
+**Q: Do I need Ollama for mock agents?**
 A: No, mock agents work without Ollama. Only needed for LLM agents.
 
-**Q: Which models should I download?**  
+**Q: Which models should I download?**
 A: `llama3.2:3b` (general tasks) and `qwen2.5-coder:7b` (coding). See Option 2 in Quick Start.
 
-**Q: Can I use different models?**  
+**Q: Can I use different models?**
 A: Yes, use `--llm-model` flag. Any Ollama-compatible model works.
 
-**Q: Models are slow to download**  
+**Q: Models are slow to download**
 A: Normal. llama3.2:3b is ~2GB, qwen2.5-coder:7b is ~4.7GB. Takes 10-30 minutes depending on internet speed.
 
 ### Troubleshooting Questions
 
-**Q: "Connection refused" errors**  
-A: Check if ChronoQueue is running: `docker ps | grep chronoqueue` and `make server-dev`
+**Q: "Connection refused" errors**
+A: Check if Nzovu is running: `docker ps | grep nzovu` and `make server-dev`
 
-**Q: Tasks not processing**  
+**Q: Tasks not processing**
 A: Verify agents are started. Check `ps aux | grep ai-orchestrator` and logs.
 
-**Q: High memory usage**  
+**Q: High memory usage**
 A: LLM models require significant RAM (4-8GB). Adjust Docker resource limits if needed.
 
 ---
 
 ## 🤝 Contributing
 
-This is a demonstration example showcasing ChronoQueue capabilities. For improvements or suggestions:
+This is a demonstration example showcasing Nzovu capabilities. For improvements or suggestions:
 
-1. Report issues in the main ChronoQueue repository
+1. Report issues in the main Nzovu repository
 2. Fork and submit pull requests
 3. Share feedback on agent patterns and use cases
 
 ## 📄 License
 
-Same as ChronoQueue parent project.
+Same as Nzovu parent project.
 
 ---
 
-**Built with ChronoQueue** | [Project Repository](../../) | [Report Issues](../../issues)
+**Built with Nzovu** | [Project Repository](../../) | [Report Issues](https://github.com/adrien19/nzovu/issues)

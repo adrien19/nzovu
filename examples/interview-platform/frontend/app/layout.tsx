@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Interview Evaluation Platform",
-  description: "Streamlined interview scheduling and evaluation system powered by ChronoQueue",
+  description: "Streamlined interview scheduling and evaluation system powered by Nzovu",
 };
 
 export default function RootLayout({

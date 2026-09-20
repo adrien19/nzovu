@@ -1,19 +1,19 @@
 # 📋 Interview Evaluation Platform
 
-> **A comprehensive sample application demonstrating all ChronoQueue features through a practical interview evaluation system.**
+> **A comprehensive sample application demonstrating all Nzovu features through a practical interview evaluation system.**
 
-This example application showcases how to integrate ChronoQueue into a real-world application, demonstrating priority queues, scheduled messages, DLQ handling, schema validation, multi-tenant isolation, and more.
+This example application showcases how to integrate Nzovu into a real-world application, demonstrating priority queues, scheduled messages, DLQ handling, schema validation, multi-tenant isolation, and more.
 
 ## 🎯 Purpose
 
 This is a **learning-focused sample application** designed to:
 
-- Demonstrate **all ChronoQueue features** in a practical context
+- Demonstrate **all Nzovu features** in a practical context
 - Provide **reference implementation** patterns for developers
 - Show **best practices** for queue-based architectures
 - Offer **hands-on experience** with message queue workflows
 
-**Note**: This is not a production-ready interview platform. The focus is on demonstrating ChronoQueue capabilities with minimalist supporting infrastructure.
+**Note**: This is not a production-ready interview platform. The focus is on demonstrating Nzovu capabilities with minimalist supporting infrastructure.
 
 ---
 
@@ -30,7 +30,7 @@ An interview evaluation platform where:
 - **Scheduled batch processing** for analytics and reports
 - **Real-time status updates** via Server-Sent Events (SSE)
 
-### ChronoQueue Features Demonstrated
+### Nzovu Features Demonstrated
 
 | Feature | Demonstration |
 |---------|---------------|
@@ -60,12 +60,12 @@ An interview evaluation platform where:
                          ↓
 ┌─────────────────────────────────────────────────────────────┐
 │                   Backend API Server (Go)                    │
-│  - REST endpoints  - Auth middleware  - ChronoQueue client  │
+│  - REST endpoints  - Auth middleware  - Nzovu client  │
 └────────────────────────┬────────────────────────────────────┘
                          │ gRPC
                          ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                    ChronoQueue Server                        │
+│                    Nzovu Server                        │
 │  - Message queuing  - Priority handling  - Scheduling       │
 └────────────────────────┬────────────────────────────────────┘
                          │
@@ -101,7 +101,7 @@ An interview evaluation platform where:
 - **Technology**: Go, Chi Router, gRPC client
 - **Responsibilities**:
   - REST API endpoints for frontend
-  - ChronoQueue client wrapper
+  - Nzovu client wrapper
   - Authentication middleware (Clerk JWT validation)
   - SSE handler for real-time updates
   - Business logic orchestration
@@ -143,14 +143,14 @@ evaluation-urgent:
   use_case: VIP candidates, C-level positions, urgent evaluations
   max_attempts: 3
   dlq: evaluation-urgent-dlq
-  
+
 evaluation-standard:
   type: PRIORITY
   priority: 40-60
   use_case: Regular candidates, standard processing
   max_attempts: 5
   dlq: evaluation-standard-dlq
-  
+
 evaluation-bulk:
   type: SIMPLE
   priority: 10-20
@@ -235,11 +235,11 @@ Admin Action:
 
 ```go
 // CEO Position - Highest Priority
-candidateCEO := PostMessage(queue: "evaluation-urgent", 
+candidateCEO := PostMessage(queue: "evaluation-urgent",
   priority: 95,
   data: {candidate_id: "123", position: "CEO"})
 
-// Senior Engineer - Medium Priority  
+// Senior Engineer - Medium Priority
 candidateSE := PostMessage(queue: "evaluation-standard",
   priority: 50,
   data: {candidate_id: "456", position: "Senior Engineer"})
@@ -309,16 +309,16 @@ schedule:
 // Evaluation Worker
 for {
   msg := queue.GetNextMessage()
-  
+
   // Attempt to call AI service
   result, err := aiService.Evaluate(msg.Data)
   if err != nil {
     // Message automatically retries based on MaxAttempts
     // Exponential backoff: 1s, 2s, 4s, 8s...
     log.Error("Evaluation failed, will retry", err)
-    return err // ChronoQueue handles retry
+    return err // Nzovu handles retry
   }
-  
+
   // Success - acknowledge message
   queue.AckMessage(msg.MessageID)
 }
@@ -390,7 +390,7 @@ msg := queue.GetNextMessage(leaseDuration: 30 * time.Second)
 go func() {
   ticker := time.NewTicker(20 * time.Second)
   defer ticker.Stop()
-  
+
   for range ticker.C {
     // Renew lease every 20s during processing
     queue.RenewLease(msg.MessageID, extension: 30 * time.Second)
@@ -487,7 +487,7 @@ notificationQueue := client.QueueOptions{
 ## 🗂️ Project Structure
 
 ```
-chronoqueue/examples/interview-platform/
+nzovu/examples/interview-platform/
 ├── README.md                          # This file
 ├── docker-compose.yml                 # All services orchestration
 ├── .env.example                       # Environment variables template
@@ -525,7 +525,7 @@ chronoqueue/examples/interview-platform/
 │   │   ├── ScheduleViewer.tsx       # Calendar schedules UI
 │   │   └── QueueMetrics.tsx         # Health dashboard
 │   ├── lib/
-│   │   ├── chronoqueue-client.ts    # API client wrapper
+│   │   ├── client.ts    # API client wrapper
 │   │   ├── sse-client.ts            # Server-sent events client
 │   │   └── utils.ts
 │   ├── package.json
@@ -540,8 +540,8 @@ chronoqueue/examples/interview-platform/
 │   │   │   ├── handlers.go          # REST endpoint handlers
 │   │   │   ├── middleware.go        # Auth, CORS, logging
 │   │   │   └── sse.go               # Server-sent events
-│   │   ├── chronoqueue/
-│   │   │   ├── client.go            # ChronoQueue client wrapper
+│   │   ├── api/
+│   │   │   ├── client.go            # Nzovu client wrapper
 │   │   │   ├── queues.go            # Queue configurations
 │   │   │   ├── schemas.go           # Message schemas
 │   │   │   └── publisher.go         # Message publishing helpers
@@ -621,24 +621,24 @@ chronoqueue/examples/interview-platform/
 
 ### Backend
 
-- **Language**: Go 1.21+
+- **Language**: Go 1.26.6
 - **HTTP Router**: Chi
 - **Database**: SQLite (mattn/go-sqlite3)
-- **Queue Client**: ChronoQueue gRPC Client
+- **Queue Client**: Nzovu gRPC Client
 - **Authentication**: Clerk Go SDK
 - **Validation**: go-playground/validator
 
 ### Workers
 
-- **Language**: Go 1.21+
-- **Queue Client**: ChronoQueue gRPC Client
+- **Language**: Go 1.26.6
+- **Queue Client**: Nzovu gRPC Client
 - **Database**: SQLite (shared with backend)
 
 ### Infrastructure
 
 - **Containerization**: Docker & Docker Compose
-- **Queue System**: ChronoQueue Server
-- **Cache/Store**: PostgreSQL/SQLite (ChronoQueue storage backends)
+- **Queue System**: Nzovu Server
+- **Cache/Store**: PostgreSQL/SQLite (Nzovu storage backends)
 
 ---
 
@@ -646,97 +646,54 @@ chronoqueue/examples/interview-platform/
 
 ### Prerequisites
 
-- **Docker** & **Docker Compose** (for ChronoQueue server & PostgreSQL)
-- **Go 1.21+** (for backend & workers)
-- **Node.js 18+** & **npm/pnpm** (for frontend)
+- **Docker** & **Docker Compose** (for Nzovu server & PostgreSQL)
+- **Go 1.26.6** (for backend & workers)
+- **Node.js 22** & **npm/pnpm** (for frontend)
 - **Clerk Account** (free tier available at <https://clerk.com>)
 
-### Installation Steps
+### Run the backend and workers
 
-1. **Clone the repository**
-
-   ```bash
-   cd /workspaces/chronoqueue/examples/interview-platform
-   ```
-
-2. **Run setup script**
-
-   ```bash
-   ./scripts/setup.sh
-   ```
-
-   This will:
-   - Install frontend dependencies
-   - Install backend dependencies
-   - Create SQLite database
-   - Set up environment variables
-
-3. **Configure environment**
-
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your Clerk API keys
-   ```
-
-4. **Start ChronoQueue server**
-
-   ```bash
-   # From chronoqueue root
-   docker-compose up -d
-   # Or use the main server binary
-   ```
-
-5. **Start the backend API**
-
-   ```bash
-   cd backend
-   go run cmd/server/main.go
-   # Runs on http://localhost:8081
-   ```
-
-6. **Start workers**
-
-   ```bash
-   # Terminal 1: Evaluation Worker
-   cd workers
-   go run cmd/evaluation-worker/main.go
-   
-   # Terminal 2: Notification Worker
-   go run cmd/notification-worker/main.go
-   
-   # Terminal 3: Analytics Worker
-   go run cmd/analytics-worker/main.go
-   ```
-
-7. **Start frontend**
-
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   # Runs on http://localhost:3000
-   ```
-
-8. **Seed sample data**
-
-   ```bash
-   ./scripts/seed-data.sh
-   ```
-
-### Quick Test
+Build the SQLite-capable broker from the repository root, then start it in a separate terminal:
 
 ```bash
-# Run the priority queue demo
-./scripts/demo-priority.sh
-
-# Expected output:
-# ✓ Posted CEO candidate (priority: 95)
-# ✓ Posted Senior Engineer (priority: 50)
-# ✓ Posted Intern (priority: 15)
-# → Worker processing: CEO candidate (processed first)
-# → Worker processing: Senior Engineer (processed second)
-# → Worker processing: Intern (processed third)
+cd "$(git rev-parse --show-toplevel)"
+make build-full DEBUG=0
+./dist/$(go env GOOS)_$(go env GOARCH)/release/nzovu server --dev \
+  --storage-type sqlite --sqlite-db-path /tmp/nzovu-interview-demo.db \
+  --grpc-addr 127.0.0.1:50051 --http-addr 127.0.0.1:8090
 ```
+
+From another terminal:
+
+```bash
+cd "$(git rev-parse --show-toplevel)/examples/interview-platform"
+make build-all
+make start-api
+make start-workers
+make health
+```
+
+The API listens on `http://localhost:3001`; its health endpoint is `/health`.
+Both processes connect to `localhost:50051` and share
+`logs/api_interview_platform.db`. Override `NZOVU_ADDR` and `APP_DB` in the Make
+commands to use another server or an existing database. Do not change the
+existing database path during an upgrade. `make stop` stops the example API,
+workers and frontend; stop the broker separately.
+
+### Run the frontend
+
+```bash
+cd "$(git rev-parse --show-toplevel)/examples/interview-platform/frontend"
+cp example.env .env.local
+# Set your Clerk keys and NEXT_PUBLIC_API_URL=http://localhost:3001.
+npm ci --legacy-peer-deps
+npm run dev
+```
+
+Open `http://localhost:3000`. The frontend requires your Clerk configuration;
+API and SSE requests use `NEXT_PUBLIC_API_URL`. The design examples below
+include proposed workflows; setup, seed and demo scripts are not shipped.
+Use the running UI and [backend API](./backend/README.md) to create test data.
 
 ---
 
@@ -745,7 +702,7 @@ chronoqueue/examples/interview-platform/
 ### Path 1: Queue Basics (Beginner)
 
 1. Run `demo-priority.sh` - Understand priority queues
-2. Explore `backend/internal/chronoqueue/client.go` - See how to post messages
+2. Explore `backend/main.go` - See how to post messages
 3. Review `workers/cmd/evaluation-worker/main.go` - Learn worker patterns
 4. Open frontend and submit an interview - See end-to-end flow
 
@@ -807,7 +764,7 @@ queues:
       max_attempts: 3
       auto_create_dlq: true
       dlq_name: evaluation-urgent-dlq
-    
+
   - name: evaluation-standard
     type: PRIORITY
     metadata:
@@ -827,7 +784,7 @@ schedules:
       cron_schedule: "0 8 * * 1-5"  # Weekdays at 8 AM
     payload:
       type: daily_report
-      
+
   - schedule_id: weekly-summary
     queue_name: analytics-scheduled
     schedule_config:
@@ -870,7 +827,7 @@ schedules:
 
 **Issue**: Worker not receiving messages
 
-- **Check**: ChronoQueue server running
+- **Check**: Nzovu server running
 - **Check**: Queue created with correct name
 - **Check**: Messages in PENDING state (not INVISIBLE)
 - **Solution**: Wait for invisibility period to expire
@@ -891,7 +848,7 @@ schedules:
 
 ## 📖 Additional Resources
 
-- **ChronoQueue Documentation**: ../../README.md
+- **Nzovu Documentation**: ../../README.md
 - **API Reference**: docs/API_DOCUMENTATION.md
 - **Queue Design Patterns**: docs/QUEUE_DESIGN.md
 - **Deployment Guide**: docs/DEPLOYMENT.md
@@ -913,14 +870,14 @@ are welcome!
 
 ## 📄 License
 
-This example application is part of the ChronoQueue project and follows the same license.
+This example application is part of the Nzovu project and follows the same license.
 
 ---
 
 ## 🎯 Next Steps
 
 1. **Run the demos**: Start with `./scripts/demo-priority.sh`
-2. **Explore the code**: Read through `backend/internal/chronoqueue/`
+2. **Explore the code**: Read through `backend/pkg/workers/`
 3. **Build something**: Modify the UI or add a new worker
 4. **Learn patterns**: Study how features are implemented
 5. **Apply to your project**: Use these patterns in your own applications

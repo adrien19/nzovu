@@ -1,12 +1,12 @@
 # Interview Platform Backend
 
-REST API backend for the Interview Platform example, integrating with ChronoQueue for asynchronous job processing.
+REST API backend for the Interview Platform example, integrating with Nzovu for asynchronous job processing.
 
 ## Architecture
 
 - **Framework**: Go with Chi router
 - **Database**: SQLite for data persistence
-- **Queue System**: ChronoQueue (using official `github.com/adrien19/chronoqueue/client`)
+- **Queue System**: Nzovu (using official `github.com/adrien19/nzovu/client`)
 - **API**: RESTful endpoints with JSON responses
 
 ## Project Structure
@@ -27,9 +27,9 @@ backend/
 └── go.mod                 # Go dependencies
 ```
 
-## ChronoQueue Integration
+## Nzovu Integration
 
-The backend uses the **official ChronoQueue Go client** (`github.com/adrien19/chronoqueue/client`) instead of a custom wrapper. This provides:
+The backend uses the **official Nzovu Go client** (`github.com/adrien19/nzovu/client`) instead of a custom wrapper. This provides:
 
 - Full API support (CreateQueue, PostMessage, GetNextMessage, AcknowledgeMessage, etc.)
 - Built-in retry logic and exponential backoff
@@ -66,14 +66,16 @@ go build -o backend
 ./backend
 
 # Custom configuration
-./backend -port 8080 -chronoqueue localhost:50051 -db ./data.db
+./backend -port 3001 -server localhost:50051 -db ./data.db
 ```
+
+API and workers must use the same `-db` path and `-server` endpoint. The example Makefile supplies both. When starting them manually from different directories, pass an absolute database path.
 
 ### Command-line Flags
 
-- `-port` - HTTP server port (default: 8080)
-- `-chronoqueue` - ChronoQueue gRPC address (default: localhost:50051)
-- `-db` - SQLite database path (default: ./interview-platform.db)
+- `-port` - HTTP server port (default: 3001)
+- `-server` - Nzovu gRPC address (default: localhost:50051)
+- `-db` - SQLite database path (default: ./api_interview_platform.db)
 
 ## API Endpoints
 
@@ -119,8 +121,8 @@ go build -o backend
 
 ### Prerequisites
 
-1. **ChronoQueue Server** running on `localhost:50051`
-2. **Go 1.21+**
+1. **Nzovu Server** running on `localhost:50051`
+2. **Go 1.26.6**
 
 ### Local Development
 
@@ -144,11 +146,11 @@ go test -cover ./...
 
 ## Dependencies
 
-The backend uses the local ChronoQueue module via a `replace` directive in `go.mod`:
+The backend uses the local Nzovu module via a `replace` directive in `go.mod`:
 
 ```go
-replace github.com/adrien19/chronoqueue => ../../..
+replace github.com/adrien19/nzovu => ../../..
 ```
 
-This allows the backend to use the latest local version of ChronoQueue during development.
+This allows the backend to use the latest local version of Nzovu during development.
 

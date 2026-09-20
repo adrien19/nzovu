@@ -1,13 +1,16 @@
-.PHONY: help stop clean build-api build-workers build-frontend build-all start-chronoqueue start-api start-workers start-frontend start-all run kill-all health logs
+.PHONY: help stop clean build-api build-workers build-frontend build-all start-nzovu start-api start-workers start-frontend start-all run kill-all health logs
 
 # Absolute paths
 WORKSPACE := $(abspath ../..)
 BACKEND_DIR := $(WORKSPACE)/examples/interview-platform/backend
 FRONTEND_DIR := $(WORKSPACE)/examples/interview-platform/frontend
 LOGS_DIR := $(WORKSPACE)/examples/interview-platform/logs
-NZOVU_BIN := $(WORKSPACE)/dist/$(shell go env GOOS)_$(shell go env GOARCH)/release/nzovu
+NZOVU_BIN ?= $(WORKSPACE)/dist/$(shell go env GOOS)_$(shell go env GOARCH)/release/nzovu
 
 # Binary paths
+NZOVU_ADDR ?= localhost:50051
+APP_DB ?= $(LOGS_DIR)/api_interview_platform.db
+
 API_BIN := $(BACKEND_DIR)/bin/api
 WORKERS_BIN := $(BACKEND_DIR)/bin/workers
 
@@ -35,13 +38,13 @@ help:
 	@echo "  make build-frontend - Install frontend dependencies"
 	@echo ""
 	@echo "Service Control:"
-	@echo "  make start-all      - Start all services in order"
+	@echo "  make start-all      - Start app services (requires running broker)"
 	@echo "  make stop           - Stop all services gracefully"
 	@echo "  make kill-all       - Force kill all services by process name"
 	@echo "  make run            - Clean, build, and start all services"
 	@echo ""
 	@echo "Individual Services:"
-	@echo "  make start-chronoqueue - Start ChronoQueue server"
+	@echo "  make start-nzovu - Start Nzovu server"
 	@echo "  make start-api         - Start backend API"
 	@echo "  make start-workers     - Start worker processes"
 	@echo "  make start-frontend    - Start frontend dev server"
@@ -50,7 +53,7 @@ help:
 	@echo "  make stop-frontend     - Stop frontend (devcontainer-safe)"
 	@echo "  make stop-api          - Stop backend API"
 	@echo "  make stop-workers      - Stop worker processes"
-	@echo "  make stop-chronoqueue  - Stop ChronoQueue server"
+	@echo "  make stop-nzovu  - Stop Nzovu server"
 	@echo "  make restart-frontend  - Safely restart frontend (recommended)"
 	@echo "  make restart-api       - Restart backend API"
 	@echo "  make restart-workers   - Restart worker processes"
@@ -62,7 +65,7 @@ help:
 	@echo "  make logs-api       - Tail API logs"
 	@echo "  make logs-workers   - Tail worker logs"
 	@echo "  make logs-frontend  - Tail frontend logs"
-	@echo "  make logs-chronoqueue - Tail ChronoQueue logs"
+	@echo "  make logs-nzovu - Tail Nzovu logs"
 	@echo ""
 	@echo "$(RED)Dangerous Commands (use with caution):$(NC)"
 	@echo "  make kill-ports     - Kill by port (may break devcontainer!)"
@@ -88,9 +91,9 @@ stop-api:
 stop-workers:
 	@bash $(WORKSPACE)/examples/interview-platform/scripts/stop-service.sh workers
 
-## stop-chronoqueue: Stop ChronoQueue server
-stop-chronoqueue:
-	@bash $(WORKSPACE)/examples/interview-platform/scripts/stop-service.sh chronoqueue
+## stop-nzovu: Stop Nzovu server
+stop-nzovu:
+	@bash $(WORKSPACE)/examples/interview-platform/scripts/stop-service.sh nzovu
 
 ## kill-all: Force kill all services (same as stop, kept for backwards compatibility)
 kill-all: stop
@@ -102,10 +105,10 @@ kill-ports:
 	@echo ""
 	@read -p "Continue anyway? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
 	@echo "$(YELLOW)Killing processes on service ports...$(NC)"
-	@echo "Checking ChronoQueue (port 50051)..."
+	@echo "Checking Nzovu (port 50051)..."
 	@lsof -ti:50051 | xargs kill -9 2>/dev/null || true
-	@echo "Checking API (port 8080)..."
-	@lsof -ti:8080 | xargs kill -9 2>/dev/null || true
+	@echo "Checking API (port 3001)..."
+	@lsof -ti:3001 | xargs kill -9 2>/dev/null || true
 	@echo "Checking Frontend (port 3000)..."
 	@lsof -ti:3000 | xargs kill -9 2>/dev/null || true
 	@echo "$(GREEN)Port cleanup complete$(NC)"
@@ -139,26 +142,26 @@ build-frontend:
 build-all: build-api build-workers
 	@echo "$(GREEN)All services built successfully$(NC)"
 
-## start-chronoqueue: Start ChronoQueue server
-start-chronoqueue:
-	@echo "$(YELLOW)Starting ChronoQueue server...$(NC)"
+## start-nzovu: Start Nzovu server
+start-nzovu:
+	@echo "$(YELLOW)Starting Nzovu server...$(NC)"
 	@mkdir -p $(LOGS_DIR)
-	@nohup $(NZOVU_BIN) server --grpc-addr :50051 --http-addr :8090 --dev > $(LOGS_DIR)/chronoqueue.log 2>&1 & echo "$(GREEN)ChronoQueue started with PID: $$!$(NC)"
+	@nohup $(NZOVU_BIN) server --grpc-addr :50051 --http-addr :8090 --dev > $(LOGS_DIR)/nzovu.log 2>&1 & echo "$(GREEN)Nzovu started with PID: $$!$(NC)"
 	@sleep 2
-	@curl -s http://localhost:8090/health && echo "" || echo "$(RED)ChronoQueue health check failed$(NC)"
+	@curl -s http://localhost:8090/health && echo "" || echo "$(RED)Nzovu health check failed$(NC)"
 
 ## start-api: Start backend API
 start-api:
 	@echo "$(YELLOW)Starting backend API...$(NC)"
 	@mkdir -p $(LOGS_DIR)
-	@cd $(BACKEND_DIR) && nohup ./bin/api -port 3001 -chronoqueue 127.0.0.1:9000 > $(LOGS_DIR)/api.log 2>&1 & echo "$(GREEN)API started with PID: $$!$(NC)"
+	@cd $(BACKEND_DIR) && nohup ./bin/api -port 3001 -server "$(NZOVU_ADDR)" -db "$(APP_DB)" > $(LOGS_DIR)/api.log 2>&1 & echo "$(GREEN)API started with PID: $$!$(NC)"
 	@sleep 1
 
 ## start-workers: Start worker processes
 start-workers:
 	@echo "$(YELLOW)Starting workers...$(NC)"
 	@mkdir -p $(LOGS_DIR)
-	@cd $(BACKEND_DIR) && nohup ./bin/workers > $(LOGS_DIR)/workers.log 2>&1 & echo "$(GREEN)Workers started with PID: $$!$(NC)"
+	@cd $(BACKEND_DIR) && nohup ./bin/workers -server "$(NZOVU_ADDR)" -db "$(APP_DB)" > $(LOGS_DIR)/workers.log 2>&1 & echo "$(GREEN)Workers started with PID: $$!$(NC)"
 	@sleep 1
 
 ## start-frontend: Start frontend dev server
@@ -184,7 +187,7 @@ restart-workers: stop-workers
 	@sleep 1
 	@$(MAKE) start-workers
 
-## start-all: Start all services in dependency order
+## start-all: Start app services against an already running broker
 start-all: start-api start-workers start-frontend
 	@echo ""
 	@echo "$(GREEN)================================================$(NC)"
@@ -192,13 +195,13 @@ start-all: start-api start-workers start-frontend
 	@echo "$(GREEN)================================================$(NC)"
 	@echo ""
 	@echo "Service URLs:"
-	@echo "  - ChronoQueue gRPC: localhost:50051"
-	@echo "  - ChronoQueue HTTP: http://localhost:8090"
-	@echo "  - Backend API:      http://localhost:8080"
+	@echo "  - Nzovu gRPC: localhost:50051"
+	@echo "  - Nzovu HTTP: http://localhost:8090"
+	@echo "  - Backend API:      http://localhost:3001"
 	@echo "  - Frontend:         http://localhost:3000"
 	@echo ""
 	@echo "Log files:"
-	@echo "  - ChronoQueue: $(LOGS_DIR)/chronoqueue.log"
+	@echo "  - Nzovu: $(LOGS_DIR)/nzovu.log"
 	@echo "  - API:         $(LOGS_DIR)/api.log"
 	@echo "  - Workers:     $(LOGS_DIR)/workers.log"
 	@echo "  - Frontend:    $(LOGS_DIR)/frontend.log"
@@ -215,11 +218,11 @@ run: kill-ports clean build-all start-all
 health:
 	@echo "$(YELLOW)Checking service health...$(NC)"
 	@echo ""
-	@echo "ChronoQueue:"
+	@echo "Nzovu:"
 	@curl -s http://localhost:8090/health && echo " $(GREEN)✓$(NC)" || echo "$(RED)✗ Not responding$(NC)"
 	@echo ""
 	@echo "Backend API:"
-	@curl -s http://localhost:8080/api/health && echo " $(GREEN)✓$(NC)" || echo "$(RED)✗ Not responding$(NC)"
+	@curl -s http://localhost:3001/health && echo " $(GREEN)✓$(NC)" || echo "$(RED)✗ Not responding$(NC)"
 	@echo ""
 	@echo "Frontend:"
 	@curl -s http://localhost:3000 > /dev/null 2>&1 && echo "$(GREEN)✓ Running$(NC)" || echo "$(RED)✗ Not responding$(NC)"
@@ -231,14 +234,14 @@ health:
 check-ports:
 	@echo "$(YELLOW)Checking port usage...$(NC)"
 	@echo ""
-	@echo "Port 50051 (ChronoQueue gRPC):"
+	@echo "Port 50051 (Nzovu gRPC):"
 	@lsof -i:50051 2>/dev/null && echo "" || echo "$(GREEN)✓ Available$(NC)"
 	@echo ""
-	@echo "Port 8090 (ChronoQueue HTTP):"
+	@echo "Port 8090 (Nzovu HTTP):"
 	@lsof -i:8090 2>/dev/null && echo "" || echo "$(GREEN)✓ Available$(NC)"
 	@echo ""
-	@echo "Port 8080 (Backend API):"
-	@lsof -i:8080 2>/dev/null && echo "" || echo "$(GREEN)✓ Available$(NC)"
+	@echo "Port 3001 (Backend API):"
+	@lsof -i:3001 2>/dev/null && echo "" || echo "$(GREEN)✓ Available$(NC)"
 	@echo ""
 	@echo "Port 3000 (Frontend):"
 	@lsof -i:3000 2>/dev/null && echo "" || echo "$(GREEN)✓ Available$(NC)"
@@ -246,11 +249,11 @@ check-ports:
 ## logs: Tail all service logs
 logs:
 	@echo "$(YELLOW)Tailing all logs (Ctrl+C to exit)...$(NC)"
-	@tail -f $(LOGS_DIR)/chronoqueue.log $(LOGS_DIR)/api.log $(LOGS_DIR)/workers.log $(LOGS_DIR)/frontend.log
+	@tail -f $(LOGS_DIR)/nzovu.log $(LOGS_DIR)/api.log $(LOGS_DIR)/workers.log $(LOGS_DIR)/frontend.log
 
-## logs-chronoqueue: Tail ChronoQueue logs
-logs-chronoqueue:
-	@tail -f $(LOGS_DIR)/chronoqueue.log
+## logs-nzovu: Tail Nzovu logs
+logs-nzovu:
+	@tail -f $(LOGS_DIR)/nzovu.log
 
 ## logs-api: Tail API logs
 logs-api:
@@ -278,12 +281,12 @@ rebuild-workers: build-workers
 	@sleep 1
 	@$(MAKE) start-workers
 
-## restart-chronoqueue: Restart ChronoQueue only
-restart-chronoqueue:
-	@echo "$(YELLOW)Restarting ChronoQueue...$(NC)"
+## restart-nzovu: Restart Nzovu only
+restart-nzovu:
+	@echo "$(YELLOW)Restarting Nzovu...$(NC)"
 	-@pkill -f '$(NZOVU_PROC)' 2>/dev/null || true
 	@sleep 2
-	@$(MAKE) start-chronoqueue
+	@$(MAKE) start-nzovu
 
 ## quick-restart: Restart all services without rebuilding
 quick-restart: stop start-all

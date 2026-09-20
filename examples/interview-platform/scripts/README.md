@@ -17,7 +17,7 @@ Universal service stopper script that safely terminates processes without affect
 - `frontend` - Next.js development server
 - `api` - Backend API server
 - `workers` - Background worker processes
-- `chronoqueue` - ChronoQueue server
+- `nzovu` - Nzovu server
 
 ### Why Use Scripts Instead of Direct pkill?
 

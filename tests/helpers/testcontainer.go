@@ -1,6 +1,6 @@
 package helpers
 
-// Package helpers provides utility functions for ChronoQueue integration testing.
+// Package helpers provides utility functions for Nzovu integration testing.
 //
 // This package includes helpers for:
 // - Testcontainer setup and management
@@ -34,7 +34,7 @@ import (
 )
 
 // TestEnvironment holds all test infrastructure components.
-// It manages the lifecycle of Postgres and ChronoQueue containers,
+// It manages the lifecycle of Postgres and Nzovu containers,
 // providing convenient access to clients and addresses.
 type TestEnvironment struct {
 	PostgresContainer *postgres.PostgresContainer
@@ -46,12 +46,12 @@ type TestEnvironment struct {
 	ctx               context.Context
 }
 
-// SetupTestEnvironment creates and starts Postgres and ChronoQueue containers.
+// SetupTestEnvironment creates and starts Postgres and Nzovu containers.
 // It automatically registers cleanup with t.Cleanup() to ensure proper teardown.
 //
 // This function:
 // 1. Starts a Postgres container (postgres:17-alpine)
-// 2. Starts a ChronoQueue server container
+// 2. Starts a Nzovu server container
 // 3. Returns a TestEnvironment with all necessary addresses
 //
 // Example:
@@ -108,15 +108,15 @@ func SetupTestEnvironment(t *testing.T) *TestEnvironment {
 	t.Logf("Postgres container started with connection string: %s", connectionString)
 
 	// Verify Postgres is ready by attempting a connection
-	// This ensures the database is fully initialized before starting ChronoQueue
+	// This ensures the database is fully initialized before starting Nzovu
 	time.Sleep(2 * time.Second) // Brief delay to ensure full initialization
 
 	// For container→container connections, use network alias
 	postgresInternalHost := "postgres"
 	postgresInternalPort := "5432"
 
-	// Start ChronoQueue server container
-	t.Log("Starting ChronoQueue server container...")
+	// Start Nzovu server container
+	t.Log("Starting Nzovu server container...")
 	serverReq := testcontainers.ContainerRequest{
 		FromDockerfile: testcontainers.FromDockerfile{
 			Context:    "../..", // Adjust based on test location
@@ -147,11 +147,11 @@ func SetupTestEnvironment(t *testing.T) *TestEnvironment {
 	t.Cleanup(func() {
 		if serverOwned {
 			if err := serverContainer.Terminate(ctx); err != nil {
-				t.Errorf("failed to terminate ChronoQueue container after setup failure: %v", err)
+				t.Errorf("failed to terminate Nzovu container after setup failure: %v", err)
 			}
 		}
 	})
-	require.NoError(t, err, "Failed to start ChronoQueue server container")
+	require.NoError(t, err, "Failed to start Nzovu server container")
 
 	serverHost, err := serverContainer.Host(ctx)
 	require.NoError(t, err)
@@ -165,7 +165,7 @@ func SetupTestEnvironment(t *testing.T) *TestEnvironment {
 	grpcAddr := fmt.Sprintf("%s:%s", serverHost, grpcPort.Port())
 	httpAddr := fmt.Sprintf("http://%s:%s", serverHost, httpPort.Port())
 
-	t.Logf("ChronoQueue server started - gRPC: %s, HTTP: %s", grpcAddr, httpAddr)
+	t.Logf("Nzovu server started - gRPC: %s, HTTP: %s", grpcAddr, httpAddr)
 
 	env := &TestEnvironment{
 		PostgresContainer: postgresContainer,
@@ -202,7 +202,7 @@ func (e *TestEnvironment) Cleanup() {
 	}
 }
 
-// NewGRPCClient creates a new gRPC client connection to the ChronoQueue server.
+// NewGRPCClient creates a new gRPC client connection to the Nzovu server.
 // The connection is automatically closed via t.Cleanup().
 //
 // Example:
@@ -228,7 +228,7 @@ func (e *TestEnvironment) NewGRPCClient(t *testing.T) *grpc.ClientConn {
 	return conn
 }
 
-// WaitForHealthy waits for the ChronoQueue server to be healthy.
+// WaitForHealthy waits for the Nzovu server to be healthy.
 // This is useful if you need to ensure the server is fully ready before starting tests.
 func (e *TestEnvironment) WaitForHealthy(t *testing.T, timeout time.Duration) {
 	ctx, cancel := context.WithTimeout(e.ctx, timeout)
@@ -251,7 +251,7 @@ func (e *TestEnvironment) WaitForHealthy(t *testing.T, timeout time.Duration) {
 	}
 }
 
-// SetupTestEnvironmentWithTLS creates and starts a ChronoQueue server with TLS/mTLS enabled.
+// SetupTestEnvironmentWithTLS creates and starts a Nzovu server with TLS/mTLS enabled.
 // This is similar to SetupTestEnvironment but configures the server with TLS certificates.
 //
 // The certs parameter should be obtained from GenerateTestCertificates().
@@ -320,8 +320,8 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 	postgresInternalHost := "postgres"
 	postgresInternalPort := "5432"
 
-	// Start ChronoQueue server container with TLS enabled
-	t.Log("Starting ChronoQueue server container with TLS...")
+	// Start Nzovu server container with TLS enabled
+	t.Log("Starting Nzovu server container with TLS...")
 	serverReq := testcontainers.ContainerRequest{
 		Image:        "nzovu:test-latest",
 		ExposedPorts: []string{"9000/tcp", "8080/tcp"},
@@ -388,7 +388,7 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 			ContainerRequest: serverReq,
 			Started:          true,
 		})
-	require.NoError(t, err, "Failed to start ChronoQueue server container")
+	require.NoError(t, err, "Failed to start Nzovu server container")
 
 	serverHost, err := serverContainer.Host(ctx)
 	require.NoError(t, err)
@@ -402,7 +402,7 @@ func setupTestEnvironmentWithTLSGatewayCertificates(t *testing.T, certs *TestCer
 	grpcAddr := fmt.Sprintf("%s:%s", serverHost, grpcPort.Port())
 	httpAddr := fmt.Sprintf("https://%s:%s", serverHost, httpPort.Port())
 
-	t.Logf("ChronoQueue server with TLS started - gRPC: %s, HTTP: %s", grpcAddr, httpAddr)
+	t.Logf("Nzovu server with TLS started - gRPC: %s, HTTP: %s", grpcAddr, httpAddr)
 
 	env := &TestEnvironment{
 		PostgresContainer: postgresContainer,

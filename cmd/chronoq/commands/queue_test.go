@@ -13,7 +13,7 @@ func TestNewQueueCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "queue", cmd.Use)
 	assert.Equal(t, "Queue management operations", cmd.Short)
-	assert.Contains(t, cmd.Long, "Manage ChronoQueue queues")
+	assert.Contains(t, cmd.Long, "Manage Nzovu queues")
 
 	// Check that subcommands are properly added
 	subcommands := cmd.Commands()
@@ -37,7 +37,7 @@ func TestNewQueueCreateCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "create <queue-name>", cmd.Use)
 	assert.Equal(t, "Create a new queue", cmd.Short)
-	assert.Contains(t, cmd.Long, "Create a new ChronoQueue queue")
+	assert.Contains(t, cmd.Long, "Create a new Nzovu queue")
 	assert.NotNil(t, cmd.RunE)
 
 	// Check that command requires exactly one argument
@@ -57,7 +57,7 @@ func TestNewQueueDeleteCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "delete <queue-name>", cmd.Use)
 	assert.Equal(t, "Delete a queue", cmd.Short)
-	assert.Contains(t, cmd.Long, "Delete an existing ChronoQueue queue")
+	assert.Contains(t, cmd.Long, "Delete an existing Nzovu queue")
 	assert.NotNil(t, cmd.RunE)
 
 	// Check that command requires exactly one argument
@@ -74,7 +74,7 @@ func TestNewQueueListCommand(t *testing.T) {
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "list", cmd.Use)
 	assert.Equal(t, "List all queues", cmd.Short)
-	assert.Contains(t, cmd.Long, "List all ChronoQueue queues")
+	assert.Contains(t, cmd.Long, "List all Nzovu queues")
 	assert.NotNil(t, cmd.RunE)
 }
 

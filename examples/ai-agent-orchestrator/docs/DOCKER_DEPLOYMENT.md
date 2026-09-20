@@ -31,19 +31,19 @@ This script will:
 #### Step 1: Build Images
 
 ```bash
-docker-compose build
+docker compose build
 ```
 
 #### Step 2: Start Ollama
 
 ```bash
-docker-compose up -d ollama
+docker compose up -d ollama
 ```
 
 Wait for Ollama to be healthy:
 
 ```bash
-docker-compose ps ollama
+docker compose ps ollama
 ```
 
 #### Step 3: Pull Models
@@ -65,8 +65,10 @@ Or use the convenience script:
 #### Step 4: Start All Services
 
 ```bash
+docker compose up -d --wait nzovu
+docker compose run --rm --no-deps coordinator /app/ai-orchestrator init --server nzovu:9000 --insecure
 # Start coordinator and agents
-docker-compose up -d coordinator agents-mock agents-llm
+docker compose up -d coordinator agents-mock agents-llm
 ```
 
 ## Service Architecture
@@ -81,7 +83,7 @@ The Docker Compose setup includes:
    - Health check enabled
 
 2. **coordinator** - Task decomposition service
-   - Connects to: Ollama, ChronoQueue
+   - Connects to: Ollama, Nzovu
    - Workers: 2
    - Uses Ollama for intelligent task routing
 
@@ -95,11 +97,11 @@ The Docker Compose setup includes:
    - Connects to: Ollama
    - Workers: 2 per agent
 
-### External Dependencies
+### Included Broker
 
-- **chronoqueue** - Must be running separately
+- **nzovu** - Included SQLite broker; exposed on host loopback ports 9000 and 8080
   - Default: localhost:9000
-  - Configure via `CHRONOQUEUE_SERVER` environment variable
+  - Configure via `NZOVU_SERVER` environment variable
 
 ## Configuration
 
@@ -117,8 +119,8 @@ Edit `.env` to customize:
 # Ollama
 OLLAMA_BASE_URL=http://ollama:11434
 
-# ChronoQueue
-CHRONOQUEUE_SERVER=chronoqueue:9000
+# Nzovu
+NZOVU_SERVER=nzovu:9000
 
 # LLM Models
 LLM_MODEL=llama3.2:3b
@@ -154,7 +156,7 @@ OLLAMA_BASE_URL=http://host.docker.internal:11434
 Before submitting tasks, initialize the queue system:
 
 ```bash
-docker-compose exec coordinator /app/ai-orchestrator init --server chronoqueue:9000 --insecure
+docker compose exec coordinator /app/ai-orchestrator init --server nzovu:9000 --insecure
 ```
 
 Or from your host (if you have the binary):
@@ -199,15 +201,15 @@ Or from your host (if you have the binary):
 
 ```bash
 # All services
-docker-compose logs -f
+docker compose logs -f
 
 # Specific service
-docker-compose logs -f coordinator
-docker-compose logs -f agents-llm
-docker-compose logs -f ollama
+docker compose logs -f coordinator
+docker compose logs -f agents-llm
+docker compose logs -f ollama
 
 # Last 100 lines
-docker-compose logs --tail=100 agents-llm
+docker compose logs --tail=100 agents-llm
 ```
 
 ## Management
@@ -216,33 +218,33 @@ docker-compose logs --tail=100 agents-llm
 
 ```bash
 # All services
-docker-compose up -d
+docker compose up -d
 
 # Specific service
-docker-compose up -d coordinator
+docker compose up -d coordinator
 ```
 
 ### Stop Services
 
 ```bash
 # All services
-docker-compose down
+docker compose down
 
 # Stop services (keeps volumes/models)
-docker-compose down
+docker compose down
 
 # Remove everything including volumes
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Restart Services
 
 ```bash
 # All services
-docker-compose restart
+docker compose restart
 
 # Specific service
-docker-compose restart coordinator
+docker compose restart coordinator
 ```
 
 ### Scale Agents
@@ -250,7 +252,7 @@ docker-compose restart coordinator
 Increase the number of agent workers:
 
 ```bash
-docker-compose up -d --scale agents-llm=3
+docker compose up -d --scale agents-llm=3
 ```
 
 ## Troubleshooting
@@ -260,8 +262,8 @@ docker-compose up -d --scale agents-llm=3
 Check if Ollama is healthy:
 
 ```bash
-docker-compose ps ollama
-docker-compose logs ollama
+docker compose ps ollama
+docker compose logs ollama
 ```
 
 Test Ollama API:
@@ -279,12 +281,12 @@ docker exec -it ai-orchestrator-ollama ollama list
 docker exec -it ai-orchestrator-ollama ollama pull llama3.2:3b
 ```
 
-### Coordinator Can't Connect to ChronoQueue
+### Coordinator Can't Connect to Nzovu
 
-Ensure ChronoQueue is running and accessible:
+Ensure Nzovu is running and accessible:
 
 ```bash
-# Check ChronoQueue
+# Check Nzovu
 nc -zv localhost 9000
 
 # Or use grpcurl
@@ -294,7 +296,7 @@ grpcurl -plaintext localhost:9000 list
 Update the server address if needed:
 
 ```bash
-docker-compose exec coordinator /app/ai-orchestrator status --server chronoqueue:9000
+docker compose exec coordinator /app/ai-orchestrator status --server nzovu:9000
 ```
 
 ### Agent Errors
@@ -302,14 +304,14 @@ docker-compose exec coordinator /app/ai-orchestrator status --server chronoqueue
 Check agent logs:
 
 ```bash
-docker-compose logs agents-llm
-docker-compose logs agents-mock
+docker compose logs agents-llm
+docker compose logs agents-mock
 ```
 
 Restart specific agents:
 
 ```bash
-docker-compose restart agents-llm
+docker compose restart agents-llm
 ```
 
 ### Out of Memory
@@ -332,7 +334,7 @@ Model sizes:
 Monitor download progress:
 
 ```bash
-docker-compose logs -f ollama
+docker compose logs -f ollama
 ```
 
 ## Performance Tuning
@@ -415,13 +417,13 @@ docker run --rm -v ai-agent-orchestrator_ollama_data:/data -v $(pwd):/backup alp
 
 For production use:
 
-1. Enable TLS for ChronoQueue:
+1. Enable TLS for Nzovu:
 
 ```yaml
 coordinator:
   command: >
     /app/ai-orchestrator coordinator
-    --server chronoqueue:9000
+    --server nzovu:9000
     # Remove --insecure flag
 ```
 
@@ -429,8 +431,8 @@ coordinator:
 
 ```yaml
 secrets:
-  chronoqueue_cert:
-    file: ./certs/chronoqueue.crt
+  nzovu_cert:
+    file: ./certs/nzovu.crt
 ```
 
 3. Restrict network access:
@@ -462,7 +464,7 @@ coordinator:
          │
          ▼
 ┌─────────────────┐      ┌─────────────────┐
-│  ChronoQueue    │◄─────┤  Coordinator    │
+│  Nzovu    │◄─────┤  Coordinator    │
 │   (External)    │      │  (Task Router)  │
 └────────┬────────┘      └────────┬────────┘
          │                        │
@@ -484,5 +486,5 @@ coordinator:
 ## Next Steps
 
 - Review [../README.md](../README.md) for detailed usage
-- Check [../PHASE5_TEST_RESULTS.md](../PHASE5_TEST_RESULTS.md) for performance benchmarks
+- Check [../README.md](../README.md) for performance benchmarks
 - Explore example tasks in `tasks/` directory

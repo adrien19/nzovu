@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides priority queue ordering tests for ChronoQueue.
+// Package integration provides priority queue ordering tests for Nzovu.
 //
 // These tests validate:
 // - Priority-based message ordering

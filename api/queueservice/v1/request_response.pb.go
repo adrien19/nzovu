@@ -1,4 +1,4 @@
-// ChronoQueue Service Request/Response Messages v1
+// Nzovu Service Request/Response Messages v1
 //
 // This file defines all request and response message types for QueueService RPCs.
 // Each RPC in service.proto has a corresponding request and response message here.

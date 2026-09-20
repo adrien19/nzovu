@@ -18,7 +18,7 @@ type DLQStats struct {
 	UpdatedAt    int64  `json:"updated_at"`
 }
 
-// Storage defines the interface for ChronoQueue persistence layer.
+// Storage defines the interface for Nzovu persistence layer.
 // All storage backends (SQLite and Postgres) must implement this interface.
 type Storage interface {
 	Ping(ctx context.Context) error

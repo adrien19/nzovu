@@ -1,6 +1,6 @@
-# ChronoQueue Docker Entrypoint
+# Nzovu Docker Entrypoint
 
-The `entrypoint.sh` script provides a flexible way to start the ChronoQueue server with proper validation and configuration based on environment variables.
+The `entrypoint.sh` script provides a flexible way to start the Nzovu server with proper validation and configuration based on environment variables.
 
 ## Features
 
@@ -76,7 +76,7 @@ The `entrypoint.sh` script provides a flexible way to start the ChronoQueue serv
 
 | Variable | Description | Default |
 | ---------- | ------------- | --------- |
-| `CHRONOQUEUE_TLS_ENABLED` | Enable TLS for gRPC/HTTP | `false` in development; `true` in production |
+| `NZOVU_TLS_ENABLED` | Enable TLS for gRPC/HTTP | `false` in development; `true` in production |
 | `CERT_FILE` | Path to server certificate | _(empty)_ |
 | `KEY_FILE` | Path to server private key | _(empty)_ |
 | `CA_CERT_FILE` | Path to CA certificate | _(empty)_ |
@@ -114,7 +114,7 @@ docker run -d \
   -e LOG_LEVEL=debug \
   -p 9000:9000 \
   -p 8080:8080 \
-  chronoqueue:latest
+  nzovu:latest
 ```
 
 ### Docker Run - Development Mode (SQLite)
@@ -128,7 +128,7 @@ docker run -d \
   -v /path/to/data:/data \
   -p 9000:9000 \
   -p 8080:8080 \
-  chronoqueue:sqlite
+  nzovu:sqlite
 ```
 
 ### Docker Run - Production Mode (PostgreSQL)
@@ -146,7 +146,7 @@ docker run -d \
   -e POSTGRES_ROOT_CERT=/secrets/postgres-root.crt \
   -e API_KEYS=replace-with-a-secret \
   -e METRICS_BEARER_TOKEN=replace-with-a-separate-metrics-secret \
-  -e CHRONOQUEUE_TLS_ENABLED=true \
+  -e NZOVU_TLS_ENABLED=true \
   -e CERT_FILE=/secrets/tls/server.crt \
   -e KEY_FILE=/secrets/tls/server.key \
   -e ENABLE_ENCRYPTION=true \
@@ -159,7 +159,7 @@ docker run -d \
   -v /path/to/certs:/secrets/tls:ro \
   -p 9000:9000 \
   -p 8080:8080 \
-  chronoqueue:latest
+  nzovu:latest
 ```
 
 ### Docker Run - Production with TLS
@@ -175,7 +175,7 @@ docker run -d \
   -e POSTGRES_ROOT_CERT=/secrets/postgres-root.crt \
   -e API_KEYS=replace-with-a-secret \
   -e METRICS_BEARER_TOKEN=replace-with-a-separate-metrics-secret \
-  -e CHRONOQUEUE_TLS_ENABLED=true \
+  -e NZOVU_TLS_ENABLED=true \
   -e CERT_FILE=/secrets/tls/server.crt \
   -e KEY_FILE=/secrets/tls/server.key \
   -e ENABLE_ENCRYPTION=true \
@@ -187,7 +187,7 @@ docker run -d \
   -v /path/to/certs:/secrets/tls:ro \
   -p 9000:9000 \
   -p 8080:8080 \
-  chronoqueue:latest
+  nzovu:latest
 ```
 
 Create `/path/to/vault-token.env` with a single `VAULT_TOKEN=...` entry and restrict it to the deployment account. Docker reads the credential from that protected file, so the token is not included in the command line. The PostgreSQL root CA must validate the server certificate, whose DNS names must include the configured `POSTGRES_HOST` (`postgres-prod` above).
@@ -200,8 +200,8 @@ Before changing an encryption key, follow the [rotation and rollback procedure](
 version: '3.8'
 
 services:
-  chronoqueue:
-    image: chronoqueue:latest
+  nzovu:
+    image: nzovu:latest
     environment:
       - SERVER_MODE=production
       - STORAGE_TYPE=postgres
@@ -237,20 +237,20 @@ volumes:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chronoqueue
+  name: nzovu
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: chronoqueue
+      app: nzovu
   template:
     metadata:
       labels:
-        app: chronoqueue
+        app: nzovu
     spec:
       containers:
-      - name: chronoqueue
-        image: chronoqueue:latest
+      - name: nzovu
+        image: nzovu:latest
         env:
         - name: SERVER_MODE
           value: "production"
@@ -296,7 +296,7 @@ spec:
 1. **Display Configuration**: Logs all configuration values including storage backend
 2. **Validate Storage Configuration**: Ensures required environment variables are set for chosen storage
 3. **Build Command**: Constructs server command based on `SERVER_MODE`, `STORAGE_TYPE`, and other env vars
-4. **Start Server**: Executes the ChronoQueue server with the constructed arguments
+4. **Start Server**: Executes the Nzovu server with the constructed arguments
 
 ## Troubleshooting
 
@@ -343,7 +343,7 @@ docker logs <container-id>
 **Expected Output:**
 
 ```
-[INFO] ChronoQueue Server Startup
+[INFO] Nzovu Server Startup
 [INFO] ==========================
 [INFO] Server Mode: development
 [INFO] Storage Type: postgres
@@ -369,6 +369,6 @@ make docker-build
 
 ## Related Documentation
 
-- [Server Configuration](../internal/server/README.md)
+- [Server Configuration](../internal/server/config.go)
 - [Deployment Guide](../deploy/README.md)
-- [Docker Compose Setup](../deploy/docker-compose.yaml)
+- [Docker Compose Setup](../deploy/docker-compose.postgres.yaml)

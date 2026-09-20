@@ -31,9 +31,9 @@ Examples:
 
   # Client operations
   nzovu queue create my-queue --type simple
-  nzovu message post my-queue "Hello World"
+  nzovu message post my-queue "Hello World" --id hello-1
   nzovu message get my-queue
-  nzovu schedule create --cron "0 */5 * * *" --queue my-queue --message "Scheduled task"`,
+  nzovu schedule create my-queue "Scheduled task" --cron "*/5 * * * *"`,
 		Version: version.Info(),
 	}
 
@@ -101,6 +101,7 @@ Examples:
 
 	// Server configuration flags
 	config := server.DefaultConfig()
+	cmd.AddCommand(commands.NewServerCommand().Commands()...)
 	server.AddServerFlags(cmd, config)
 
 	// Add mode flags

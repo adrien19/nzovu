@@ -1,6 +1,6 @@
 package integration
 
-// Package integration provides comprehensive message lifecycle tests for ChronoQueue.
+// Package integration provides comprehensive message lifecycle tests for Nzovu.
 //
 // These tests validate:
 // - Message posting (various content types, priorities)

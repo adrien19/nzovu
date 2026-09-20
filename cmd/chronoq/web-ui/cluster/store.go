@@ -27,7 +27,7 @@ const (
 	TransportTLS       = "tls"
 )
 
-// Cluster holds connection details for a single ChronoQueue gRPC backend.
+// Cluster holds connection details for a single Nzovu gRPC backend.
 type Cluster struct {
 	Slug           string `json:"slug"`
 	Name           string `json:"name"`
@@ -111,7 +111,7 @@ func (s *Store) Seed(name, brokerAddr string, skipSSL bool) {
 		s.clusters = append(s.clusters, &Cluster{
 			Slug:          SlugFor(brokerAddr),
 			Name:          name,
-			Description:   "Default ChronoQueue server",
+			Description:   "Default Nzovu server",
 			BrokerAddress: brokerAddr,
 			TransportMode: mapLegacyTransport(skipSSL),
 			IsActive:      true,

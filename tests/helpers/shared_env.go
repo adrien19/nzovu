@@ -124,11 +124,11 @@ func createSharedEnvironment() (*TestEnvironment, error) {
 	}
 
 	// Verify Postgres is ready by attempting a connection
-	// This ensures the database is fully initialized before starting ChronoQueue
+	// This ensures the database is fully initialized before starting Nzovu
 	time.Sleep(2 * time.Second) // Brief delay to ensure full initialization
 
 	// For container→container connections, use network alias
-	// ChronoQueue container will connect to Postgres via internal Docker network
+	// Nzovu container will connect to Postgres via internal Docker network
 	postgresInternalHost := "postgres"
 	postgresInternalPort := "5432"
 
@@ -160,19 +160,19 @@ func createSharedEnvironment() (*TestEnvironment, error) {
 
 	serverGenericReq := testcontainers.GenericContainerRequest{ContainerRequest: serverReq, Started: true}
 	if err := network.WithNetwork([]string{"nzovu"}, net)(&serverGenericReq); err != nil {
-		return nil, fmt.Errorf("configure ChronoQueue container network: %w", err)
+		return nil, fmt.Errorf("configure Nzovu container network: %w", err)
 	}
 	serverContainer, err := testcontainers.GenericContainer(ctx, serverGenericReq)
 	serverOwned := serverContainer != nil
 	defer func() {
 		if serverOwned {
 			if err := serverContainer.Terminate(ctx); err != nil {
-				log.Printf("failed to terminate ChronoQueue container after setup failure: %v", err)
+				log.Printf("failed to terminate Nzovu container after setup failure: %v", err)
 			}
 		}
 	}()
 	if err != nil {
-		return nil, fmt.Errorf("failed to start ChronoQueue server container (did you run 'make build-test-image'?): %w", err)
+		return nil, fmt.Errorf("failed to start Nzovu server container (did you run 'make build-test-image'?): %w", err)
 	}
 
 	serverHost, err := serverContainer.Host(ctx)

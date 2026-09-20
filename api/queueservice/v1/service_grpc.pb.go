@@ -1,6 +1,6 @@
-// ChronoQueue Service API v1
+// Nzovu Service API v1
 //
-// This file defines the complete gRPC service interface for ChronoQueue.
+// This file defines the complete gRPC service interface for Nzovu.
 // All client operations go through this service.
 //
 // Service categories:
@@ -72,7 +72,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// QueueService is the primary API for interacting with ChronoQueue.
+// QueueService is the primary API for interacting with Nzovu.
 //
 // This service provides:
 // - Queue lifecycle management
@@ -141,7 +141,7 @@ type QueueServiceClient interface {
 	// Errors:
 	//   - NotFound: Queue doesn't exist
 	DeleteQueue(ctx context.Context, in *DeleteQueueRequest, opts ...grpc.CallOption) (*DeleteQueueResponse, error)
-	// ListQueues returns all queues in your ChronoQueue instance.
+	// ListQueues returns all queues in your Nzovu instance.
 	//
 	// Use for:
 	// - Monitoring dashboards
@@ -1090,7 +1090,7 @@ func (c *queueServiceClient) ValidatePayload(ctx context.Context, in *ValidatePa
 // All implementations should embed UnimplementedQueueServiceServer
 // for forward compatibility.
 //
-// QueueService is the primary API for interacting with ChronoQueue.
+// QueueService is the primary API for interacting with Nzovu.
 //
 // This service provides:
 // - Queue lifecycle management
@@ -1159,7 +1159,7 @@ type QueueServiceServer interface {
 	// Errors:
 	//   - NotFound: Queue doesn't exist
 	DeleteQueue(context.Context, *DeleteQueueRequest) (*DeleteQueueResponse, error)
-	// ListQueues returns all queues in your ChronoQueue instance.
+	// ListQueues returns all queues in your Nzovu instance.
 	//
 	// Use for:
 	// - Monitoring dashboards

@@ -27,7 +27,7 @@ echo ""
 echo -e "${YELLOW}🔍 Checking Ollama service...${NC}"
 if ! curl -s "${OLLAMA_URL}/api/tags" > /dev/null 2>&1; then
     echo -e "${RED}❌ Error: Ollama service is not running at ${OLLAMA_URL}${NC}"
-    echo -e "${YELLOW}💡 Tip: Start Ollama with 'docker-compose up -d ollama'${NC}"
+    echo -e "${YELLOW}💡 Tip: Start Ollama with 'docker compose up -d ollama'${NC}"
     exit 1
 fi
 echo -e "${GREEN}✓ Ollama service is running${NC}"
@@ -89,7 +89,7 @@ if [ ${#failed_models[@]} -eq 0 ]; then
     done
     echo ""
     echo -e "${YELLOW}💡 Next steps:${NC}"
-    echo -e "   1. Start the AI orchestrator: ${GREEN}docker-compose up -d${NC}"
+    echo -e "   1. Start the AI orchestrator: ${GREEN}docker compose up -d${NC}"
     echo -e "   2. Initialize queues: ${GREEN}./ai-orchestrator init${NC}"
     echo -e "   3. Submit a task: ${GREEN}./ai-orchestrator submit tasks/llm-jokes.json${NC}"
     exit 0
@@ -101,8 +101,8 @@ else
     echo ""
     echo -e "${YELLOW}💡 Troubleshooting:${NC}"
     echo -e "   • Check your internet connection"
-    echo -e "   • Verify Ollama service is running: ${GREEN}docker-compose ps ollama${NC}"
-    echo -e "   • Check Ollama logs: ${GREEN}docker-compose logs ollama${NC}"
+    echo -e "   • Verify Ollama service is running: ${GREEN}docker compose ps ollama${NC}"
+    echo -e "   • Check Ollama logs: ${GREEN}docker compose logs ollama${NC}"
     echo -e "   • Try pulling manually: ${GREEN}docker exec -it ai-orchestrator-ollama ollama pull <model>${NC}"
     exit 1
 fi

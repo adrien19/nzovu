@@ -8,11 +8,11 @@ echo "  Stopping workers..."
 pkill -f "event-processor worker" 2>/dev/null || true
 pkill -f "monitor-scheduled.sh" 2>/dev/null || true
 
-# Stop ChronoQueue server if running on default ports
-echo "  Checking for ChronoQueue server..."
+# Stop Nzovu server if running on default ports
+echo "  Checking for Nzovu server..."
 SERVER_PID=$(lsof -ti :9000 2>/dev/null)
 if [ -n "$SERVER_PID" ]; then
-    echo "  Stopping ChronoQueue server (PID: $SERVER_PID)..."
+    echo "  Stopping Nzovu server (PID: $SERVER_PID)..."
     kill $SERVER_PID 2>/dev/null || true
     sleep 1
 fi
@@ -24,6 +24,6 @@ rm -f events/test-load.json
 rm -f events/generated.json
 
 # Clean up log files
-rm -f /tmp/chronoqueue.log 2>/dev/null || true
+rm -f /tmp/nzovu.log 2>/dev/null || true
 
 echo "✨ Cleanup complete!"
