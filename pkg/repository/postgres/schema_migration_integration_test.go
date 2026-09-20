@@ -20,9 +20,9 @@ func TestSchemaMigration_FromV1ToLatest(t *testing.T) {
 	container, err := postgrescontainer.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)
@@ -114,9 +114,9 @@ func TestSchemaMigration_V9RejectsInvalidQueueMetadataAndRollsBack(t *testing.T)
 	container, err := postgrescontainer.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgrescontainer.WithDatabase("chronoqueue"),
-		postgrescontainer.WithUsername("chronoqueue"),
-		postgrescontainer.WithPassword("chronoqueue"),
+		postgrescontainer.WithDatabase("nzovu"),
+		postgrescontainer.WithUsername("nzovu"),
+		postgrescontainer.WithPassword("nzovu"),
 		postgrescontainer.BasicWaitStrategies(),
 		testcontainers.WithTmpfs(map[string]string{"/var/lib/postgresql/data": "rw"}),
 	)

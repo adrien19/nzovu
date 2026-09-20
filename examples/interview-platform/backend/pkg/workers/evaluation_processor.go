@@ -14,12 +14,12 @@ import (
 
 // EvaluationProcessorWorker processes evaluation messages
 type EvaluationProcessorWorker struct {
-	queue *client.ChronoQueueClient
+	queue *client.NzovuClient
 	db    *db.Database
 }
 
 // NewEvaluationProcessorWorker creates a new evaluation processor worker
-func NewEvaluationProcessorWorker(queue *client.ChronoQueueClient, database *db.Database) *EvaluationProcessorWorker {
+func NewEvaluationProcessorWorker(queue *client.NzovuClient, database *db.Database) *EvaluationProcessorWorker {
 	return &EvaluationProcessorWorker{
 		queue: queue,
 		db:    database,

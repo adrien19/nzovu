@@ -14,7 +14,7 @@ type NotificationAgent struct {
 }
 
 // NewNotificationAgent creates a new notification agent
-func NewNotificationAgent(c *client.ChronoQueueClient, workers int, verbose bool) *NotificationAgent {
+func NewNotificationAgent(c *client.NzovuClient, workers int, verbose bool) *NotificationAgent {
 	baseAgent := NewBaseAgent(c, "agent-notification", "notification", workers, verbose)
 	baseAgent.skipResultPosting = true // Notification results don't need to be in agent-results
 	return &NotificationAgent{

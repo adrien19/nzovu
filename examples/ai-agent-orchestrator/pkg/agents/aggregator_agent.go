@@ -21,7 +21,7 @@ type AggregatorAgent struct {
 }
 
 // NewAggregatorAgent creates a new aggregator agent
-func NewAggregatorAgent(c *client.ChronoQueueClient, llmClient llm.LLMClient, workers int, verbose bool) *AggregatorAgent {
+func NewAggregatorAgent(c *client.NzovuClient, llmClient llm.LLMClient, workers int, verbose bool) *AggregatorAgent {
 	baseAgent := NewBaseAgent(c, "agent-aggregator", "aggregator", workers, verbose)
 	baseAgent.skipResultPosting = true // Aggregator results don't need to be in agent-results
 	return &AggregatorAgent{

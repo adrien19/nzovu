@@ -16,7 +16,7 @@ func TestDecryptPayload_DecryptsWithValidNonce(t *testing.T) {
 	manager, err := keymanager.NewEncryptionKeyManagerWithConfig(log.NewLogger(), keymanager.Config{Enabled: true, SourceType: "LOCAL"})
 	require.NoError(t, err)
 
-	payload := []byte("chronoqueue payload")
+	payload := []byte("nzovu payload")
 	ciphertext, nonce, keyID, err := EncryptPayload(payload, manager)
 	require.NoError(t, err)
 

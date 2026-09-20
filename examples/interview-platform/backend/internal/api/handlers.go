@@ -21,12 +21,12 @@ import (
 // Handlers contains all HTTP handlers
 type Handlers struct {
 	db          *db.Database
-	queue       *client.ChronoQueueClient
+	queue       *client.NzovuClient
 	broadcaster *sse.Broadcaster
 }
 
 // NewHandlers creates a new handlers instance
-func NewHandlers(database *db.Database, queueClient *client.ChronoQueueClient, broadcaster *sse.Broadcaster) *Handlers {
+func NewHandlers(database *db.Database, queueClient *client.NzovuClient, broadcaster *sse.Broadcaster) *Handlers {
 	return &Handlers{
 		db:          database,
 		queue:       queueClient,

@@ -835,7 +835,7 @@ func generateEvents(count int, output string) error {
 	return nil
 }
 
-func connectToServer() (*client.ChronoQueueClient, error) {
+func connectToServer() (*client.NzovuClient, error) {
 	opts := client.ClientOptions{
 		MaxRetries:          client.DefaultMaxRetries,
 		InitialBackoff:      client.DefaultInitialBackoff,
@@ -847,7 +847,7 @@ func connectToServer() (*client.ChronoQueueClient, error) {
 		fmt.Printf("Connecting to %s (insecure: %v)\n", serverAddr, insecure)
 	}
 
-	return client.NewChronoQueueClient(serverAddr, opts)
+	return client.NewNzovuClient(serverAddr, opts)
 }
 
 func getQueueForType(eventType string) string {

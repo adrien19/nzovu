@@ -16,7 +16,7 @@ type LLMResearcherAgent struct {
 }
 
 // NewLLMResearcherAgent creates a new LLM-powered researcher agent
-func NewLLMResearcherAgent(c *client.ChronoQueueClient, llmClient llm.LLMClient, workers int, verbose bool) *LLMResearcherAgent {
+func NewLLMResearcherAgent(c *client.NzovuClient, llmClient llm.LLMClient, workers int, verbose bool) *LLMResearcherAgent {
 	return &LLMResearcherAgent{
 		BaseAgent: NewBaseAgent(c, "agent-llm-researcher", "llm-researcher", workers, verbose),
 		llmClient: llmClient,

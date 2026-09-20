@@ -34,7 +34,7 @@ func TestProtoSerializerPreservesOrderedBinaryMessageHeaders(t *testing.T) {
 	require.True(t, proto.Equal(original, decoded))
 }
 
-func TestProtoSerializerReadsChronoQueueFixtures(t *testing.T) {
+func TestProtoSerializerReadsPreMigrationFixtures(t *testing.T) {
 	serializer := NewProtoSerializer()
 	tests := []struct {
 		name   string
@@ -73,7 +73,7 @@ func TestProtoSerializerReadsChronoQueueFixtures(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			data, err := os.ReadFile(filepath.Join("testdata", "chronoqueue_v1_"+tt.name+".bin"))
+			data, err := os.ReadFile(filepath.Join("testdata", "pre_migration_v1_"+tt.name+".bin"))
 			require.NoError(t, err)
 			decoded, err := tt.decode(data)
 			require.NoError(t, err)

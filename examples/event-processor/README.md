@@ -906,7 +906,7 @@ nzovu server --log-level debug
 
 - [Nzovu Documentation](../../README.md)
 - [Message Priority Guide](../../API_VALIDATION.md)
-- [DLQ Best Practices](../../cmd/chronoq/README.md)
+- [DLQ Best Practices](../../cmd/nzovu/README.md)
 
 ## 🎯 Next Steps
 

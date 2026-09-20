@@ -23,27 +23,27 @@ const (
 	ERROR_LEVEL_DEBUG
 )
 
-type ChronoError struct {
+type NzovuError struct {
 	Level   ErrorLevel
 	Code    codes.Code // gRPC status code
 	Message string
 	Err     error
 }
 
-func (ce *ChronoError) Error() string {
-	return ce.Err.Error()
+func (e *NzovuError) Error() string {
+	return e.Err.Error()
 }
 
-// Convert the ChronoError to a gRPC status error
-func (e *ChronoError) GRPCStatus() error {
+// Convert the NzovuError to a gRPC status error
+func (e *NzovuError) GRPCStatus() error {
 	if e.Err != nil {
 		return status.Errorf(e.Code, "%s: %s", e.Message, e.Err.Error())
 	}
 	return status.Errorf(e.Code, "%s", e.Message)
 }
 
-func NewChronoError(level ErrorLevel, code codes.Code, err error, msg string) *ChronoError {
-	return &ChronoError{
+func NewNzovuError(level ErrorLevel, code codes.Code, err error, msg string) *NzovuError {
+	return &NzovuError{
 		Level:   level,
 		Code:    code,
 		Err:     err,

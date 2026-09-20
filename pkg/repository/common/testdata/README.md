@@ -3,3 +3,5 @@ These binary fixtures were encoded with protoc 32.0 from the ChronoQueue
 migration. They cover persisted message, queue and schedule payloads. Keep these
 original bytes when regenerating Nzovu APIs; the serializer test verifies that
 existing data remains readable without a database rewrite.
+
+Fixture filenames use `pre_migration_v1_*`; their original bytes are unchanged.

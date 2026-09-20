@@ -1,6 +1,6 @@
 # Nzovu Deployment
 
-For Nzovu cutover, environment aliases and preserving existing databases/volumes, see the [runtime migration guide](./NZOVU_MIGRATION.md).
+For Nzovu cutover, removed environment aliases and preserving existing databases/volumes, see the [runtime migration guide](./NZOVU_MIGRATION.md).
 
 This directory contains Docker Compose configurations for deploying Nzovu with different storage backends and monitoring stack.
 
@@ -68,7 +68,7 @@ cd "$(git rev-parse --show-toplevel)/deploy"
 docker compose -f docker-compose.sqlite.yaml up -d
 ```
 
-No external database needed - data stored in volume at `/data/chronoqueue.db`.
+No external database needed - data stored in volume at `/data/nzovu.db`.
 
 The Compose files are local-development configurations. The Web UI is exposed only on the host loopback interface at <https://localhost:8081> and uses the certificate mounted from `${WORKSPACE_FOLDER}/certs`; that certificate must be trusted by the browser and valid for `localhost`. Replace the example certificate and credentials before adapting either file for production.
 
@@ -186,9 +186,9 @@ Edit [`docker-compose.postgres.yaml`](./docker-compose.postgres.yaml):
 environment:
   - POSTGRES_HOST=postgres
   - POSTGRES_PORT=5432
-  - POSTGRES_USER=chronoqueue
-  - POSTGRES_PASSWORD=chronoqueue_dev_password  # Change for production!
-  - POSTGRES_DB=chronoqueue
+  - POSTGRES_USER=nzovu
+  - POSTGRES_PASSWORD=nzovu_dev_password  # Change for production!
+  - POSTGRES_DB=nzovu
   - POSTGRES_SSLMODE=disable  # Use verify-full with a trusted CA in production
 ```
 
@@ -198,7 +198,7 @@ Edit [`docker-compose.sqlite.yaml`](./docker-compose.sqlite.yaml):
 
 ```yaml
 environment:
-  - SQLITE_DB_PATH=/data/chronoqueue.db
+  - SQLITE_DB_PATH=/data/nzovu.db
 volumes:
   - sqlite-data:/data  # Persistent storage location
 ```
@@ -279,16 +279,16 @@ Common across all storage backends:
 | ---------- | --------- | ------------- |
 | `POSTGRES_HOST` | `postgres` | PostgreSQL hostname |
 | `POSTGRES_PORT` | `5432` | PostgreSQL port |
-| `POSTGRES_USER` | `chronoqueue` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | `chronoqueue_dev_password` | PostgreSQL password |
-| `POSTGRES_DB` | `chronoqueue` | Database name |
+| `POSTGRES_USER` | `nzovu` | PostgreSQL username |
+| `POSTGRES_PASSWORD` | `nzovu_dev_password` | PostgreSQL password |
+| `POSTGRES_DB` | `nzovu` | Database name |
 | `POSTGRES_SSLMODE` | `disable` | SSL mode (disable/require/verify-full) |
 
 ### SQLite-specific
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SQLITE_DB_PATH` | `/data/chronoqueue.db` | Path to SQLite database file |
+| `SQLITE_DB_PATH` | `/data/nzovu.db` | Path to SQLite database file |
 
 ## Persistent Data
 
@@ -313,11 +313,11 @@ docker volume ls  # Existing project-prefixed volume names are retained
 ```bash
 # Backup PostgreSQL with a transactionally consistent logical dump
 docker compose -f docker-compose.postgres.yaml exec -T postgres \
-  pg_dump --format=custom --username=chronoqueue --dbname=chronoqueue > chronoqueue.dump
+  pg_dump --format=custom --username=nzovu --dbname=nzovu > nzovu.dump
 
 # Backup SQLite while the only writer is stopped
 docker compose -f docker-compose.sqlite.yaml stop nzovusvc
-docker compose -f docker-compose.sqlite.yaml cp nzovusvc:/data/chronoqueue.db chronoqueue-backup.db
+docker compose -f docker-compose.sqlite.yaml cp nzovusvc:/data/nzovu.db nzovu-backup.db
 docker compose -f docker-compose.sqlite.yaml start nzovusvc
 
 # Backup Prometheus data
@@ -336,13 +336,13 @@ docker compose -f docker-compose.postgres.yaml stop nzovusvc
 
 # Restore PostgreSQL into the empty database, then restart Nzovu
 docker compose -f docker-compose.postgres.yaml exec -T postgres \
-  pg_restore --clean --if-exists --no-owner --username=chronoqueue --dbname=chronoqueue < chronoqueue.dump
+  pg_restore --clean --if-exists --no-owner --username=nzovu --dbname=nzovu < nzovu.dump
 docker compose -f docker-compose.postgres.yaml start nzovusvc
 # Restart the external producers, workers, and administrative clients stopped above.
 
 # Restore SQLite only while Nzovu is stopped
 docker compose -f docker-compose.sqlite.yaml stop nzovusvc
-docker compose -f docker-compose.sqlite.yaml cp chronoqueue-backup.db nzovusvc:/data/chronoqueue.db
+docker compose -f docker-compose.sqlite.yaml cp nzovu-backup.db nzovusvc:/data/nzovu.db
 docker compose -f docker-compose.sqlite.yaml start nzovusvc
 ```
 
@@ -425,10 +425,10 @@ make deploy-logs STORAGE=postgres
 
 ```bash
 # Check PostgreSQL is healthy
-docker exec nzovu-postgres pg_isready -U chronoqueue
+docker exec nzovu-postgres pg_isready -U nzovu
 
 # Connect to PostgreSQL
-docker exec -it nzovu-postgres psql -U chronoqueue -d chronoqueue
+docker exec -it nzovu-postgres psql -U nzovu -d nzovu
 
 # View tables
 \dt
@@ -441,10 +441,10 @@ docker logs nzovu-server | grep -i postgres
 
 ```bash
 # Check SQLite database exists
-docker exec nzovu-server ls -lh /data/chronoqueue.db
+docker exec nzovu-server ls -lh /data/nzovu.db
 
 # Inspect SQLite database
-docker exec -it nzovu-server sqlite3 /data/chronoqueue.db ".tables"
+docker exec -it nzovu-server sqlite3 /data/nzovu.db ".tables"
 ```
 
 ### Reset Everything
@@ -489,7 +489,7 @@ make deploy-all STORAGE=postgres
    ```yaml
    environment:
      - POSTGRES_HOST=your-postgres-instance.cloud:5432
-     - POSTGRES_USER=chronoqueue
+     - POSTGRES_USER=nzovu
      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}  # From secrets
      - POSTGRES_SSLMODE=verify-full
    ```
@@ -600,10 +600,10 @@ docker exec -it nzovu-server /bin/sh
 docker exec -it nzovu-server /nzovu --help
 
 # Access PostgreSQL
-docker exec -it nzovu-postgres psql -U chronoqueue -d chronoqueue
+docker exec -it nzovu-postgres psql -U nzovu -d nzovu
 
 # Run SQL queries
-docker exec -it nzovu-postgres psql -U chronoqueue -d chronoqueue -c "SELECT * FROM queues;"
+docker exec -it nzovu-postgres psql -U nzovu -d nzovu -c "SELECT * FROM queues;"
 ```
 
 ### Switch Storage Backends

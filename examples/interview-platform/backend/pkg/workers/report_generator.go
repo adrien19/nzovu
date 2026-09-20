@@ -15,12 +15,12 @@ import (
 
 // ReportGeneratorWorker processes report generation requests
 type ReportGeneratorWorker struct {
-	queue *client.ChronoQueueClient
+	queue *client.NzovuClient
 	db    *db.Database
 }
 
 // NewReportGeneratorWorker creates a new report generator worker
-func NewReportGeneratorWorker(queue *client.ChronoQueueClient, database *db.Database) *ReportGeneratorWorker {
+func NewReportGeneratorWorker(queue *client.NzovuClient, database *db.Database) *ReportGeneratorWorker {
 	return &ReportGeneratorWorker{
 		queue: queue,
 		db:    database,

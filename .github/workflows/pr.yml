@@ -205,7 +205,7 @@ jobs:
           CGO_ENABLED=0 gotestsum \
             --format testname \
             -- \
-            ./client ./pkg/chronoqueue ./pkg/gateway ./pkg/metrics \
+            ./client ./pkg/nzovu ./pkg/gateway ./pkg/metrics \
             ./internal/server ./internal/util ./internal/encryption/... ./pkg/log
 
   docker-validation:

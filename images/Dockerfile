@@ -13,7 +13,7 @@ RUN go mod download
 
 # Copy source code
 COPY api api
-COPY cmd/chronoq cmd/chronoq
+COPY cmd/nzovu cmd/nzovu
 COPY client client
 COPY internal internal
 COPY pkg pkg

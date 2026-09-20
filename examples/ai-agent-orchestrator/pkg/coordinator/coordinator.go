@@ -17,7 +17,7 @@ import (
 
 // Coordinator handles task decomposition and routing
 type Coordinator struct {
-	client    *client.ChronoQueueClient
+	client    *client.NzovuClient
 	llm       llm.LLMClient
 	queueName string
 	workers   int
@@ -27,7 +27,7 @@ type Coordinator struct {
 }
 
 // NewCoordinator creates a new coordinator agent
-func NewCoordinator(c *client.ChronoQueueClient, llmClient llm.LLMClient, workers int, verbose bool) *Coordinator {
+func NewCoordinator(c *client.NzovuClient, llmClient llm.LLMClient, workers int, verbose bool) *Coordinator {
 	return &Coordinator{
 		client:    c,
 		llm:       llmClient,

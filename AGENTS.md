@@ -29,7 +29,7 @@ Before starting the implementation of any request, you MUST REVIEW the following
 
 - `/api`: proto definitions and generated code
 - `/client`: client library for inter-service communication between other services and Nzovu.
-- `/cmd/chronoq`: CLI commands application for Nzovu
+- `/cmd/nzovu`: CLI commands application for Nzovu
 - `/deploy`: configurations for deployment (docker compose for local setup)
 - `/docker`: custom docker image builder sripts (used to build devcontainer image)
 - `/pkg/gateway/nzovu.swagger.json`: generated OpenAPI documentation
@@ -39,7 +39,7 @@ Before starting the implementation of any request, you MUST REVIEW the following
 - `/internal/server`: Nzovu main server appication and utilities
 - `/internal/util`: error and validation utilities
 - `/pkg`: Nzovu service implementation
-  - `/pkg/chronoqueue`: server wiring, handlers, background services
+  - `/pkg/nzovu`: server wiring, handlers, background services
   - `/pkg/repository`: storage backends (Postgres/SQLite), base SQL, schema manager
   - `/pkg/schema`: schema registry implementations
   - `/pkg/calendar`: calendar scheduling engine integration

@@ -7,15 +7,9 @@ import (
 	"strings"
 )
 
-// Lookup gives an explicitly set Nzovu variable precedence, including an empty value.
+// Lookup preserves the distinction between an unset and explicitly empty variable.
 func Lookup(key string) (string, bool) {
-	if value, exists := os.LookupEnv(key); exists {
-		return value, true
-	}
-	if strings.HasPrefix(key, "NZOVU_") {
-		return os.LookupEnv("CHRONOQUEUE_" + strings.TrimPrefix(key, "NZOVU_"))
-	}
-	return "", false
+	return os.LookupEnv(key)
 }
 
 func Get(key string) string {
@@ -26,8 +20,7 @@ func Get(key string) string {
 // Bool rejects invalid security settings instead of silently disabling protection.
 func Bool(key string, fallback bool) (bool, error) {
 	value, exists := Lookup(key)
-	_, currentSet := os.LookupEnv(key)
-	if !exists || (!currentSet && strings.TrimSpace(value) == "") {
+	if !exists {
 		return fallback, nil
 	}
 	parsed, err := strconv.ParseBool(strings.TrimSpace(value))

@@ -446,7 +446,7 @@ nzovu/
 │   └── util/            # Utilities
 ├── pkg/                 # Public packages
 │   ├── calendar/        # Calendar scheduling
-│   ├── chronoqueue/     # Core queue logic
+│   ├── nzovu/     # Core queue logic
 │   ├── gateway/         # gRPC gateway
 │   ├── log/             # Logging
 │   ├── metrics/         # Metrics

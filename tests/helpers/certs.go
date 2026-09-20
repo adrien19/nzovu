@@ -45,7 +45,7 @@ type TestCertificates struct {
 //	}
 func GenerateTestCertificates(t *testing.T) *TestCertificates {
 	// Create temporary directory for certificates
-	tempDir, err := os.MkdirTemp("", "chronoqueue-test-certs-*")
+	tempDir, err := os.MkdirTemp("", "nzovu-test-certs-*")
 	require.NoError(t, err, "Failed to create temp directory for certificates")
 
 	// Cleanup temp directory when test completes

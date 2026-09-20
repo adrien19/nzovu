@@ -4,7 +4,7 @@
 
 HTTP `/v1` routes and protobuf field numbers remain unchanged. Existing typed SQL payloads remain readable; no database rewrite is required for this namespace change. The storage format does not use `google.protobuf.Any`. External consumers that wrap these messages in `Any` must migrate their `type.googleapis.com/chronoqueue.api.*` type URLs to `type.googleapis.com/nzovu.api.*`; no legacy type resolver is registered.
 
-ChronoQueue applies the same validation and error mapping to gRPC requests and requests received through the HTTP gateway. Invalid-argument responses include `google.rpc.BadRequest` field violations when a specific field caused the rejection.
+Nzovu applies the same validation and error mapping to gRPC requests and requests received through the HTTP gateway. Invalid-argument responses include `google.rpc.BadRequest` field violations when a specific field caused the rejection.
 
 ## Error mapping
 

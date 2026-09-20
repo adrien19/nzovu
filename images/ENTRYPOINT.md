@@ -54,9 +54,9 @@ The `entrypoint.sh` script provides a flexible way to start the Nzovu server wit
 |----------|-------------|---------||
 | `POSTGRES_HOST` | PostgreSQL host | `localhost` |
 | `POSTGRES_PORT` | PostgreSQL port | `5432` |
-| `POSTGRES_USER` | PostgreSQL user | `chronoqueue` |
+| `POSTGRES_USER` | PostgreSQL user | `nzovu` |
 | `POSTGRES_PASSWORD` | PostgreSQL password | _(required)_ |
-| `POSTGRES_DB` | PostgreSQL database | `chronoqueue` |
+| `POSTGRES_DB` | PostgreSQL database | `nzovu` |
 | `POSTGRES_SSLMODE` | SSL mode | `disable` in development; `verify-full` in production |
 | `POSTGRES_ROOT_CERT` | PostgreSQL root CA certificate | _(required with production `verify-full`)_ |
 
@@ -64,7 +64,7 @@ The `entrypoint.sh` script provides a flexible way to start the Nzovu server wit
 
 | Variable | Description | Default |
 |----------|-------------|---------||
-| `SQLITE_DB_PATH` | SQLite database file path | `chronoqueue.db` |
+| `SQLITE_DB_PATH` | SQLite database file path | `nzovu.db` |
 
 ### Logging Configuration
 
@@ -108,9 +108,9 @@ docker run -d \
   -e SERVER_MODE=development \
   -e STORAGE_TYPE=postgres \
   -e POSTGRES_HOST=postgres \
-  -e POSTGRES_USER=chronoqueue \
+  -e POSTGRES_USER=nzovu \
   -e POSTGRES_PASSWORD=secret \
-  -e POSTGRES_DB=chronoqueue \
+  -e POSTGRES_DB=nzovu \
   -e LOG_LEVEL=debug \
   -p 9000:9000 \
   -p 8080:8080 \
@@ -123,7 +123,7 @@ docker run -d \
 docker run -d \
   -e SERVER_MODE=development \
   -e STORAGE_TYPE=sqlite \
-  -e SQLITE_DB_PATH=/data/chronoqueue.db \
+  -e SQLITE_DB_PATH=/data/nzovu.db \
   -e LOG_LEVEL=debug \
   -v /path/to/data:/data \
   -p 9000:9000 \
@@ -139,9 +139,9 @@ docker run -d \
   -e SERVER_MODE=production \
   -e STORAGE_TYPE=postgres \
   -e POSTGRES_HOST=postgres-prod \
-  -e POSTGRES_USER=chronoqueue \
+  -e POSTGRES_USER=nzovu \
   -e POSTGRES_PASSWORD=secret \
-  -e POSTGRES_DB=chronoqueue \
+  -e POSTGRES_DB=nzovu \
   -e POSTGRES_SSLMODE=verify-full \
   -e POSTGRES_ROOT_CERT=/secrets/postgres-root.crt \
   -e API_KEYS=replace-with-a-secret \
@@ -153,7 +153,7 @@ docker run -d \
   -e ENCRYPTION_KEY_SOURCE_TYPE=VAULT \
   -e VAULT_ENDPOINT=https://vault.example \
   -e VAULT_AUTH_METHOD=TOKEN \
-  -e VAULT_SECRET_PATH=secret/data/chronoqueue \
+  -e VAULT_SECRET_PATH=secret/data/nzovu \
   -e LOG_LEVEL=info \
   -v /path/to/postgres-root.crt:/secrets/postgres-root.crt:ro \
   -v /path/to/certs:/secrets/tls:ro \
@@ -182,7 +182,7 @@ docker run -d \
   -e ENCRYPTION_KEY_SOURCE_TYPE=VAULT \
   -e VAULT_ENDPOINT=https://vault.example \
   -e VAULT_AUTH_METHOD=TOKEN \
-  -e VAULT_SECRET_PATH=secret/data/chronoqueue \
+  -e VAULT_SECRET_PATH=secret/data/nzovu \
   -v /path/to/postgres-root.crt:/secrets/postgres-root.crt:ro \
   -v /path/to/certs:/secrets/tls:ro \
   -p 9000:9000 \
@@ -206,9 +206,9 @@ services:
       - SERVER_MODE=production
       - STORAGE_TYPE=postgres
       - POSTGRES_HOST=postgres
-      - POSTGRES_USER=chronoqueue
+      - POSTGRES_USER=nzovu
       - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=chronoqueue
+      - POSTGRES_DB=nzovu
       - LOG_LEVEL=info
     ports:
       - "9000:9000"
@@ -219,9 +219,9 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_USER=chronoqueue
+      - POSTGRES_USER=nzovu
       - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=chronoqueue
+      - POSTGRES_DB=nzovu
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
@@ -259,7 +259,7 @@ spec:
         - name: POSTGRES_HOST
           value: "postgres-service"
         - name: POSTGRES_DB
-          value: "chronoqueue"
+          value: "nzovu"
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:

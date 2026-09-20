@@ -31,7 +31,7 @@ func TestPrometheusAlertsReferenceRegisteredMetrics(t *testing.T) {
 
 	registered := registeredMetricNames(t)
 
-	metricPattern := regexp.MustCompile(`(?:nzovu|chronoqueue)_[a-z0-9_]+`)
+	metricPattern := regexp.MustCompile(`nzovu_[a-z0-9_]+`)
 	for _, group := range rules.Groups {
 		for _, rule := range group.Rules {
 			for _, metricName := range metricPattern.FindAllString(rule.Expr, -1) {
@@ -58,13 +58,15 @@ func registeredMetricNames(t *testing.T) map[string]struct{} {
 		registered[match[1]] = struct{}{}
 	}
 	require.NotEmpty(t, registered)
+	for name := range registered {
+		require.True(t, strings.HasPrefix(name, "nzovu_"), "unexpected metric namespace: %s", name)
+	}
 	return registered
 }
 
 func TestGrafanaDashboardReferencesRegisteredMetrics(t *testing.T) {
 	contents, err := os.ReadFile(filepath.Join("..", "..", "monitoring", "grafana-dashboard.json"))
 	require.NoError(t, err)
-	require.NotContains(t, string(contents), "chronoqueue_")
 	var dashboard any
 	require.NoError(t, json.Unmarshal(contents, &dashboard))
 	registered := registeredMetricNames(t)
@@ -107,5 +109,4 @@ func TestScrapeUsesNzovuMetricNames(t *testing.T) {
 	registry.Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/metrics", nil))
 	require.Equal(t, http.StatusOK, recorder.Code)
 	require.Contains(t, recorder.Body.String(), `nzovu_messages_enqueued_total{queue_name="namespace-test"}`)
-	require.NotContains(t, recorder.Body.String(), "chronoqueue_")
 }

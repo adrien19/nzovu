@@ -52,7 +52,7 @@ From a checkout of `main`, Go and a C compiler are sufficient for the SQLite qui
 git clone --branch main https://github.com/adrien19/nzovu.git
 cd nzovu
 CGO_ENABLED=1 go build -tags sqlite -o ./dist/nzovu .
-./dist/nzovu server --dev --grpc-addr 127.0.0.1:9000 --http-addr 127.0.0.1:8080 --storage-type sqlite --sqlite-db-path chronoqueue.db
+./dist/nzovu server --dev --grpc-addr 127.0.0.1:9000 --http-addr 127.0.0.1:8080 --storage-type sqlite --sqlite-db-path nzovu.db
 ```
 
 In another terminal at the checkout root:
@@ -63,7 +63,7 @@ In another terminal at the checkout root:
 ./dist/nzovu --server localhost:9000 --insecure message peek quickstart
 ```
 
-`chronoqueue.db` remains the database default for existing installations; its name does not identify the running product. Development mode is intended for local evaluation.
+`nzovu.db` is the new SQLite default. Existing deployments must explicitly select their original database path; see the migration guide. Development mode is intended for local evaluation.
 
 #### Release installers
 
@@ -87,7 +87,7 @@ Configure your environment:
 
    - Start with [`.env.example`](./.env.example) and choose PostgreSQL (recommended) or SQLite.
    - For PostgreSQL, set `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB`. Production mode defaults to `POSTGRES_SSLMODE=verify-full`; set `POSTGRES_ROOT_CERT` when a custom CA certificate is required. Development mode defaults to `POSTGRES_SSLMODE=disable` for local use.
-   - For SQLite, set `SQLITE_DB_PATH` (for example, `/data/chronoqueue.db`).
+   - For SQLite, set `SQLITE_DB_PATH` (for example, `/data/nzovu.db`).
    - Production mode enables authentication by default. Set `API_KEYS` to a comma-separated list; clients can authenticate with the `api-key` header or an `Authorization: Bearer` token. The CLI and web UI read `NZOVU_API_KEY`; the CLI also accepts `--api-key`. Development mode can enable authentication with `AUTH_ENABLED=true`.
    - Production mode requires TLS for the gRPC and HTTP endpoints. Set `CERT_FILE` and `KEY_FILE`. To require gRPC client certificates, also set `CA_CERT_FILE`; the internal HTTP gateway then needs `GATEWAY_CLIENT_CERT_FILE` and `GATEWAY_CLIENT_KEY_FILE`.
    - HTTP gateway timeouts default to `5s` for request headers, `15s` for reads, `30s` for writes, and `60s` for idle connections. Override them with `HTTP_READ_HEADER_TIMEOUT`, `HTTP_READ_TIMEOUT`, `HTTP_WRITE_TIMEOUT`, and `HTTP_IDLE_TIMEOUT`.
@@ -102,7 +102,7 @@ Start the Nzovu server:
     go run . server --dev --grpc-addr :9000
 
     # Development mode with SQLite
-    CGO_ENABLED=1 go run -tags sqlite . server --dev --grpc-addr :9000 --storage-type sqlite --sqlite-db-path chronoqueue.db
+    CGO_ENABLED=1 go run -tags sqlite . server --dev --grpc-addr :9000 --storage-type sqlite --sqlite-db-path nzovu.db
     ```
 
 SQLite requires CGO, a C compiler, and the `sqlite` build tag. For a SQLite-capable binary, use `CGO_ENABLED=1 go build -tags sqlite -o nzovu .`; an untagged build supports PostgreSQL only. See [server build selection](./internal/server/server_nosqlite.go).
@@ -118,7 +118,7 @@ Nzovu includes a built-in web interface for monitoring and managing your queues,
 1. Build the UI assets (first time only):
 
     ```bash
-    cd cmd/chronoq/web-ui
+    cd cmd/nzovu/web-ui
     npm ci
     npm run build:css
     cd ../../..
@@ -178,9 +178,10 @@ The [legacy ChronoQueue TypeScript SDK and MCP repository](https://github.com/ad
 Documentation currently lives alongside the relevant components:
 
 - Start the HTTP gateway with `--dev` or `--enable-api-docs` and open `/docs/` for the embedded Swagger UI, or inspect the generated [OpenAPI specification](./pkg/gateway/nzovu.swagger.json).
-- See the [migration guide](./deploy/NZOVU_MIGRATION.md) for namespace changes, configuration aliases and retained identifiers.
+- See the [migration guide](./deploy/NZOVU_MIGRATION.md) for breaking source/configuration changes and preserving existing data.
 - See the [API validation and error contract](./API_VALIDATION.md) for queue/message configuration rules and gRPC-to-HTTP error mappings.
 - See the [deployment guide](./deploy/README.md), [monitoring guide](./monitoring/README.md), [test guide](./tests/README.md), and [examples](./examples/README.md).
+- See the [Go client guide](./client/README.md) for `NewNzovuClient` and client lifecycle.
 - The protobuf service contract is defined in [`proto/queueservice/v1/service.proto`](./proto/queueservice/v1/service.proto).
 
 ## 🤔 Why not just use Kafka or RabbitMQ?

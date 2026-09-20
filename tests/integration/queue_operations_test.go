@@ -29,7 +29,7 @@ import (
 // TestMain sets up shared test infrastructure for all tests in this package.
 // Containers are created once and reused, significantly speeding up test execution.
 func TestMain(m *testing.M) {
-	if err := os.Setenv("CHRONOQUEUE_API_KEY", helpers.TestAPIKey); err != nil {
+	if err := os.Setenv("NZOVU_API_KEY", helpers.TestAPIKey); err != nil {
 		log.NewLogger().Fatal("Failed to configure integration API key", "error", err)
 	}
 	os.Exit(helpers.RunWithSharedEnvironment(m))
