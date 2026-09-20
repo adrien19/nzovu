@@ -2,7 +2,7 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    cluster: "chronoqueue-dev"
+    cluster: "nzovu-dev"
     environment: "development"
 
 # Load alerting rules
@@ -17,12 +17,12 @@ rule_files:
 #             - alertmanager:9093
 
 scrape_configs:
-  # ChronoQueue metrics
-  - job_name: "chronoqueue"
+  # Nzovu metrics
+  - job_name: "nzovu"
     static_configs:
-      - targets: ["chronoqueue-server:8080"]
+      - targets: ["nzovu-server:8080"]
         labels:
-          service: "chronoqueue"
+          service: "nzovu"
           component: "server"
     scrape_interval: 10s
     scrape_timeout: 5s
@@ -36,10 +36,10 @@ scrape_configs:
           service: "prometheus"
 
   # Add additional scrape targets here
-  # Example for additional ChronoQueue instances:
-  # - job_name: 'chronoqueue-prod'
+  # Example for additional Nzovu instances:
+  # - job_name: 'nzovu-prod'
   #   static_configs:
-  #     - targets: ['chronoqueue-prod:9091']
+  #     - targets: ['nzovu-prod:9091']
   #       labels:
-  #         service: 'chronoqueue'
+  #         service: 'nzovu'
   #         environment: 'production'

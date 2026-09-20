@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/adrien19/nzovu/internal/runtimeenv"
 	"github.com/adrien19/nzovu/pkg/log"
 )
 
@@ -22,6 +23,8 @@ var (
 
 // Config holds the complete server configuration
 type Config struct {
+	environmentError error
+
 	// Version Information
 	Version   string
 	GitCommit string
@@ -120,7 +123,6 @@ func DefaultConfig() *Config {
 		PostgresRootCertFile:                getEnv("POSTGRES_ROOT_CERT", ""),
 		LogLevel:                            getEnv("LOG_LEVEL", "info"),
 		LogFormat:                           getEnv("LOG_FORMAT", "text"),
-		EnableTLS:                           getEnvBool("CHRONOQUEUE_TLS_ENABLED", false),
 		CertFile:                            getEnv("CERT_FILE", ""),
 		KeyFile:                             getEnv("KEY_FILE", ""),
 		CACertFile:                          getEnv("CA_CERT_FILE", ""),
@@ -150,6 +152,7 @@ func DefaultConfig() *Config {
 		ReclaimIntervalMs:                   getEnvInt("RECLAIM_INTERVAL_MS", 5000),
 		IsDevelopment:                       true,
 	}
+	config.EnableTLS, config.environmentError = runtimeenv.Bool("NZOVU_TLS_ENABLED", !config.IsDevelopment)
 	config.GatewayUseTLS = config.EnableTLS
 	return config
 }
@@ -173,7 +176,6 @@ func ProductionConfig() *Config {
 		PostgresRootCertFile:                getEnv("POSTGRES_ROOT_CERT", ""),
 		LogLevel:                            getEnv("LOG_LEVEL", "info"),
 		LogFormat:                           getEnv("LOG_FORMAT", "json"),
-		EnableTLS:                           getEnvBool("CHRONOQUEUE_TLS_ENABLED", true),
 		CertFile:                            getEnv("CERT_FILE", ""),
 		KeyFile:                             getEnv("KEY_FILE", ""),
 		CACertFile:                          getEnv("CA_CERT_FILE", ""),
@@ -203,12 +205,17 @@ func ProductionConfig() *Config {
 		ReclaimIntervalMs:                   getEnvInt("RECLAIM_INTERVAL_MS", 5000),
 		IsDevelopment:                       false,
 	}
+	config.EnableTLS, config.environmentError = runtimeenv.Bool("NZOVU_TLS_ENABLED", !config.IsDevelopment)
 	config.GatewayUseTLS = config.EnableTLS
 	return config
 }
 
 // Validate checks if the configuration is valid
 func (c *Config) Validate() error {
+	if c.environmentError != nil {
+		return c.environmentError
+	}
+
 	if !c.IsDevelopment && !c.EnableTLS {
 		return fmt.Errorf("TLS must be enabled in production")
 	}

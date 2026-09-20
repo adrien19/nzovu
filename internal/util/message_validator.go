@@ -3,7 +3,6 @@ package util
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 
 	common_pb "github.com/adrien19/nzovu/api/common/v1"
 	message_pb "github.com/adrien19/nzovu/api/message/v1"
+	"github.com/adrien19/nzovu/internal/runtimeenv"
 )
 
 const MaxMessageSize = 150 * 1024 // 150 KB
@@ -43,7 +43,7 @@ func ValidateMessageSize(msg *message_pb.Message) error {
 	dataSize := len(msg.Metadata.Payload.Data.String()) // This might need to be adjusted based on how the data is serialized
 
 	totalSize := fixedSize + variableSize + dataSize
-	allowedMessageSize, err := strconv.Atoi(envString("CHRONOQUEUE_MAX_MESSAGE_SIZE", strconv.Itoa(MaxMessageSize)))
+	allowedMessageSize, err := strconv.Atoi(envString("NZOVU_MAX_MESSAGE_SIZE", strconv.Itoa(MaxMessageSize)))
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func ValidateMessageSize(msg *message_pb.Message) error {
 }
 
 func envString(env, fallback string) string {
-	e := os.Getenv(env)
+	e := runtimeenv.Get(env)
 	if e == "" {
 		return fallback
 	}

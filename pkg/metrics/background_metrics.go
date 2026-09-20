@@ -12,7 +12,7 @@ var (
 	// Use this to detect if background services are running and healthy
 	backgroundServiceIterations = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_background_service_iterations_total",
+			Name: "nzovu_background_service_iterations_total",
 			Help: "Total number of background service iterations",
 		},
 		[]string{"service", "status"},
@@ -23,7 +23,7 @@ var (
 	// This shows the actual work done by background services
 	backgroundServiceProcessedMessages = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_background_service_processed_messages_total",
+			Name: "nzovu_background_service_processed_messages_total",
 			Help: "Total messages processed by background services",
 		},
 		[]string{"service", "queue_name"},
@@ -33,7 +33,7 @@ var (
 	// Long durations may indicate the service is overloaded or database is slow
 	backgroundServiceIterationDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "chronoqueue_background_service_iteration_duration_seconds",
+			Name: "nzovu_background_service_iteration_duration_seconds",
 			Help: "Duration of background service iterations",
 			// Buckets optimized for background tasks (10ms to 30s)
 			Buckets: []float64{.01, .05, .1, .5, 1, 5, 10, 30},
@@ -43,7 +43,7 @@ var (
 
 	backgroundServiceBatchSize = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "chronoqueue_background_service_batch_size",
+			Name:    "nzovu_background_service_batch_size",
 			Help:    "Number of candidates handled in each background service batch",
 			Buckets: []float64{1, 10, 25, 50, 100, 250, 500, 1000},
 		},
@@ -52,7 +52,7 @@ var (
 
 	backgroundServiceBudgetExhausted = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_background_service_budget_exhausted_total",
+			Name: "nzovu_background_service_budget_exhausted_total",
 			Help: "Background service cycles stopped by their batch or duration budget",
 		},
 		[]string{"service"},
@@ -60,7 +60,7 @@ var (
 
 	backgroundServiceCycleBatches = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "chronoqueue_background_service_cycle_batches",
+			Name:    "nzovu_background_service_cycle_batches",
 			Help:    "Number of batches handled in a background service cycle",
 			Buckets: []float64{0, 1, 2, 5, 10, 25, 50},
 		},
@@ -69,7 +69,7 @@ var (
 
 	backgroundServiceCycleItems = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "chronoqueue_background_service_cycle_items",
+			Name:    "nzovu_background_service_cycle_items",
 			Help:    "Number of candidates handled in a background service cycle",
 			Buckets: []float64{0, 1, 10, 50, 100, 250, 500, 1000, 2500, 5000},
 		},
@@ -80,7 +80,7 @@ var (
 	// by the cleanup service after their retention period expires.
 	messagesCleanedUpTotal = prometheus.NewCounter(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_messages_cleaned_up_total",
+			Name: "nzovu_messages_cleaned_up_total",
 			Help: "Total number of messages permanently deleted after retention period",
 		},
 	)

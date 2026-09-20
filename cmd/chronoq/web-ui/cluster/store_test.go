@@ -16,6 +16,28 @@ import (
 	"time"
 )
 
+func TestDefaultAPIKeyEnvironmentMigration(t *testing.T) {
+	t.Setenv("CHRONOQUEUE_API_KEY", "legacy-secret")
+	for _, value := range []string{"nzovu-secret", ""} {
+		t.Setenv("NZOVU_API_KEY", value)
+		opts, err := clientOptions(Cluster{BrokerAddress: "localhost:9000", TransportMode: TransportPlaintext})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if opts.APIKey != value {
+			t.Fatalf("API key = %q, want %q", opts.APIKey, value)
+		}
+	}
+	t.Setenv("NZOVU_API_KEY", "nzovu-secret")
+	opts, err := clientOptions(Cluster{BrokerAddress: "localhost:9000", TransportMode: TransportPlaintext, APIKeyEnv: "CHRONOQUEUE_API_KEY"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if opts.APIKey != "legacy-secret" {
+		t.Fatal("explicit key environment variable was overridden")
+	}
+}
+
 func TestActiveClient(t *testing.T) {
 	t.Run("no active cluster", func(t *testing.T) {
 		store := NewStore("")

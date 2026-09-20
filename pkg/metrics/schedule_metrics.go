@@ -11,7 +11,7 @@ var (
 	// Use this to monitor scheduled job reliability
 	scheduleExecutionsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_schedule_executions_total",
+			Name: "nzovu_schedule_executions_total",
 			Help: "Total number of schedule executions",
 		},
 		[]string{"schedule_id", "queue_name", "status"},
@@ -19,7 +19,7 @@ var (
 
 	cronScheduleExecutionsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_cron_schedule_executions_total",
+			Name: "nzovu_cron_schedule_executions_total",
 			Help: "Total number of cron schedule executions",
 		},
 		[]string{"schedule_id", "queue_name", "status"},
@@ -30,7 +30,7 @@ var (
 	// High activation rate indicates heavy use of delayed/scheduled messages
 	scheduleActivationsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_schedule_activations_total",
+			Name: "nzovu_schedule_activations_total",
 			Help: "Total number of messages activated from INVISIBLE to PENDING by scheduler",
 		},
 		[]string{"queue_name"},
@@ -42,7 +42,7 @@ var (
 	// Values >60s indicate scheduler is falling behind and may need tuning
 	scheduleLagSeconds = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_schedule_lag_seconds",
+			Name: "nzovu_schedule_lag_seconds",
 			Help: "How far behind scheduled_time the scheduler is (negative = ahead, positive = behind)",
 		},
 		[]string{"queue_name"},

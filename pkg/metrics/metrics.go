@@ -15,7 +15,7 @@ var (
 	// gRPC metrics
 	grpcRequestsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_grpc_requests_total",
+			Name: "nzovu_grpc_requests_total",
 			Help: "Total number of gRPC requests",
 		},
 		[]string{"method", "status_code"},
@@ -23,7 +23,7 @@ var (
 
 	grpcRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "chronoqueue_grpc_request_duration_seconds",
+			Name:    "nzovu_grpc_request_duration_seconds",
 			Help:    "Duration of gRPC requests in seconds",
 			Buckets: prometheus.DefBuckets,
 		},
@@ -33,7 +33,7 @@ var (
 	// HTTP Gateway metrics
 	httpRequestsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_http_requests_total",
+			Name: "nzovu_http_requests_total",
 			Help: "Total number of HTTP requests",
 		},
 		[]string{"method", "path", "status_code"},
@@ -41,7 +41,7 @@ var (
 
 	httpRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "chronoqueue_http_request_duration_seconds",
+			Name:    "nzovu_http_request_duration_seconds",
 			Help:    "Duration of HTTP requests in seconds",
 			Buckets: prometheus.DefBuckets,
 		},
@@ -51,14 +51,14 @@ var (
 	// Business metrics
 	queuesTotal = prometheus.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_queues_total",
+			Name: "nzovu_queues_total",
 			Help: "Total number of queues",
 		},
 	)
 
 	messagesEnqueued = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_messages_enqueued_total",
+			Name: "nzovu_messages_enqueued_total",
 			Help: "Total number of messages enqueued",
 		},
 		[]string{"queue_name"},
@@ -66,7 +66,7 @@ var (
 
 	messagesDequeued = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_messages_dequeued_total",
+			Name: "nzovu_messages_dequeued_total",
 			Help: "Total number of messages dequeued",
 		},
 		[]string{"queue_name"},
@@ -74,7 +74,7 @@ var (
 
 	messagesPending = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_messages_pending",
+			Name: "nzovu_messages_pending",
 			Help: "Number of pending messages in queues",
 		},
 		[]string{"queue_name"},
@@ -82,7 +82,7 @@ var (
 
 	messagesValidatedTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_messages_validated_total",
+			Name: "nzovu_messages_validated_total",
 			Help: "Total number of messages validated successfully",
 		},
 		[]string{"queue_name"},
@@ -90,7 +90,7 @@ var (
 
 	validationFailuresTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_validation_failures_total",
+			Name: "nzovu_validation_failures_total",
 			Help: "Total number of message validation failures",
 		},
 		[]string{"queue_name", "reason"},
@@ -102,7 +102,7 @@ type MetricsRegistry struct {
 	registry *prometheus.Registry
 }
 
-// NewMetricsRegistry creates a new metrics registry with all ChronoQueue metrics
+// NewMetricsRegistry creates a new metrics registry with all Nzovu metrics
 func NewMetricsRegistry() *MetricsRegistry {
 	registry := prometheus.NewRegistry()
 

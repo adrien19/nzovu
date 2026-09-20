@@ -1,5 +1,7 @@
 # ChronoQueue Deployment
 
+For Nzovu cutover, environment aliases and preserving existing databases/volumes, see the [runtime migration guide](./NZOVU_MIGRATION.md).
+
 This directory contains Docker Compose configurations for deploying ChronoQueue with different storage backends and monitoring stack.
 
 ## Files

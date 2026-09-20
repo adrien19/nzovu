@@ -159,7 +159,7 @@ func createSharedEnvironment() (*TestEnvironment, error) {
 	}
 
 	serverGenericReq := testcontainers.GenericContainerRequest{ContainerRequest: serverReq, Started: true}
-	if err := network.WithNetwork([]string{"chronoqueue"}, net)(&serverGenericReq); err != nil {
+	if err := network.WithNetwork([]string{"nzovu"}, net)(&serverGenericReq); err != nil {
 		return nil, fmt.Errorf("configure ChronoQueue container network: %w", err)
 	}
 	serverContainer, err := testcontainers.GenericContainer(ctx, serverGenericReq)

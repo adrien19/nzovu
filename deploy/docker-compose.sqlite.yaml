@@ -1,8 +1,8 @@
 
 services:
-  chronoqueuesvc:
-    container_name: chronoqueue-server
-    hostname: chronoqueue-server
+  nzovusvc:
+    container_name: nzovu-server
+    hostname: nzovu-server
     build:
       context: ..
       dockerfile: ./images/Dockerfile.sqlite
@@ -12,7 +12,7 @@ services:
       - SQLITE_DB_PATH=/data/chronoqueue.db
       - GRPC_ADDR=:9000
       - HTTP_ADDR=:8080
-      - CHRONOQUEUE_TLS_ENABLED=false
+      - NZOVU_TLS_ENABLED=false
       - ENABLE_ENCRYPTION=true
       - ENCRYPTION_KEY_SOURCE_TYPE=LOCAL
       - ENCRYPTION_KEY=0123456789abcdef0123456789abcdef
@@ -21,7 +21,7 @@ services:
       - ENABLE_API_DOCS=true
       - API_DOCS_CORS_ORIGINS=*
     networks:
-      - chronoqueue-network
+      - nzovu-network
     volumes:
       - ${WORKSPACE_FOLDER}/certs:/secrets
       - sqlite-data:/data
@@ -30,20 +30,20 @@ services:
       - "127.0.0.1:8080:8080"
     restart: unless-stopped
 
-  chronoqueue-ui:
-    container_name: chronoqueue-ui
-    hostname: chronoqueue-ui
+  nzovu-ui:
+    container_name: nzovu-ui
+    hostname: nzovu-ui
     build:
       context: ..
       dockerfile: ./images/Dockerfile.sqlite
     entrypoint: ["/nzovu"]
     environment:
-      - CHRONOQUEUE_UI_AUTH_ENABLED=true
-      - CHRONOQUEUE_UI_AUTH_USERNAME=${CHRONOQUEUE_UI_AUTH_USERNAME:?Set CHRONOQUEUE_UI_AUTH_USERNAME}
-      - CHRONOQUEUE_UI_AUTH_PASSWORD=${CHRONOQUEUE_UI_AUTH_PASSWORD:?Set CHRONOQUEUE_UI_AUTH_PASSWORD}
-      - CHRONOQUEUE_UI_TLS_CERT_FILE=/secrets/server.crt
-      - CHRONOQUEUE_UI_TLS_KEY_FILE=/secrets/server.key
-      - CHRONOQUEUE_UI_PUBLIC_ORIGIN=https://localhost:8081
+      - NZOVU_UI_AUTH_ENABLED=true
+      - NZOVU_UI_AUTH_USERNAME=${NZOVU_UI_AUTH_USERNAME-${CHRONOQUEUE_UI_AUTH_USERNAME-}}
+      - NZOVU_UI_AUTH_PASSWORD=${NZOVU_UI_AUTH_PASSWORD-${CHRONOQUEUE_UI_AUTH_PASSWORD-}}
+      - NZOVU_UI_TLS_CERT_FILE=/secrets/server.crt
+      - NZOVU_UI_TLS_KEY_FILE=/secrets/server.key
+      - NZOVU_UI_PUBLIC_ORIGIN=https://localhost:8081
     command:
       - web-ui
       - start
@@ -52,12 +52,12 @@ services:
       - --port
       - "8081"
       - --grpc-address
-      - chronoqueuesvc:9000
+      - nzovusvc:9000
       - --skip-ssl
     depends_on:
-      - chronoqueuesvc
+      - nzovusvc
     networks:
-      - chronoqueue-network
+      - nzovu-network
     volumes:
       - ${WORKSPACE_FOLDER}/certs:/secrets:ro
     ports:
@@ -65,7 +65,8 @@ services:
     restart: unless-stopped
 
 networks:
-  chronoqueue-network:
+  nzovu-network:
+    name: ${NZOVU_NETWORK_NAME:-nzovu-network}
     driver: bridge
 
 volumes:

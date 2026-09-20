@@ -106,7 +106,7 @@ esac
 [ -n "$HTTP_ADDR" ] && CMD_ARGS="$CMD_ARGS --http-addr $HTTP_ADDR"
 
 # Add TLS configuration flags
-tls_enabled="${CHRONOQUEUE_TLS_ENABLED:-${ENABLE_TLS:-false}}"
+tls_enabled="${NZOVU_TLS_ENABLED-${CHRONOQUEUE_TLS_ENABLED:-${ENABLE_TLS:-false}}}"
 if [ "$tls_enabled" = "true" ]; then
     log_info "TLS enabled"
     CMD_ARGS="$CMD_ARGS --enable-tls"

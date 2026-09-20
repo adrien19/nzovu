@@ -17,6 +17,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"github.com/adrien19/nzovu/client"
+	"github.com/adrien19/nzovu/internal/runtimeenv"
 )
 
 var ErrNoActiveCluster = errors.New("no active cluster configured")
@@ -304,9 +305,12 @@ func clientOptions(cluster Cluster) (client.ClientOptions, error) {
 
 	apiKeyEnv := cluster.APIKeyEnv
 	if apiKeyEnv == "" {
-		apiKeyEnv = "CHRONOQUEUE_API_KEY"
+		apiKeyEnv = "NZOVU_API_KEY"
 	}
 	apiKey := os.Getenv(apiKeyEnv)
+	if cluster.APIKeyEnv == "" {
+		apiKey = runtimeenv.Get(apiKeyEnv)
+	}
 	if cluster.APIKeyEnv != "" && apiKey == "" {
 		return client.ClientOptions{}, fmt.Errorf("API key environment variable %q is not set", apiKeyEnv)
 	}

@@ -13,7 +13,7 @@ var (
 	// States: INVISIBLE, PENDING, RUNNING, COMPLETED, ERRORED, CANCELED
 	messageStateTransitions = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "chronoqueue_message_state_transitions_total",
+			Name: "nzovu_message_state_transitions_total",
 			Help: "Total number of message state transitions",
 		},
 		[]string{"queue_name", "from_state", "to_state"},
@@ -23,7 +23,7 @@ var (
 	// This is a gauge that should be updated periodically by querying GetQueueState
 	messagesByState = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "chronoqueue_messages_by_state",
+			Name: "nzovu_messages_by_state",
 			Help: "Number of messages in each state per queue",
 		},
 		[]string{"queue_name", "state"},
@@ -33,7 +33,7 @@ var (
 	// This includes the database query time and any locking/transaction overhead
 	messageClaimLatency = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "chronoqueue_message_claim_duration_seconds",
+			Name: "nzovu_message_claim_duration_seconds",
 			Help: "Time taken to claim a message from queue",
 			// Buckets optimized for typical claim operations (1ms to 5s)
 			Buckets: []float64{.001, .005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5},
@@ -46,7 +46,7 @@ var (
 	// This reflects how long workers take to process messages
 	messageProcessingDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "chronoqueue_message_processing_duration_seconds",
+			Name: "nzovu_message_processing_duration_seconds",
 			Help: "Time from claim to acknowledgment (completed state)",
 			// Buckets optimized for typical processing (100ms to 10min)
 			Buckets: []float64{.1, .5, 1, 5, 10, 30, 60, 120, 300, 600},
