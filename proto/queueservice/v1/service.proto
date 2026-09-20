@@ -15,7 +15,7 @@
 // REST endpoints follow Google API Design Guide conventions.
 
 syntax = "proto3";
-package chronoqueue.api.queueservice.v1;
+package nzovu.api.queueservice.v1;
 
 option go_package = "github.com/adrien19/nzovu/api/queueservice/v1;queueservice";
 

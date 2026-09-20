@@ -1426,7 +1426,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/CreateQueue", runtime.WithHTTPPathPattern("/v1/queues"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/CreateQueue", runtime.WithHTTPPathPattern("/v1/queues"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1446,7 +1446,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteQueue", runtime.WithHTTPPathPattern("/v1/queues/{name=*}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteQueue", runtime.WithHTTPPathPattern("/v1/queues/{name=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1466,7 +1466,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ListQueues", runtime.WithHTTPPathPattern("/v1/queues"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ListQueues", runtime.WithHTTPPathPattern("/v1/queues"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1486,7 +1486,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetQueueState", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/state"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetQueueState", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/state"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1506,7 +1506,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PostMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PostMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1526,7 +1526,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PostMessagesBulk", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:bulk"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PostMessagesBulk", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:bulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1546,7 +1546,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetNextMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:getNext"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetNextMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:getNext"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1566,7 +1566,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/AcknowledgeMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:acknowledge"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/AcknowledgeMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:acknowledge"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1586,7 +1586,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/CancelMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:cancel"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/CancelMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:cancel"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1606,7 +1606,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/RenewMessageLease", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:renewLease"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/RenewMessageLease", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:renewLease"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1626,7 +1626,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PeekQueueMessages", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:peek"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PeekQueueMessages", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:peek"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1646,7 +1646,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/SendMessageHeartBeat", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:heartbeat"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/SendMessageHeartBeat", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:heartbeat"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1666,7 +1666,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/CreateSchedule", runtime.WithHTTPPathPattern("/v1/schedules"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/CreateSchedule", runtime.WithHTTPPathPattern("/v1/schedules"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1686,7 +1686,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1706,7 +1706,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1726,7 +1726,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ListSchedules", runtime.WithHTTPPathPattern("/v1/schedules"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ListSchedules", runtime.WithHTTPPathPattern("/v1/schedules"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1746,7 +1746,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetScheduleHistory", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}/history"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetScheduleHistory", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}/history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1766,7 +1766,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PauseSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:pause"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PauseSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:pause"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1786,7 +1786,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ResumeSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:resume"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ResumeSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:resume"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1806,7 +1806,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetDLQMessages", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetDLQMessages", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1826,7 +1826,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/RequeueFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}:requeue"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/RequeueFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}:requeue"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1846,7 +1846,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1866,7 +1866,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PurgeDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}:purge"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PurgeDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}:purge"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1886,7 +1886,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetDLQStats", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/stats"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetDLQStats", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1906,7 +1906,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ValidateCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:validate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ValidateCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1926,7 +1926,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PreviewCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:preview"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PreviewCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:preview"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1946,7 +1946,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/RegisterSchema", runtime.WithHTTPPathPattern("/v1/schemas"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/RegisterSchema", runtime.WithHTTPPathPattern("/v1/schemas"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1966,7 +1966,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1986,7 +1986,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ListSchemas", runtime.WithHTTPPathPattern("/v1/schemas"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ListSchemas", runtime.WithHTTPPathPattern("/v1/schemas"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2006,7 +2006,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2026,7 +2026,7 @@ func RegisterQueueServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ValidatePayload", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}:validate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ValidatePayload", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}:validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2084,7 +2084,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/CreateQueue", runtime.WithHTTPPathPattern("/v1/queues"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/CreateQueue", runtime.WithHTTPPathPattern("/v1/queues"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2101,7 +2101,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteQueue", runtime.WithHTTPPathPattern("/v1/queues/{name=*}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteQueue", runtime.WithHTTPPathPattern("/v1/queues/{name=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2118,7 +2118,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ListQueues", runtime.WithHTTPPathPattern("/v1/queues"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ListQueues", runtime.WithHTTPPathPattern("/v1/queues"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2135,7 +2135,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetQueueState", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/state"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetQueueState", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/state"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2152,7 +2152,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PostMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PostMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2169,7 +2169,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PostMessagesBulk", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:bulk"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PostMessagesBulk", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:bulk"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2186,7 +2186,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetNextMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:getNext"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetNextMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:getNext"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2203,7 +2203,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/AcknowledgeMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:acknowledge"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/AcknowledgeMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:acknowledge"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2220,7 +2220,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/CancelMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:cancel"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/CancelMessage", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:cancel"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2237,7 +2237,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/RenewMessageLease", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:renewLease"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/RenewMessageLease", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages/{message_id=*}:renewLease"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2254,7 +2254,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PeekQueueMessages", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:peek"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PeekQueueMessages", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:peek"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2271,7 +2271,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/SendMessageHeartBeat", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:heartbeat"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/SendMessageHeartBeat", runtime.WithHTTPPathPattern("/v1/queues/{queue_name=*}/messages:heartbeat"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2288,7 +2288,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/CreateSchedule", runtime.WithHTTPPathPattern("/v1/schedules"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/CreateSchedule", runtime.WithHTTPPathPattern("/v1/schedules"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2305,7 +2305,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2322,7 +2322,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2339,7 +2339,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ListSchedules", runtime.WithHTTPPathPattern("/v1/schedules"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ListSchedules", runtime.WithHTTPPathPattern("/v1/schedules"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2356,7 +2356,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetScheduleHistory", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}/history"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetScheduleHistory", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}/history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2373,7 +2373,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PauseSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:pause"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PauseSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:pause"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2390,7 +2390,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ResumeSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:resume"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ResumeSchedule", runtime.WithHTTPPathPattern("/v1/schedules/{schedule_id=*}:resume"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2407,7 +2407,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetDLQMessages", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetDLQMessages", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2424,7 +2424,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/RequeueFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}:requeue"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/RequeueFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}:requeue"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2441,7 +2441,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteFromDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/messages/{message_id=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2458,7 +2458,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PurgeDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}:purge"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PurgeDLQ", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}:purge"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2475,7 +2475,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetDLQStats", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/stats"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetDLQStats", runtime.WithHTTPPathPattern("/v1/dlq/{dlq_name=*}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2492,7 +2492,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ValidateCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:validate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ValidateCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2509,7 +2509,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/PreviewCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:preview"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/PreviewCalendarSchedule", runtime.WithHTTPPathPattern("/v1/calendar-schedules:preview"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2526,7 +2526,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/RegisterSchema", runtime.WithHTTPPathPattern("/v1/schemas"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/RegisterSchema", runtime.WithHTTPPathPattern("/v1/schemas"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2543,7 +2543,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/GetSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/GetSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2560,7 +2560,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ListSchemas", runtime.WithHTTPPathPattern("/v1/schemas"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ListSchemas", runtime.WithHTTPPathPattern("/v1/schemas"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2577,7 +2577,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/DeleteSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/DeleteSchema", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2594,7 +2594,7 @@ func RegisterQueueServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chronoqueue.api.queueservice.v1.QueueService/ValidatePayload", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}:validate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/nzovu.api.queueservice.v1.QueueService/ValidatePayload", runtime.WithHTTPPathPattern("/v1/schemas/{schema_id=*}/versions/{version=*}:validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return

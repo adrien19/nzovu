@@ -219,7 +219,7 @@ type QueueMetadata struct {
 	// type: Determines message consumption pattern.
 	// SIMPLE: Multiple workers process concurrently (most common).
 	// EXCLUSIVE: One RUNNING lease at a time; claims require exclusivity_key.
-	Type QueueType `protobuf:"varint,1,opt,name=type,proto3,enum=chronoqueue.api.queue.v1.QueueType" json:"type,omitempty"`
+	Type QueueType `protobuf:"varint,1,opt,name=type,proto3,enum=nzovu.api.queue.v1.QueueType" json:"type,omitempty"`
 	// default_max_attempts: Default retry count for messages without explicit max_attempts.
 	// Messages failing this many times move to the dead letter queue.
 	// Common values: 1 (no retry), 3 (standard), 5 (aggressive retry).
@@ -425,7 +425,7 @@ func (x *QueueMetadata) GetMessageRetentionPolicy() *MessageRetentionPolicy {
 type MessageRetentionPolicy struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// mode: Retention strategy for this queue's messages.
-	Mode MessageRetentionPolicy_Mode `protobuf:"varint,1,opt,name=mode,proto3,enum=chronoqueue.api.queue.v1.MessageRetentionPolicy_Mode" json:"mode,omitempty"`
+	Mode MessageRetentionPolicy_Mode `protobuf:"varint,1,opt,name=mode,proto3,enum=nzovu.api.queue.v1.MessageRetentionPolicy_Mode" json:"mode,omitempty"`
 	// retention_seconds: How long to retain messages (used with RETAIN_DURATION mode).
 	// After this period, messages are permanently deleted by background cleanup service.
 	// Common values: 86400 (1 day), 604800 (7 days), 2592000 (30 days).
@@ -497,7 +497,7 @@ type PriorityConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// policy: The fairness strategy to use.
 	// See FairnessPolicy enum for detailed descriptions.
-	Policy FairnessPolicy `protobuf:"varint,1,opt,name=policy,proto3,enum=chronoqueue.api.queue.v1.FairnessPolicy" json:"policy,omitempty"`
+	Policy FairnessPolicy `protobuf:"varint,1,opt,name=policy,proto3,enum=nzovu.api.queue.v1.FairnessPolicy" json:"policy,omitempty"`
 	// priority_weights: For WEIGHTED/HYBRID policies, maps priority levels to weights.
 	// Key: priority level (e.g., 4, 2, 0)
 	// Value: relative weight (e.g., 70, 20, 10 = 70% high, 20% medium, 10% low)
@@ -651,9 +651,9 @@ var File_proto_queue_v1_queue_proto protoreflect.FileDescriptor
 
 const file_proto_queue_v1_queue_proto_rawDesc = "" +
 	"\n" +
-	"\x1aproto/queue/v1/queue.proto\x12\x18chronoqueue.api.queue.v1\x1a\x1cproto/common/v1/common.proto\x1a\x1egoogle/protobuf/duration.proto\"\x8d\x06\n" +
-	"\rQueueMetadata\x127\n" +
-	"\x04type\x18\x01 \x01(\x0e2#.chronoqueue.api.queue.v1.QueueTypeR\x04type\x120\n" +
+	"\x1aproto/queue/v1/queue.proto\x12\x12nzovu.api.queue.v1\x1a\x1cproto/common/v1/common.proto\x1a\x1egoogle/protobuf/duration.proto\"\xf5\x05\n" +
+	"\rQueueMetadata\x121\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x1d.nzovu.api.queue.v1.QueueTypeR\x04type\x120\n" +
 	"\x14default_max_attempts\x18\x02 \x01(\x05R\x12defaultMaxAttempts\x12@\n" +
 	"\x0elease_duration\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\rleaseDuration\x12'\n" +
 	"\x0fexclusivity_key\x18\x04 \x01(\tR\x0eexclusivityKey\x123\n" +
@@ -663,28 +663,28 @@ const file_proto_queue_v1_queue_proto_rawDesc = "" +
 	"\x0fschema_required\x18\t \x01(\bR\x0eschemaRequired\x12(\n" +
 	"\x10max_payload_size\x18\n" +
 	" \x01(\x05R\x0emaxPayloadSize\x122\n" +
-	"\x15allowed_content_types\x18\v \x03(\tR\x13allowedContentTypes\x12Q\n" +
-	"\x0fpriority_config\x18\f \x01(\v2(.chronoqueue.api.queue.v1.PriorityConfigR\x0epriorityConfig\x12I\n" +
-	"\flease_policy\x18\r \x01(\v2&.chronoqueue.api.common.v1.LeasePolicyR\vleasePolicy\x12j\n" +
-	"\x18message_retention_policy\x18\x0e \x01(\v20.chronoqueue.api.queue.v1.MessageRetentionPolicyR\x16messageRetentionPolicyJ\x04\b\x05\x10\x06R\x15invisibility_duration\"\xd9\x01\n" +
-	"\x16MessageRetentionPolicy\x12I\n" +
-	"\x04mode\x18\x01 \x01(\x0e25.chronoqueue.api.queue.v1.MessageRetentionPolicy.ModeR\x04mode\x12+\n" +
+	"\x15allowed_content_types\x18\v \x03(\tR\x13allowedContentTypes\x12K\n" +
+	"\x0fpriority_config\x18\f \x01(\v2\".nzovu.api.queue.v1.PriorityConfigR\x0epriorityConfig\x12C\n" +
+	"\flease_policy\x18\r \x01(\v2 .nzovu.api.common.v1.LeasePolicyR\vleasePolicy\x12d\n" +
+	"\x18message_retention_policy\x18\x0e \x01(\v2*.nzovu.api.queue.v1.MessageRetentionPolicyR\x16messageRetentionPolicyJ\x04\b\x05\x10\x06R\x15invisibility_duration\"\xd3\x01\n" +
+	"\x16MessageRetentionPolicy\x12C\n" +
+	"\x04mode\x18\x01 \x01(\x0e2/.nzovu.api.queue.v1.MessageRetentionPolicy.ModeR\x04mode\x12+\n" +
 	"\x11retention_seconds\x18\x02 \x01(\x03R\x10retentionSeconds\"G\n" +
 	"\x04Mode\x12\x16\n" +
 	"\x12DELETE_IMMEDIATELY\x10\x00\x12\x13\n" +
 	"\x0fRETAIN_DURATION\x10\x01\x12\x12\n" +
-	"\x0eRETAIN_FOREVER\x10\x02\"\xfd\x02\n" +
-	"\x0ePriorityConfig\x12@\n" +
-	"\x06policy\x18\x01 \x01(\x0e2(.chronoqueue.api.queue.v1.FairnessPolicyR\x06policy\x12h\n" +
-	"\x10priority_weights\x18\x02 \x03(\v2=.chronoqueue.api.queue.v1.PriorityConfig.PriorityWeightsEntryR\x0fpriorityWeights\x12I\n" +
+	"\x0eRETAIN_FOREVER\x10\x02\"\xf1\x02\n" +
+	"\x0ePriorityConfig\x12:\n" +
+	"\x06policy\x18\x01 \x01(\x0e2\".nzovu.api.queue.v1.FairnessPolicyR\x06policy\x12b\n" +
+	"\x10priority_weights\x18\x02 \x03(\v27.nzovu.api.queue.v1.PriorityConfig.PriorityWeightsEntryR\x0fpriorityWeights\x12I\n" +
 	"\x13age_boost_threshold\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x11ageBoostThreshold\x120\n" +
 	"\x14age_boost_multiplier\x18\x04 \x01(\x05R\x12ageBoostMultiplier\x1aB\n" +
 	"\x14PriorityWeightsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\x05R\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"`\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"Z\n" +
 	"\x05Queue\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12C\n" +
-	"\bmetadata\x18\x02 \x01(\v2'.chronoqueue.api.queue.v1.QueueMetadataR\bmetadata*&\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12=\n" +
+	"\bmetadata\x18\x02 \x01(\v2!.nzovu.api.queue.v1.QueueMetadataR\bmetadata*&\n" +
 	"\tQueueType\x12\n" +
 	"\n" +
 	"\x06SIMPLE\x10\x00\x12\r\n" +
@@ -712,28 +712,28 @@ func file_proto_queue_v1_queue_proto_rawDescGZIP() []byte {
 var file_proto_queue_v1_queue_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_proto_queue_v1_queue_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_proto_queue_v1_queue_proto_goTypes = []any{
-	(QueueType)(0),                   // 0: chronoqueue.api.queue.v1.QueueType
-	(FairnessPolicy)(0),              // 1: chronoqueue.api.queue.v1.FairnessPolicy
-	(MessageRetentionPolicy_Mode)(0), // 2: chronoqueue.api.queue.v1.MessageRetentionPolicy.Mode
-	(*QueueMetadata)(nil),            // 3: chronoqueue.api.queue.v1.QueueMetadata
-	(*MessageRetentionPolicy)(nil),   // 4: chronoqueue.api.queue.v1.MessageRetentionPolicy
-	(*PriorityConfig)(nil),           // 5: chronoqueue.api.queue.v1.PriorityConfig
-	(*Queue)(nil),                    // 6: chronoqueue.api.queue.v1.Queue
-	nil,                              // 7: chronoqueue.api.queue.v1.PriorityConfig.PriorityWeightsEntry
+	(QueueType)(0),                   // 0: nzovu.api.queue.v1.QueueType
+	(FairnessPolicy)(0),              // 1: nzovu.api.queue.v1.FairnessPolicy
+	(MessageRetentionPolicy_Mode)(0), // 2: nzovu.api.queue.v1.MessageRetentionPolicy.Mode
+	(*QueueMetadata)(nil),            // 3: nzovu.api.queue.v1.QueueMetadata
+	(*MessageRetentionPolicy)(nil),   // 4: nzovu.api.queue.v1.MessageRetentionPolicy
+	(*PriorityConfig)(nil),           // 5: nzovu.api.queue.v1.PriorityConfig
+	(*Queue)(nil),                    // 6: nzovu.api.queue.v1.Queue
+	nil,                              // 7: nzovu.api.queue.v1.PriorityConfig.PriorityWeightsEntry
 	(*durationpb.Duration)(nil),      // 8: google.protobuf.Duration
-	(*v1.LeasePolicy)(nil),           // 9: chronoqueue.api.common.v1.LeasePolicy
+	(*v1.LeasePolicy)(nil),           // 9: nzovu.api.common.v1.LeasePolicy
 }
 var file_proto_queue_v1_queue_proto_depIdxs = []int32{
-	0,  // 0: chronoqueue.api.queue.v1.QueueMetadata.type:type_name -> chronoqueue.api.queue.v1.QueueType
-	8,  // 1: chronoqueue.api.queue.v1.QueueMetadata.lease_duration:type_name -> google.protobuf.Duration
-	5,  // 2: chronoqueue.api.queue.v1.QueueMetadata.priority_config:type_name -> chronoqueue.api.queue.v1.PriorityConfig
-	9,  // 3: chronoqueue.api.queue.v1.QueueMetadata.lease_policy:type_name -> chronoqueue.api.common.v1.LeasePolicy
-	4,  // 4: chronoqueue.api.queue.v1.QueueMetadata.message_retention_policy:type_name -> chronoqueue.api.queue.v1.MessageRetentionPolicy
-	2,  // 5: chronoqueue.api.queue.v1.MessageRetentionPolicy.mode:type_name -> chronoqueue.api.queue.v1.MessageRetentionPolicy.Mode
-	1,  // 6: chronoqueue.api.queue.v1.PriorityConfig.policy:type_name -> chronoqueue.api.queue.v1.FairnessPolicy
-	7,  // 7: chronoqueue.api.queue.v1.PriorityConfig.priority_weights:type_name -> chronoqueue.api.queue.v1.PriorityConfig.PriorityWeightsEntry
-	8,  // 8: chronoqueue.api.queue.v1.PriorityConfig.age_boost_threshold:type_name -> google.protobuf.Duration
-	3,  // 9: chronoqueue.api.queue.v1.Queue.metadata:type_name -> chronoqueue.api.queue.v1.QueueMetadata
+	0,  // 0: nzovu.api.queue.v1.QueueMetadata.type:type_name -> nzovu.api.queue.v1.QueueType
+	8,  // 1: nzovu.api.queue.v1.QueueMetadata.lease_duration:type_name -> google.protobuf.Duration
+	5,  // 2: nzovu.api.queue.v1.QueueMetadata.priority_config:type_name -> nzovu.api.queue.v1.PriorityConfig
+	9,  // 3: nzovu.api.queue.v1.QueueMetadata.lease_policy:type_name -> nzovu.api.common.v1.LeasePolicy
+	4,  // 4: nzovu.api.queue.v1.QueueMetadata.message_retention_policy:type_name -> nzovu.api.queue.v1.MessageRetentionPolicy
+	2,  // 5: nzovu.api.queue.v1.MessageRetentionPolicy.mode:type_name -> nzovu.api.queue.v1.MessageRetentionPolicy.Mode
+	1,  // 6: nzovu.api.queue.v1.PriorityConfig.policy:type_name -> nzovu.api.queue.v1.FairnessPolicy
+	7,  // 7: nzovu.api.queue.v1.PriorityConfig.priority_weights:type_name -> nzovu.api.queue.v1.PriorityConfig.PriorityWeightsEntry
+	8,  // 8: nzovu.api.queue.v1.PriorityConfig.age_boost_threshold:type_name -> google.protobuf.Duration
+	3,  // 9: nzovu.api.queue.v1.Queue.metadata:type_name -> nzovu.api.queue.v1.QueueMetadata
 	10, // [10:10] is the sub-list for method output_type
 	10, // [10:10] is the sub-list for method input_type
 	10, // [10:10] is the sub-list for extension type_name

@@ -647,7 +647,7 @@ gen-proto-$(1):
 	@if [ "$(1)" = "queueservice" ]; then \
 		mkdir -p pkg/gateway && \
 		$(PROTOC) --openapiv2_out=pkg/gateway \
-			--openapiv2_opt=allow_merge=true,merge_file_name=chronoqueue \
+			--openapiv2_opt=allow_merge=true,merge_file_name=nzovu \
 			./proto/$(1)/v1/service.proto; \
 		echo "Generated OpenAPI spec in pkg/gateway/ for embedding"; \
 	fi
@@ -688,8 +688,8 @@ check-proto-version: ## Checking the version of proto related tools
 ################################################################################
 .PHONY: check-proto-diff
 check-proto-diff:
-	git diff --exit-code -- api pkg/gateway/chronoqueue.swagger.json
-	@test -z "$$(git ls-files --others --exclude-standard -- api pkg/gateway/chronoqueue.swagger.json)"
+	git diff --exit-code -- api pkg/gateway/nzovu.swagger.json
+	@test -z "$$(git ls-files --others --exclude-standard -- api pkg/gateway/nzovu.swagger.json)"
 
 
 ################################################################################

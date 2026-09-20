@@ -5,7 +5,7 @@
 
 syntax = "proto3";
 
-package chronoqueue.api.queue.v1;
+package nzovu.api.queue.v1;
 
 import "proto/common/v1/common.proto";
 import "google/protobuf/duration.proto";
@@ -118,7 +118,7 @@ message QueueMetadata {
     // Lease model defaults (queue-level)
     // ---------------------------------------------------------------------------
     // Message-level policies can selectively override these fields.
-  chronoqueue.api.common.v1.LeasePolicy lease_policy = 13;
+  nzovu.api.common.v1.LeasePolicy lease_policy = 13;
 
     // message_retention_policy: Controls how long messages are retained after completion/error.
     // By default (if not set), messages are deleted immediately upon acknowledgment.

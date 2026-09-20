@@ -582,7 +582,7 @@ var File_proto_schema_v1_schema_proto protoreflect.FileDescriptor
 
 const file_proto_schema_v1_schema_proto_rawDesc = "" +
 	"\n" +
-	"\x1cproto/schema/v1/schema.proto\x12\x19chronoqueue.api.schema.v1\"\x97\x03\n" +
+	"\x1cproto/schema/v1/schema.proto\x12\x13nzovu.api.schema.v1\"\x91\x03\n" +
 	"\x06Schema\x12\x1b\n" +
 	"\tschema_id\x18\x01 \x01(\tR\bschemaId\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\x05R\aversion\x12\x12\n" +
@@ -594,24 +594,24 @@ const file_proto_schema_v1_schema_proto_rawDesc = "" +
 	"created_at\x18\a \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\b \x01(\x03R\tupdatedAt\x12\x1b\n" +
-	"\tis_active\x18\t \x01(\bR\bisActive\x12K\n" +
+	"\tis_active\x18\t \x01(\bR\bisActive\x12E\n" +
 	"\bmetadata\x18\n" +
-	" \x03(\v2/.chronoqueue.api.schema.v1.Schema.MetadataEntryR\bmetadata\x1a;\n" +
+	" \x03(\v2).nzovu.api.schema.v1.Schema.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd3\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcd\x01\n" +
 	"\x10ValidationResult\x12\x14\n" +
-	"\x05valid\x18\x01 \x01(\bR\x05valid\x12B\n" +
-	"\x06errors\x18\x02 \x03(\v2*.chronoqueue.api.schema.v1.ValidationErrorR\x06errors\x12!\n" +
+	"\x05valid\x18\x01 \x01(\bR\x05valid\x12<\n" +
+	"\x06errors\x18\x02 \x03(\v2$.nzovu.api.schema.v1.ValidationErrorR\x06errors\x12!\n" +
 	"\fvalidated_at\x18\x03 \x01(\x03R\vvalidatedAt\x12\x1b\n" +
 	"\tschema_id\x18\x04 \x01(\tR\bschemaId\x12%\n" +
-	"\x0eschema_version\x18\x05 \x01(\x05R\rschemaVersion\"\xef\x01\n" +
+	"\x0eschema_version\x18\x05 \x01(\x05R\rschemaVersion\"\xe9\x01\n" +
 	"\x0fValidationError\x12\x14\n" +
 	"\x05field\x18\x01 \x01(\tR\x05field\x12\x1d\n" +
 	"\n" +
 	"error_code\x18\x02 \x01(\tR\terrorCode\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage\x12Q\n" +
-	"\adetails\x18\x04 \x03(\v27.chronoqueue.api.schema.v1.ValidationError.DetailsEntryR\adetails\x1a:\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12K\n" +
+	"\adetails\x18\x04 \x03(\v21.nzovu.api.schema.v1.ValidationError.DetailsEntryR\adetails\x1a:\n" +
 	"\fDetailsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xef\x02\n" +
@@ -647,17 +647,17 @@ func file_proto_schema_v1_schema_proto_rawDescGZIP() []byte {
 var file_proto_schema_v1_schema_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_proto_schema_v1_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_proto_schema_v1_schema_proto_goTypes = []any{
-	(ErrorCode)(0),           // 0: chronoqueue.api.schema.v1.ErrorCode
-	(*Schema)(nil),           // 1: chronoqueue.api.schema.v1.Schema
-	(*ValidationResult)(nil), // 2: chronoqueue.api.schema.v1.ValidationResult
-	(*ValidationError)(nil),  // 3: chronoqueue.api.schema.v1.ValidationError
-	nil,                      // 4: chronoqueue.api.schema.v1.Schema.MetadataEntry
-	nil,                      // 5: chronoqueue.api.schema.v1.ValidationError.DetailsEntry
+	(ErrorCode)(0),           // 0: nzovu.api.schema.v1.ErrorCode
+	(*Schema)(nil),           // 1: nzovu.api.schema.v1.Schema
+	(*ValidationResult)(nil), // 2: nzovu.api.schema.v1.ValidationResult
+	(*ValidationError)(nil),  // 3: nzovu.api.schema.v1.ValidationError
+	nil,                      // 4: nzovu.api.schema.v1.Schema.MetadataEntry
+	nil,                      // 5: nzovu.api.schema.v1.ValidationError.DetailsEntry
 }
 var file_proto_schema_v1_schema_proto_depIdxs = []int32{
-	4, // 0: chronoqueue.api.schema.v1.Schema.metadata:type_name -> chronoqueue.api.schema.v1.Schema.MetadataEntry
-	3, // 1: chronoqueue.api.schema.v1.ValidationResult.errors:type_name -> chronoqueue.api.schema.v1.ValidationError
-	5, // 2: chronoqueue.api.schema.v1.ValidationError.details:type_name -> chronoqueue.api.schema.v1.ValidationError.DetailsEntry
+	4, // 0: nzovu.api.schema.v1.Schema.metadata:type_name -> nzovu.api.schema.v1.Schema.MetadataEntry
+	3, // 1: nzovu.api.schema.v1.ValidationResult.errors:type_name -> nzovu.api.schema.v1.ValidationError
+	5, // 2: nzovu.api.schema.v1.ValidationError.details:type_name -> nzovu.api.schema.v1.ValidationError.DetailsEntry
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

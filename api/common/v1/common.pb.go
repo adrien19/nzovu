@@ -261,9 +261,9 @@ var File_proto_common_v1_common_proto protoreflect.FileDescriptor
 
 const file_proto_common_v1_common_proto_rawDesc = "" +
 	"\n" +
-	"\x1cproto/common/v1/common.proto\x12\x19chronoqueue.api.common.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/duration.proto\"\xc0\x02\n" +
-	"\aPayload\x12L\n" +
-	"\bmetadata\x18\x01 \x03(\v20.chronoqueue.api.common.v1.Payload.MetadataEntryR\bmetadata\x12+\n" +
+	"\x1cproto/common/v1/common.proto\x12\x13nzovu.api.common.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/duration.proto\"\xba\x02\n" +
+	"\aPayload\x12F\n" +
+	"\bmetadata\x18\x01 \x03(\v2*.nzovu.api.common.v1.Payload.MetadataEntryR\bmetadata\x12+\n" +
 	"\x04data\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x04data\x12!\n" +
 	"\fcontent_type\x18\x03 \x01(\tR\vcontentType\x12\x1b\n" +
 	"\tschema_id\x18\x04 \x01(\tR\bschemaId\x12%\n" +
@@ -295,21 +295,21 @@ func file_proto_common_v1_common_proto_rawDescGZIP() []byte {
 
 var file_proto_common_v1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_proto_common_v1_common_proto_goTypes = []any{
-	(*Payload)(nil),             // 0: chronoqueue.api.common.v1.Payload
-	(*LeasePolicy)(nil),         // 1: chronoqueue.api.common.v1.LeasePolicy
-	nil,                         // 2: chronoqueue.api.common.v1.Payload.MetadataEntry
+	(*Payload)(nil),             // 0: nzovu.api.common.v1.Payload
+	(*LeasePolicy)(nil),         // 1: nzovu.api.common.v1.LeasePolicy
+	nil,                         // 2: nzovu.api.common.v1.Payload.MetadataEntry
 	(*structpb.Struct)(nil),     // 3: google.protobuf.Struct
 	(*durationpb.Duration)(nil), // 4: google.protobuf.Duration
 	(*structpb.Value)(nil),      // 5: google.protobuf.Value
 }
 var file_proto_common_v1_common_proto_depIdxs = []int32{
-	2, // 0: chronoqueue.api.common.v1.Payload.metadata:type_name -> chronoqueue.api.common.v1.Payload.MetadataEntry
-	3, // 1: chronoqueue.api.common.v1.Payload.data:type_name -> google.protobuf.Struct
-	4, // 2: chronoqueue.api.common.v1.LeasePolicy.base_lease:type_name -> google.protobuf.Duration
-	4, // 3: chronoqueue.api.common.v1.LeasePolicy.max_extension:type_name -> google.protobuf.Duration
-	4, // 4: chronoqueue.api.common.v1.LeasePolicy.heartbeat_timeout:type_name -> google.protobuf.Duration
-	4, // 5: chronoqueue.api.common.v1.LeasePolicy.extend_step:type_name -> google.protobuf.Duration
-	5, // 6: chronoqueue.api.common.v1.Payload.MetadataEntry.value:type_name -> google.protobuf.Value
+	2, // 0: nzovu.api.common.v1.Payload.metadata:type_name -> nzovu.api.common.v1.Payload.MetadataEntry
+	3, // 1: nzovu.api.common.v1.Payload.data:type_name -> google.protobuf.Struct
+	4, // 2: nzovu.api.common.v1.LeasePolicy.base_lease:type_name -> google.protobuf.Duration
+	4, // 3: nzovu.api.common.v1.LeasePolicy.max_extension:type_name -> google.protobuf.Duration
+	4, // 4: nzovu.api.common.v1.LeasePolicy.heartbeat_timeout:type_name -> google.protobuf.Duration
+	4, // 5: nzovu.api.common.v1.LeasePolicy.extend_step:type_name -> google.protobuf.Duration
+	5, // 6: nzovu.api.common.v1.Payload.MetadataEntry.value:type_name -> google.protobuf.Value
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name

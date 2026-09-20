@@ -35,37 +35,37 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	QueueService_CreateQueue_FullMethodName              = "/chronoqueue.api.queueservice.v1.QueueService/CreateQueue"
-	QueueService_DeleteQueue_FullMethodName              = "/chronoqueue.api.queueservice.v1.QueueService/DeleteQueue"
-	QueueService_ListQueues_FullMethodName               = "/chronoqueue.api.queueservice.v1.QueueService/ListQueues"
-	QueueService_GetQueueState_FullMethodName            = "/chronoqueue.api.queueservice.v1.QueueService/GetQueueState"
-	QueueService_PostMessage_FullMethodName              = "/chronoqueue.api.queueservice.v1.QueueService/PostMessage"
-	QueueService_PostMessagesBulk_FullMethodName         = "/chronoqueue.api.queueservice.v1.QueueService/PostMessagesBulk"
-	QueueService_GetNextMessage_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/GetNextMessage"
-	QueueService_AcknowledgeMessage_FullMethodName       = "/chronoqueue.api.queueservice.v1.QueueService/AcknowledgeMessage"
-	QueueService_CancelMessage_FullMethodName            = "/chronoqueue.api.queueservice.v1.QueueService/CancelMessage"
-	QueueService_RenewMessageLease_FullMethodName        = "/chronoqueue.api.queueservice.v1.QueueService/RenewMessageLease"
-	QueueService_PeekQueueMessages_FullMethodName        = "/chronoqueue.api.queueservice.v1.QueueService/PeekQueueMessages"
-	QueueService_SendMessageHeartBeat_FullMethodName     = "/chronoqueue.api.queueservice.v1.QueueService/SendMessageHeartBeat"
-	QueueService_CreateSchedule_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/CreateSchedule"
-	QueueService_DeleteSchedule_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/DeleteSchedule"
-	QueueService_GetSchedule_FullMethodName              = "/chronoqueue.api.queueservice.v1.QueueService/GetSchedule"
-	QueueService_ListSchedules_FullMethodName            = "/chronoqueue.api.queueservice.v1.QueueService/ListSchedules"
-	QueueService_GetScheduleHistory_FullMethodName       = "/chronoqueue.api.queueservice.v1.QueueService/GetScheduleHistory"
-	QueueService_PauseSchedule_FullMethodName            = "/chronoqueue.api.queueservice.v1.QueueService/PauseSchedule"
-	QueueService_ResumeSchedule_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/ResumeSchedule"
-	QueueService_GetDLQMessages_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/GetDLQMessages"
-	QueueService_RequeueFromDLQ_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/RequeueFromDLQ"
-	QueueService_DeleteFromDLQ_FullMethodName            = "/chronoqueue.api.queueservice.v1.QueueService/DeleteFromDLQ"
-	QueueService_PurgeDLQ_FullMethodName                 = "/chronoqueue.api.queueservice.v1.QueueService/PurgeDLQ"
-	QueueService_GetDLQStats_FullMethodName              = "/chronoqueue.api.queueservice.v1.QueueService/GetDLQStats"
-	QueueService_ValidateCalendarSchedule_FullMethodName = "/chronoqueue.api.queueservice.v1.QueueService/ValidateCalendarSchedule"
-	QueueService_PreviewCalendarSchedule_FullMethodName  = "/chronoqueue.api.queueservice.v1.QueueService/PreviewCalendarSchedule"
-	QueueService_RegisterSchema_FullMethodName           = "/chronoqueue.api.queueservice.v1.QueueService/RegisterSchema"
-	QueueService_GetSchema_FullMethodName                = "/chronoqueue.api.queueservice.v1.QueueService/GetSchema"
-	QueueService_ListSchemas_FullMethodName              = "/chronoqueue.api.queueservice.v1.QueueService/ListSchemas"
-	QueueService_DeleteSchema_FullMethodName             = "/chronoqueue.api.queueservice.v1.QueueService/DeleteSchema"
-	QueueService_ValidatePayload_FullMethodName          = "/chronoqueue.api.queueservice.v1.QueueService/ValidatePayload"
+	QueueService_CreateQueue_FullMethodName              = "/nzovu.api.queueservice.v1.QueueService/CreateQueue"
+	QueueService_DeleteQueue_FullMethodName              = "/nzovu.api.queueservice.v1.QueueService/DeleteQueue"
+	QueueService_ListQueues_FullMethodName               = "/nzovu.api.queueservice.v1.QueueService/ListQueues"
+	QueueService_GetQueueState_FullMethodName            = "/nzovu.api.queueservice.v1.QueueService/GetQueueState"
+	QueueService_PostMessage_FullMethodName              = "/nzovu.api.queueservice.v1.QueueService/PostMessage"
+	QueueService_PostMessagesBulk_FullMethodName         = "/nzovu.api.queueservice.v1.QueueService/PostMessagesBulk"
+	QueueService_GetNextMessage_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/GetNextMessage"
+	QueueService_AcknowledgeMessage_FullMethodName       = "/nzovu.api.queueservice.v1.QueueService/AcknowledgeMessage"
+	QueueService_CancelMessage_FullMethodName            = "/nzovu.api.queueservice.v1.QueueService/CancelMessage"
+	QueueService_RenewMessageLease_FullMethodName        = "/nzovu.api.queueservice.v1.QueueService/RenewMessageLease"
+	QueueService_PeekQueueMessages_FullMethodName        = "/nzovu.api.queueservice.v1.QueueService/PeekQueueMessages"
+	QueueService_SendMessageHeartBeat_FullMethodName     = "/nzovu.api.queueservice.v1.QueueService/SendMessageHeartBeat"
+	QueueService_CreateSchedule_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/CreateSchedule"
+	QueueService_DeleteSchedule_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/DeleteSchedule"
+	QueueService_GetSchedule_FullMethodName              = "/nzovu.api.queueservice.v1.QueueService/GetSchedule"
+	QueueService_ListSchedules_FullMethodName            = "/nzovu.api.queueservice.v1.QueueService/ListSchedules"
+	QueueService_GetScheduleHistory_FullMethodName       = "/nzovu.api.queueservice.v1.QueueService/GetScheduleHistory"
+	QueueService_PauseSchedule_FullMethodName            = "/nzovu.api.queueservice.v1.QueueService/PauseSchedule"
+	QueueService_ResumeSchedule_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/ResumeSchedule"
+	QueueService_GetDLQMessages_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/GetDLQMessages"
+	QueueService_RequeueFromDLQ_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/RequeueFromDLQ"
+	QueueService_DeleteFromDLQ_FullMethodName            = "/nzovu.api.queueservice.v1.QueueService/DeleteFromDLQ"
+	QueueService_PurgeDLQ_FullMethodName                 = "/nzovu.api.queueservice.v1.QueueService/PurgeDLQ"
+	QueueService_GetDLQStats_FullMethodName              = "/nzovu.api.queueservice.v1.QueueService/GetDLQStats"
+	QueueService_ValidateCalendarSchedule_FullMethodName = "/nzovu.api.queueservice.v1.QueueService/ValidateCalendarSchedule"
+	QueueService_PreviewCalendarSchedule_FullMethodName  = "/nzovu.api.queueservice.v1.QueueService/PreviewCalendarSchedule"
+	QueueService_RegisterSchema_FullMethodName           = "/nzovu.api.queueservice.v1.QueueService/RegisterSchema"
+	QueueService_GetSchema_FullMethodName                = "/nzovu.api.queueservice.v1.QueueService/GetSchema"
+	QueueService_ListSchemas_FullMethodName              = "/nzovu.api.queueservice.v1.QueueService/ListSchemas"
+	QueueService_DeleteSchema_FullMethodName             = "/nzovu.api.queueservice.v1.QueueService/DeleteSchema"
+	QueueService_ValidatePayload_FullMethodName          = "/nzovu.api.queueservice.v1.QueueService/ValidatePayload"
 )
 
 // QueueServiceClient is the client API for QueueService service.
@@ -2468,7 +2468,7 @@ func _QueueService_ValidatePayload_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var QueueService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "chronoqueue.api.queueservice.v1.QueueService",
+	ServiceName: "nzovu.api.queueservice.v1.QueueService",
 	HandlerType: (*QueueServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

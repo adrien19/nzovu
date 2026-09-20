@@ -3,7 +3,7 @@
 // This file defines common data structures used across ChronoQueue APIs.
 
 syntax = "proto3";
-package chronoqueue.api.common.v1;
+package nzovu.api.common.v1;
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/duration.proto";
