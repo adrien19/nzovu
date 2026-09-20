@@ -9,6 +9,8 @@ REST API backend for the Interview Platform example, integrating with Nzovu for 
 - **Queue System**: Nzovu (using official `github.com/adrien19/nzovu/client`)
 - **API**: RESTful endpoints with JSON responses
 
+Request logs use the connection peer address; forwarded client-IP headers are not trusted.
+
 ## Project Structure
 
 ```

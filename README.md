@@ -97,13 +97,13 @@ Configure your environment:
 
 Start the Nzovu server:
 
-    ```bash
-    # Development mode with PostgreSQL (recommended)
-    go run . server --dev --grpc-addr :9000
+```bash
+# Development mode with PostgreSQL (recommended)
+go run . server --dev --grpc-addr :9000
 
-    # Development mode with SQLite
-    CGO_ENABLED=1 go run -tags sqlite . server --dev --grpc-addr :9000 --storage-type sqlite --sqlite-db-path nzovu.db
-    ```
+# Development mode with SQLite
+CGO_ENABLED=1 go run -tags sqlite . server --dev --grpc-addr :9000 --storage-type sqlite --sqlite-db-path nzovu.db
+```
 
 SQLite requires CGO, a C compiler, and the `sqlite` build tag. For a SQLite-capable binary, use `CGO_ENABLED=1 go build -tags sqlite -o nzovu .`; an untagged build supports PostgreSQL only. See [server build selection](./internal/server/server_nosqlite.go).
 
