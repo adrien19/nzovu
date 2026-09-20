@@ -224,9 +224,9 @@ docker logs <container-id>
 ### Inspect Test Environment
 
 ```go
-// In testcontainer.go, add logging:
-t.Logf("Database running at: %s", dbContainer.Endpoint)
-t.Logf("Nzovu running at: %s", chronoQueueContainer.Endpoint)
+env := helpers.SetupTestEnvironment(t)
+t.Logf("Nzovu gRPC endpoint: %s", env.GRPCAddr)
+t.Logf("Nzovu HTTP endpoint: %s", env.HTTPAddr)
 ```
 
 ### Common Issues & Solutions
