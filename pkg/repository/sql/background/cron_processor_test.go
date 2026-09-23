@@ -366,3 +366,15 @@ func TestCronProcessorDoesNotRecordConflictingMessage(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, countsBefore, counts)
 }
+
+func TestParseCronExpressionAcceptsDescriptors(t *testing.T) {
+	svc := &CronProcessorService{}
+	for _, expression := range []string{"@every 1s", "@daily", "@weekly", "@hourly"} {
+		t.Run(expression, func(t *testing.T) {
+			schedule, err := svc.parseCronExpression(expression)
+			require.NoError(t, err)
+			now := time.Now().UTC()
+			require.True(t, schedule.Next(now).After(now))
+		})
+	}
+}

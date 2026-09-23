@@ -316,6 +316,53 @@ func TestReclaimExpiredMessage_AtomicAcrossPostgresInstances(t *testing.T) {
 		require.NoError(t, first.DB.QueryRowContext(ctx, `SELECT COUNT(*) FROM cq_messages WHERE queue_name = $1 AND message_id = $2`, queueName, messageID).Scan(&remaining))
 		require.Zero(t, remaining)
 	})
+	t.Run("retries deletion deadlocks with message counter updates", func(t *testing.T) {
+		const queueName = "delete-counter-deadlock"
+		require.NoError(t, first.CreateQueue(ctx, &queuepb.Queue{Name: queueName, Metadata: &queuepb.QueueMetadata{}}))
+		require.NoError(t, first.EnqueueMessage(ctx, queueName, postgresReclaimTestMessage("counter-message", 1, 1)))
+		writer, err := second.DB.BeginTx(ctx, nil)
+		require.NoError(t, err)
+		t.Cleanup(func() {
+			if err := writer.Rollback(); err != nil && err != sql.ErrTxDone {
+				t.Error(err)
+			}
+		})
+		_, err = writer.ExecContext(ctx, `SET LOCAL deadlock_timeout = '5s'`)
+		require.NoError(t, err)
+		_, err = writer.ExecContext(ctx, `UPDATE cq_messages SET updated_at = updated_at + 1 WHERE queue_name = $1`, queueName)
+		require.NoError(t, err)
+		deleted := make(chan error, 1)
+		go func() { deleted <- first.DeleteQueue(ctx, queueName) }()
+		require.Eventually(t, func() bool {
+			var waiting bool
+			err := second.DB.QueryRowContext(ctx, `SELECT EXISTS (
+				SELECT 1 FROM pg_stat_activity WHERE datname = current_database()
+				AND state = 'active' AND wait_event_type = 'Lock'
+				AND query = 'DELETE FROM cq_queues WHERE name = $1'
+			)`).Scan(&waiting)
+			return err == nil && waiting
+		}, 3*time.Second, 10*time.Millisecond)
+		_, err = writer.ExecContext(ctx, `UPDATE cq_queues SET updated_at = updated_at + 1 WHERE name = $1`, queueName)
+		require.NoError(t, err)
+		require.NoError(t, writer.Commit())
+		select {
+		case err := <-deleted:
+			require.NoError(t, err)
+		case <-time.After(5 * time.Second):
+			t.Fatal("queue deletion did not complete after the conflicting writer committed")
+		}
+		_, err = first.GetQueue(ctx, queueName)
+		require.ErrorContains(t, err, "not found")
+	})
+	t.Run("canceled deletion preserves queue", func(t *testing.T) {
+		const queueName = "canceled-delete"
+		require.NoError(t, first.CreateQueue(ctx, &queuepb.Queue{Name: queueName, Metadata: &queuepb.QueueMetadata{}}))
+		canceled, cancel := context.WithCancel(ctx)
+		cancel()
+		require.ErrorIs(t, first.DeleteQueue(canceled, queueName), context.Canceled)
+		_, err := first.GetQueue(ctx, queueName)
+		require.NoError(t, err)
+	})
 	t.Run("rejects deletion of referenced DLQ", func(t *testing.T) {
 		require.NoError(t, first.CreateQueue(ctx, &queuepb.Queue{Name: "protected-dlq", Metadata: &queuepb.QueueMetadata{}}))
 		require.NoError(t, first.CreateQueue(ctx, &queuepb.Queue{Name: "protected-source", Metadata: &queuepb.QueueMetadata{DeadLetterQueueName: "protected-dlq"}}))

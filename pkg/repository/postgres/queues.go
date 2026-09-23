@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/lib/pq"
 
@@ -176,6 +177,24 @@ func (s *Storage) ListQueuesPage(ctx context.Context, prefix string, limit int32
 
 // DeleteQueue deletes a queue.
 func (s *Storage) DeleteQueue(ctx context.Context, name string) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	for attempt := 0; ; attempt++ {
+		err := s.deleteQueue(ctx, name)
+		var pgErr *pq.Error
+		if attempt == 2 || !errors.As(err, &pgErr) || pgErr.Code != "40P01" {
+			return err
+		}
+		// PostgreSQL aborts deadlocked transactions; this SQL-only operation can safely restart.
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(time.Duration(1<<attempt) * 10 * time.Millisecond):
+		}
+	}
+}
+
+func (s *Storage) deleteQueue(ctx context.Context, name string) error {
 	return s.WithTransaction(ctx, nil, func(tx *sql.Tx) error {
 		if _, err := tx.ExecContext(ctx, lockQueuesForRelationshipMutation); err != nil {
 			return fmt.Errorf("lock queues for deletion: %w", err)

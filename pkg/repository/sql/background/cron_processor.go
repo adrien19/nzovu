@@ -524,8 +524,7 @@ func (c *CronProcessorService) createCronMessage(ctx context.Context, tx *sql.Tx
 }
 
 func (c *CronProcessorService) parseCronExpression(expression string) (cron.Schedule, error) {
-	parser := cron.NewParser(cron.Minute | cron.Hour | cron.Dom | cron.Month | cron.Dow)
-	cronSchedule, err := parser.Parse(expression)
+	cronSchedule, err := cron.ParseStandard(expression)
 	if err != nil {
 		return nil, fmt.Errorf("invalid cron expression: %w", err)
 	}

@@ -130,16 +130,6 @@ func (v *SchemaValidator) payloadToJSON(data interface{}) ([]byte, error) {
 		return json.Marshal(data)
 	}
 
-	// Unwrap if the data is wrapped in a "value" field
-	// This happens when CLI wraps JSON data: {"value": {...actual data...}}
-	var unwrapped map[string]interface{}
-	if err := json.Unmarshal(jsonBytes, &unwrapped); err == nil {
-		if value, ok := unwrapped["value"]; ok {
-			// Extract the "value" field and re-marshal it
-			return json.Marshal(value)
-		}
-	}
-
 	return jsonBytes, nil
 }
 
