@@ -37,6 +37,8 @@
           {{ template "schedules_content" . }}
         {{ else if eq .ContentTemplate "schedule_new_content" }}
           {{ template "schedule_new_content" . }}
+        {{ else if eq .ContentTemplate "schedule_detail_content" }}
+          {{ template "schedule_detail_content" . }}
         {{ else if eq .ContentTemplate "schemas_content" }}
           {{ template "schemas_content" . }}
         {{ else if eq .ContentTemplate "schema_new_content" }}
