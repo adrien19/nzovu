@@ -18,7 +18,7 @@
 #   $b=[ScriptBlock]::Create($s); invoke-command -ScriptBlock $b -ArgumentList '0.1.0','C:\tools\nzovu'
 
 param (
-    # Version to install (e.g. "0.1.0" or "v0.1.0"). Defaults to latest release.
+    # Version to install (e.g. "0.0.1" or "v0.0.1"). Defaults to latest release.
     [string]$Version  = "",
     # Directory to install nzovu into. Defaults to $Env:NZOVU_INSTALL_DIR
     # or $Env:LOCALAPPDATA\Programs\nzovu if not set.

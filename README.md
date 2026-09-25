@@ -33,7 +33,7 @@ The table below describes the current source tree. Items marked **Evolving** or 
 | Monitoring | 🚧 Partial | Prometheus and Grafana provide operational metrics; the web dashboard provides queue state through live and polled views. |
 | Web administration | 🚧 Partial | Queue/message inspection and creation, schedule creation/pause/resume/delete, schema management, and DLQ actions. Additional settings areas remain under development. |
 | Operational security | 🧪 Evolving | API-key authentication, TLS/mTLS, payload encryption with local or Vault keys, per-principal rate limiting, and protected metrics. |
-| Additional SDKs and MCP | ↗ External | The in-repository Go client is implemented. Python support remains work in progress; the TypeScript SDK and MCP server are maintained separately and are in early development. |
+| Additional SDKs and MCP | ↗ External | Go, Python and TypeScript clients plus the MCP server implement the Nzovu API. External SDK packages remain unpublished; build from their source repositories. |
 
 ## Getting Started
 
@@ -68,6 +68,8 @@ In another terminal at the checkout root:
 #### Release installers
 
 The [shell installer](https://github.com/adrien19/nzovu/blob/main/install/install.sh) and [PowerShell installer](https://github.com/adrien19/nzovu/blob/main/install/install.ps1) target Nzovu releases and verify checksums and binary build metadata. They require published release assets. Once available, select a published tag explicitly; use `NZOVU_INSTALL_DIR` for a custom destination. Old ChronoQueue release tags and installer variables do not select Nzovu releases.
+
+Release binaries and the published production container support PostgreSQL. For SQLite, use the source build above or build `images/Dockerfile.sqlite`. The binary matrix covers Linux amd64/arm64/arm, macOS amd64/arm64 and Windows amd64.
 
 #### Docker Compose
 
@@ -171,7 +173,7 @@ NZOVU_UI_PUBLIC_ORIGIN=http://localhost:8081 go run . web-ui start --port 8081 -
 
 ## External clients
 
-The [legacy ChronoQueue TypeScript SDK and MCP repository](https://github.com/adrien19/chronoqueue-typescript-sdk) is maintained separately. Its Nzovu wire-namespace compatibility is unverified; use the in-repository Go client or regenerate clients from the Nzovu protobuf definitions. No renamed npm package is implied by this migration.
+The [Python SDK](https://github.com/adrien19/nzovu-sdk-python) provides synchronous and asynchronous clients. The [TypeScript SDK and MCP server](https://github.com/adrien19/nzovu-sdk-typescript) provide `@nzovu/client`, `@nzovu/proto`, and `@nzovu/mcp-server` with the `nzovu-mcp` executable. Both repositories vendor the current Nzovu protocol and validate against PostgreSQL and SQLite. Packages remain unpublished; follow each repository's source-build instructions until SDK releases are approved separately.
 
 ## Documentation
 

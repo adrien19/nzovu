@@ -8,6 +8,10 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 10
+    ignore:
+      # Go vulnerability database flags v1.84.0 for GO-2026-6443.
+      - dependency-name: "google.golang.org/grpc"
+        versions: ["1.84.0"]
     labels:
       - "dependencies"
       - "go"
