@@ -398,7 +398,7 @@ test-all: test test-integration test-e2e
 ci-test-all: ci-test ci-test-integration ci-test-e2e
 
 .PHONY: ci-release-test
-ci-release-test: ci-test ci-test-sqlite test-race ci-test-integration ci-test-integration-sqlite ci-test-migrations ci-test-e2e
+ci-release-test: test-release test-install-script ci-test ci-test-sqlite test-race ci-test-integration ci-test-integration-sqlite ci-test-migrations ci-test-e2e
 
 ################################################################################
 # Target: ci-test-migrations                                                   #
@@ -407,6 +407,11 @@ ci-release-test: ci-test ci-test-sqlite test-race ci-test-integration ci-test-in
 ci-test-migrations:
 	CGO_ENABLED=1 go test -tags="test_dep sqlite" ./pkg/repository/sqlite -run '^TestSchemaMigration_' -count=1
 	CGO_ENABLED=1 go test -tags="test_dep integration" ./pkg/repository/postgres -run '^TestSchemaMigration_' -count=1
+
+.PHONY: test-release
+test-release:
+	bash -n release/prepare.sh
+	python3 release/prepare_test.py
 
 .PHONY: test-install-script
 test-install-script:
