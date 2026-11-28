@@ -41,7 +41,7 @@ Examples may contain:
 ### Prerequisites
 
 - Docker & Docker Compose (for Nzovu server)
-- Go 1.26.6 (as declared in the example go.mod files) (for backend examples)
+- Go 1.26.11 (as declared in the example go.mod files) (for backend examples)
 - Node.js 22 (for frontend examples, if applicable)
 
 ### Quick Start

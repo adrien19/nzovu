@@ -19,7 +19,7 @@ A comprehensive demonstration of Nzovu's SQL-based architecture for high-through
 ## 📋 Prerequisites
 
 - Docker and Docker Compose (for PostgreSQL/SQLite)
-- Go 1.26.6
+- Go 1.26.11
 - Nzovu server running
 
 ## 🚀 Quick Start
