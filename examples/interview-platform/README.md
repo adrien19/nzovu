@@ -621,7 +621,7 @@ nzovu/examples/interview-platform/
 
 ### Backend
 
-- **Language**: Go 1.26.6
+- **Language**: Go 1.26.11
 - **HTTP Router**: Chi
 - **Database**: SQLite (mattn/go-sqlite3)
 - **Queue Client**: Nzovu gRPC Client
@@ -630,7 +630,7 @@ nzovu/examples/interview-platform/
 
 ### Workers
 
-- **Language**: Go 1.26.6
+- **Language**: Go 1.26.11
 - **Queue Client**: Nzovu gRPC Client
 - **Database**: SQLite (shared with backend)
 
@@ -647,7 +647,7 @@ nzovu/examples/interview-platform/
 ### Prerequisites
 
 - **Docker** & **Docker Compose** (for Nzovu server & PostgreSQL)
-- **Go 1.26.6** (for backend & workers)
+- **Go 1.26.11** (for backend & workers)
 - **Node.js 22** & **npm/pnpm** (for frontend)
 - **Clerk Account** (free tier available at <https://clerk.com>)
 

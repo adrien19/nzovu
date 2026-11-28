@@ -44,7 +44,7 @@ tests/
 ### Prerequisites
 
 1. **Docker** must be running (for Testcontainers)
-2. **Go 1.26.6+** installed
+2. **Go 1.26.11+** installed
 3. **Nzovu dependencies** installed: `go mod download`
 4. **Test image** built: `make build-test-image` (needed for direct `go test` integration commands)
 

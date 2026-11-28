@@ -36,7 +36,7 @@ This example showcases both **Mock Agents** (fast simulation) and **LLM-Powered 
 
 ### Required
 
-- **Go 1.26.6** - For building the orchestrator
+- **Go 1.26.11** - For building the orchestrator
 - **Nzovu server** - Message queue backend (see setup below)
 
 ### Optional (for LLM features)

@@ -124,7 +124,7 @@ API and workers must use the same `-db` path and `-server` endpoint. The example
 ### Prerequisites
 
 1. **Nzovu Server** running on `localhost:50051`
-2. **Go 1.26.6**
+2. **Go 1.26.11**
 
 ### Local Development
 

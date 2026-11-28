@@ -10,7 +10,7 @@
 # Verify Docker is running
 docker info
 
-# Verify Go version (1.26.6 required)
+# Verify Go version (1.26.11 required)
 go version
 
 # Install dependencies
